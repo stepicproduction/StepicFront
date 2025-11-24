@@ -1,0 +1,141 @@
+import React from 'react'
+import { FaArrowLeft, FaCheckCircle  } from 'react-icons/fa'
+import confirmation from "../../assets/confirmation.png"
+import { useState, useEffect } from 'react'
+import { getData } from '@/service/api'
+
+const Step4 = ({ formData, handlePrevious, handleSubmit, isSubmitting }) => {
+
+    const [categories, setCategories] = useState([])
+    const [services, setServices] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+
+    const fetchCategories = async () => {
+        try {
+            const response = await getData("/categories/with_inscription/")
+            setCategories(response.data)
+        } catch(err) {
+            console.error("Erreur lors de la récupération des catégories : ", err);
+        }
+    }    
+
+    const fetchServices = async () => {
+        try {
+            // ATTENTION : Si votre API a un endpoint pour TOUS les services, utilisez-le
+            // Sinon, vous devrez faire un appel par ID (voir Option 1 dans la réponse précédente)
+            const response = await getData("/services") 
+            setServices(response.data)
+        } catch(err) {
+            console.error("Erreur lors de la récupération des services : ", err)
+        }
+    }
+    
+    const formatCategorie = () => {
+        // formData.categorie est l'ID (une string)
+        const categorieId = String(formData.categorie); 
+        
+        // Recherche dans le tableau `categories`
+        const found = categories.find(cat => String(cat.id) === categorieId);
+
+        // Si l'objet est trouvé, renvoyer son nom, sinon renvoyer l'ID ou un message d'erreur
+        return found ? found.nom : `ID Catégorie: ${categorieId} (Introuvable)`;
+    };
+    
+    // 2. Recherche du nom lisible d'un Service
+    // 'serviceId' ici est un ID de service, pas l'objet entier
+    const formatServiceName = (serviceId) => {
+        // Le serviceId est une string
+        const serviceIdString = String(serviceId); 
+
+        // Recherche dans le tableau `services`
+        const found = services.find(srv => String(srv.id) === serviceIdString);
+
+        // Si l'objet est trouvé, renvoyer son nom, sinon renvoyer l'ID
+        return found ? found.nom : `ID Service: ${serviceIdString} (Introuvable)`;
+    };
+
+    // --- useEffect pour le chargement ---
+    useEffect(() => {
+        const loadData = async () => {
+            setIsLoading(true);
+            // On lance les deux appels en parallèle pour plus de rapidité
+            await Promise.all([fetchCategories(), fetchServices()]);
+            setIsLoading(false);
+        };
+        loadData();
+    }, [])
+    
+    // --- Rendu ---
+    
+    // Le nom de la catégorie à afficher
+    const categorieNom = !isLoading ? formatCategorie() : 'Chargement...';    
+
+    const servicesList = formData.service && formData.service.length > 0 ? (
+        <ul className='list-disc list-inside ml-4 mt-1 space-y-1'>
+            {formData.service.map((serviceId, index) => (
+                // Utiliser la fonction de recherche avec l'ID
+                <li key={index} className='text-base'>{formatServiceName(serviceId)}</li>
+            ))}
+        </ul>
+    ) : (
+        <p className='text-sm italic text-gray-600'>Aucun service supplémentaire sélectionné.</p>
+    );    
+
+  return (
+  <div className="p-4 flex flex-col md:flex-row items-center gap-6">
+
+    {/* Contenu principal */}
+    <div className="w-full md:w-[50%] flex flex-col items-center md:items-start text-left">
+      <h3 className="text-center md:text-left font-semibold text-3xl mb-6">
+        Etape 4 : Confirmation
+      </h3>
+
+      <div className="bg-gray-50 p-6 rounded-lg shadow-inner mb-8 w-full text-lg">
+        <h4 className="font-bold mb-3 border-b pb-1">Détails :</h4>
+        <p className="mb-2"><strong>Nom :</strong> {formData.nomClient} {formData.prenomClient}</p>
+        <p className="mb-2"><strong>Email :</strong> {formData.emailClient}</p>
+        <p className="mb-2"><strong>Téléphone :</strong> {formData.telephoneClient}</p>
+
+        {/* AFFICHAGE DES SERVICES MULTIPLES */}
+        <h5 className="font-bold mt-2">Services Supplémentaires :</h5>
+        {isLoading ? (
+          <p className="text-sm italic text-gray-600">Chargement des services...</p>
+        ) : (
+          servicesList
+        )}
+      </div> 
+
+      {/* Boutons */}
+      <div className="flex flex-col sm:flex-row justify-center gap-4 w-full">
+        <button 
+          type="button" 
+          className="flex items-center justify-center gap-2 px-6 py-3 rounded-full text-white font-semibold 
+                     bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] hover:from-[#6c63ff] hover:to-[#8a2be2] 
+                     shadow-lg transition-colors duration-300 cursor-pointer h-14 md:h-12 w-full sm:w-48"
+          onClick={handlePrevious}
+        >
+          <FaArrowLeft /> Précédent
+        </button>
+        <button 
+          type="submit" 
+          disabled={isSubmitting}
+          className="flex items-center justify-center gap-2 px-6 py-3 rounded-full text-white font-semibold 
+                     bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 
+                     shadow-lg transition-colors duration-300 cursor-pointer h-14 md:h-12 w-full sm:w-48 disabled:opacity-50"
+        >
+          {isSubmitting ? 'Envoi...' : <>Confirmer <FaCheckCircle /></>}
+        </button>
+      </div>
+    </div>
+
+    {/* Image visible uniquement desktop/tablette */}
+    <div className="hidden md:flex w-full md:w-[50%] justify-center">
+      <img src={confirmation} alt="Image de confirmation" className="max-w-full h-auto" />
+    </div>
+
+  </div>
+);
+
+}
+
+export default Step4
