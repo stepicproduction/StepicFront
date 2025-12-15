@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import DataTable from 'react-data-table-component'
 import { Input } from '../ui/input'
-// On importe les composants de Lucide (Search, Check, X)
 import { Search, Check, Trash2, Handbag } from 'lucide-react' 
 import { Button } from '../ui/button'
 import toast, { Toaster } from "react-hot-toast";
-import { getData, updateData, createData,  deleteData } from '@/service/api'
+import { getData, updateData, createData,  deleteData, getDataPdf } from '@/service/api'
 import AjoutCommandeModal from './Modals/commande/AjoutCommandeModal'
 import ModifCommandeModal from './Modals/commande/ModifCommandeModal'
 import {
@@ -19,31 +18,39 @@ import {
     AlertDialogCancel,
     AlertDialogAction,
 } from '../ui/alert-dialog';
+import { set } from 'zod'
 
 function DashCommand() {
-  // --- Données initiales ---
-
   const [commandes, setCommandes] = useState([])
   const [filter, setFilter] = useState("")
-  //const socketRef = useRef(null)
+  const [commandeYears, setCommandeYears] = useState([])
+  const [selectedYear, setSelectedYear] = useState("") // <-- Ajout pour le select d'année
 
-  //Récupération des données des commandes
   const fetchCommande = async () => {
     try {
       const response = await getData("/commandes/")
-      console.log(response.data);
       setCommandes(response.data)
     } catch (err) {
       console.log("Erreur lors de la récupération des données concernant les commandes : ", err);
     }
   }
 
+  const fetchCommandeYear = async () => {
+    try {
+      const response = await getData(`/commandes/available_years/`)
+      console.log(response.data)
+      setCommandeYears(response.data.years)
+    } catch (err) {
+      console.log("Erreur lors de la récupération des années disponibles : ", err);
+    }
+  }
+
   useEffect(() => {
     fetchCommande()
+    fetchCommandeYear()
   }, [])
 
   const handleAdd = async (data) => {
-    console.log("Ajout depuis dashCommande : ", data)
     try {
       await createData("/commandes/", data)
       fetchCommande()
@@ -55,7 +62,6 @@ function DashCommand() {
   }
 
   const handleSave = async (data) => {
-    console.log("Modification depuis dashCommande : ", data)
     try {
       await updateData(`/commandes/${data.id}/`, data)
       fetchCommande()
@@ -65,20 +71,30 @@ function DashCommand() {
       toast.error("Erreur lors de la mise à jour de la commande !!!", {duration : 3000})
     }
   }
-  // --- Styles personnalisés pour les en-têtes de tableau (DataTable) ---
+
+  const downloadPdf = async () => {
+    try {
+      const url = selectedYear ? `/commandes/pdf_commande/?year=${selectedYear}` : "/commandes/pdf_commande/"
+      await getData(url)
+      toast.success("PDF téléchargé avec succès", {duration : 3000})
+    } catch(err) {
+      console.log("Erreur lors de l'export PDF : ", err)
+      toast.error("Erreur lors du téléchargement du pdf", {duration : 3000})
+    }
+  }
+
   const customStyles = {
     headCells: {
       style: {
-        fontSize: '15px', // Taille légèrement plus grande
-        fontWeight: '700', // Gras
+        fontSize: '15px',
+        fontWeight: '700',
         color: '#374151', 
         backgroundColor: '#f9fafb', 
       },
     },
   };
 
-  // Filtrage
-  const filteredInscriptions = commandes.filter(comm =>
+  const filteredCommandes = commandes.filter(comm =>
     comm.nomClient.toLowerCase().includes(filter.toLowerCase()) ||
     comm.prenomClient.toLowerCase().includes(filter.toLowerCase()) ||
     comm.service_detail.map(s => s.nom).join(", ").toLowerCase().includes(filter.toLowerCase()) ||
@@ -88,8 +104,9 @@ function DashCommand() {
   const valider = async (id) => {
     try {
       await updateData(`/commandes/${id}/valider/`)
+      await getDataPdf(`/commandes/${id}/pdf/`, `commande_${id}.pdf`); 
       fetchCommande()
-      toast.success("Commande validée et envoye e-mail avec succès", {duration : 3000})
+      toast.success("Commande validée et e-mail envoyé avec succès", {duration : 3000})
     } catch (err) {
       console.log("Erreur lors de la validation : ", err);
       toast.error("Erreur lors de la validation de la commande !!!", {duration : 3000})
@@ -107,7 +124,6 @@ function DashCommand() {
     }
   }
 
-  // Colonnes tableau
   const columns = [
     { name: "ID", selector: row => row.id, sortable: true, width: "70px" },
     { name: "Nom", selector: row => row.nomClient, sortable: true },
@@ -115,9 +131,7 @@ function DashCommand() {
     { name: "Email", selector: row => row.emailClient, grow: 2 },
     { name: "Téléphone", selector: row => row.telephone },
     { name: "Catégorie", selector: row => row.categorie_detail ? row.categorie_detail.nom : "-", sortable: true },
-    { name: "Service", selector: row => row.service_detail.map(s => s.nom).join(", ")
-      
-     },
+    { name: "Service", selector: row => row.service_detail.map(s => s.nom).join(", ") },
     { name: "Date", selector: row => row.dateCommande },
     {
       name: "Statut",
@@ -126,44 +140,33 @@ function DashCommand() {
       cell: row => {
         let bgColor;
         switch(row.statut) {
-          case "Validé":
-            bgColor = "bg-green-500";
-            break;
-          case "Rejeté":
-            bgColor = "bg-rose-500";
-            break;
-          default:
-            bgColor = "bg-amber-500"; // En attente
+          case "Validé": bgColor = "bg-green-500"; break;
+          case "Rejeté": bgColor = "bg-rose-500"; break;
+          default: bgColor = "bg-amber-500";
         }
-        return (
-          <span className={`px-2 py-1 rounded-full text-xs font-semibold text-white ${bgColor}`}>
-            {row.statut}
-          </span>
-        );
+        return <span className={`px-2 py-1 rounded-full text-xs font-semibold text-white ${bgColor}`}>{row.statut}</span>
       }
     },
     {
       name: "Actions",
       cell: (row) => (
         <div className="flex gap-2">
-          {/* Bouton de Validation (Vert, Cercle) */}
           <Button
             onClick={() => valider(row.id)}
             className="bg-green-500 hover:bg-green-600 text-white shadow-lg rounded-full h-8 w-8 p-1 transition-all"
             size="icon"
-            disabled={row.statut !== "En attente"} // Désactiver si déjà traité
+            disabled={row.statut !== "En attente"}
           >
             <Check className="h-4 w-4" />
           </Button>
 
           <ModifCommandeModal value={row} onUpdate={handleSave} />
           
-         <AlertDialog>
+          <AlertDialog>
               <AlertDialogTrigger asChild>
                   <Button 
                       className='bg-rose-600 hover:bg-rose-700 text-white shadow-lg rounded-full h-8 w-8 p-1 transition-all'
                       size="icon"
-                      title="Supprimer le membre"
                   > 
                       <Trash2 className='h-4 w-4' /> 
                   </Button>
@@ -172,7 +175,7 @@ function DashCommand() {
                   <AlertDialogHeader>
                       <AlertDialogTitle className="text-rose-600">Confirmer la suppression</AlertDialogTitle>
                       <AlertDialogDescription>
-                          Voulez-vous supprimer le membre <b>{row.nomClient} {row.prenomClient}</b>? Cette action est irréversible.
+                          Voulez-vous supprimer le membre <b>{row.nomClient} {row.prenomClient}</b> ? Cette action est irréversible.
                       </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
@@ -200,7 +203,7 @@ function DashCommand() {
   return (
     <div className="p-8 bg-white min-h-screen rounded-xl shadow-lg">
 
-     <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="top-right" reverseOrder={false} />
 
       {/* --- HEADER --- */}
       <header className="flex items-center gap-3 mb-8 border-b border-indigo-400/30 pb-4">
@@ -210,9 +213,8 @@ function DashCommand() {
         </h2>
       </header>
 
-      {/* --- Barre recherche --- */}
+      {/* --- Barre recherche + select année + PDF --- */}
       <div className="flex flex-col sm:flex-row justify-center items-start sm:items-center mb-6 gap-10">
-
         <AjoutCommandeModal onCreate={handleAdd} />
 
         <div className="relative w-full max-w-sm">
@@ -225,6 +227,38 @@ function DashCommand() {
             className="w-full pl-10 h-10 rounded-lg border-gray-300 focus:ring-indigo-500 text-gray-700"
           />
         </div>
+
+        {/* --- Select année --- */}
+        <div>
+          <select
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(e.target.value)}
+            className="h-10 rounded-lg border-gray-300 focus:ring-indigo-500 text-gray-700 px-3"
+          >
+            <option value="">Sélectionner l'année</option>
+            {commandeYears.map((year) => (
+              <option key={year} value={year}>{year}</option>
+            ))}
+          </select>
+        </div>
+
+        <button
+          className="
+            flex items-center gap-2 
+            bg-gray-100 hover:bg-gray-200 
+            text-gray-800 
+            px-4 py-2 
+            cursor-pointer
+            rounded-xl 
+            shadow-sm 
+            transition
+          "
+          onClick={() => downloadPdf()}
+        >
+          <span className="text-xl">📄</span>
+          <span className="font-medium">PDF à télécharger</span>
+          <span className="text-xl">📜</span>
+        </button>
       </div>
 
       {/* --- Tableau --- */}
@@ -232,7 +266,7 @@ function DashCommand() {
         <DataTable
           title={<h3 className='text-xl font-semibold text-gray-700'>Liste des commandes en ligne</h3>}
           columns={columns}
-          data={filteredInscriptions}
+          data={filteredCommandes}
           pagination
           highlightOnHover
           striped

@@ -6,18 +6,18 @@ import { IoLocation } from "react-icons/io5";
 import { FaPhone } from "react-icons/fa6"; 
 import { FaYoutube } from "react-icons/fa6"; 
 import { FaTiktok } from "react-icons/fa6"; 
-import { Link } from "react-scroll"; 
+import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function Footer({ active = "home" }) { 
   const [showTopBtn, setShowTopBtn] = useState(false); 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const items = [ 
-    { id: "home", label: "Accueil", icon: <FiHome size={18} /> }, 
+    { id: "", label: "Accueil", icon: <FiHome size={18} /> }, 
     { id: "about", label: "À propos", icon: <FiInfo size={18} /> }, 
     { id: "offre", label: "Offres", icon: <FiBriefcase size={18} /> }, 
-    { id: "projets", label: "Portfolio", icon: <FiImage size={18} /> }, 
-    { id: "actualite", label: "Actualités", icon: <FiBell size={18} /> }, 
+    { id: "presse_actu", label: "Actualités", icon: <FiBell size={18} /> }, 
     { id: "contact", label: "Contact", icon: <FiMail size={18} /> }, 
   ]; 
 
@@ -42,13 +42,15 @@ export default function Footer({ active = "home" }) {
     <footer className="bg-blue-950 text-gray-300 relative"> 
       {/* Section principale */} 
       <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8"> 
+        
         {/* Logo & description */} 
         <div> 
-          <div className="flex items-center mb-4"> 
-            <img src={logo} alt="logo" className="w-[80px] h-[80px]" /> 
-          </div> 
+          <Link to="/" className="flex items-center mb-1 cursor-pointer">
+            <img src={logo} alt="logo" className="w-[70px] h-[70px]" /> 
+          </Link>
+
           <p className="text-gray-400 mb-6 leading-relaxed"> 
-            Créons ensemble des expériences web exceptionnelles avec les dernières technologies. 
+            Chaque pas nous rapproche du pic de l'excellence audiovisuelle. Rejoignez-nous dans cette aventure créative.
           </p> 
 
           {/* Réseaux sociaux */} 
@@ -79,8 +81,7 @@ export default function Footer({ active = "home" }) {
               href="http://youtube.com/%40stepic_production4859" 
               target="_blank" 
               rel="noreferrer" 
-              className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center  
-              hover:bg-red-600 transition-colors duration-300" 
+              className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors duration-300" 
             > 
               <FaYoutube className="text-white" /> 
             </a> 
@@ -88,8 +89,7 @@ export default function Footer({ active = "home" }) {
               href="mailto:stepicproduction@gmail.com" 
               target="_blank" 
               rel="noreferrer" 
-              className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center  
-              hover:bg-black transition-colors duration-300" 
+              className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-black transition-colors duration-300" 
             > 
               <FaTiktok className="text-white" /> 
             </a> 
@@ -101,21 +101,16 @@ export default function Footer({ active = "home" }) {
           <h4 className="text-lg font-semibold mb-6 text-white">Navigation</h4> 
           <ul className="space-y-3"> 
             {items.map((item) => ( 
-              <li key={item.id}> 
-                <Link 
-                  to={item.id} 
-                  smooth={true} 
-                  duration={500} 
-                  spy={true} 
-                  offset={-70} 
-                  className={`flex items-center text-gray-400 hover:text-white transition-colors duration-200 gap-2 cursor-pointer ${ 
-                    active === item.id ? "text-blue-400" : "" 
-                  }`} 
-                > 
-                  {item.icon} 
-                  <span>{item.label}</span> 
-                </Link> 
-              </li> 
+              <NavLink 
+                key={item.id}
+                to={item.id} 
+                className={`flex items-center text-gray-400 hover:text-white transition-colors duration-200 gap-2 cursor-pointer ${ 
+                  active === item.id ? "text-blue-400" : "" 
+                }`} 
+              > 
+                {item.icon} 
+                <span>{item.label}</span> 
+              </NavLink> 
             ))} 
           </ul> 
         </div> 
@@ -158,7 +153,6 @@ export default function Footer({ active = "home" }) {
       <div className="border-t border-gray-800 text-center py-4 text-gray-400 text-sm"> 
         © {new Date().getFullYear()} STEPIC. Tous droits réservés. 
       </div> 
-
 
       {/* Bouton retour en haut */} 
       {showTopBtn && ( 

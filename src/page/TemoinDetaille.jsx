@@ -99,7 +99,7 @@ function TemoinDetaille() {
 
   return (
     // CHANGEMENT 1 : max-w-2xl au lieu de max-w-md pour avoir plus de place en largeur
-    <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-md p-6 mt-10 pt-13">
+    <div className="max-w-2xl mx-auto p-6 mt-10 pt-13">
       <H2 className="text-center mb-6">Laissez votre avis</H2>
 
       {/* CHANGEMENT 2 : Utilisation de Grid (2 colonnes sur PC, 1 sur mobile) */}
@@ -207,11 +207,9 @@ function TemoinDetaille() {
           />
           {errors.image && <p className='text-red-500 text-[12px]'>{errors.image.message}</p>}
         </div>
-
-        {/* Bouton Envoyer (Prend toute la largeur) */}
         <button
           type="submit"
-          className="md:col-span-2 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-full cursor-pointer"
+          className="md:col-span-2 w-full max-w-xs mx-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-full cursor-pointer"
         >
           Envoyer le Témoignage
         </button>

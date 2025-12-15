@@ -11,6 +11,24 @@ export {instance};
 // récupérer les données
 export const getData = (url) => instance.get(url);
 
+export const getDataPdf = async (url, filename) => {
+  try {
+    const response = await instance.get(url, { responseType: 'blob' });
+    const urlBlob = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link = document.createElement('a');
+    link.href = urlBlob;
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(urlBlob);
+  } catch (error) {
+    console.error("Erreur lors du téléchargement du PDF : ", error);
+    throw error;
+  }
+}
+
 //endpoint pour le token
 
 export const getToken = (url, config = {}) => instance.get(url, config);

@@ -8,7 +8,6 @@ import OffreSection from "@/section/OffreSection";
 import ProjetSection from "@/section/ProjetSection";
 import ActualiteSection from "@/section/ActualiteSection";
 import TemoignageSection from "@/section/TemoignageSection";
-import ContactSection from "@/section/ContactSection";
 import ShowreelSection from "@/section/ShowreelSection";
 import AboutSection from "@/section/AboutSection";
 

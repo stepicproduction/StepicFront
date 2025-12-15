@@ -13,31 +13,6 @@ function Navbar() {
   const location = useLocation(); // Pour connaître l'URL actuelle
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  // Fonction unifiée pour gérer la navigation
-  const handleScrollToSection = (to) => {
-    // 1. Ferme le menu mobile si il est ouvert
-    if (isOpen) {
-        toggleMenu();
-    }
-    
-    // Vérifie si nous sommes sur la page d'accueil ("/")
-    if (location.pathname === "/") {
-      // 2a. Si OUI : On utilise simplement le scroller
-      scroller.scrollTo(to, {
-        smooth: true,
-        duration: 500,
-        offset: -80, // Optionnel: pour ajuster le défilement sous la navbar fixe
-      });
-    } else {
-      // 2b. Si NON (on est sur /login ou autre) : On navigue vers la page d'accueil
-      // et on passe la section cible dans l'état de navigation.
-      navigate("/", { state: { scrollTo: to } });
-
-      // Note : La logique de défilement après la navigation
-      // devra être gérée dans le composant de la page d'accueil. (Voir ci-dessous)
-    }
-  };
-
   const navItems = [
     { id:1, to: "", label: "Accueil" },
     { id:2, to: "about", label: "A propos" },
@@ -48,20 +23,21 @@ function Navbar() {
 
   return (
     <header
-      className="fixed top-0 left-0 w-full h-[80px] px-6 sm:px-12 lg:px-32 flex justify-between items-center bg-transparent backdrop-blur-lg shadow-[0_8px_25px_rgba(0,0,0,0.2)] z-50 transition-all duration-300"
+      className="fixed top-0 left-0 w-full h-[80px] px-6 sm:px-12 lg:px-32 flex justify-between items-center bg-gradient-to-br from-white/10 via-white/70 to-transparent backdrop-blur-lg shadow-2xl z-50 transition-all duration-300"
     >
       {/* ... (votre code logo inchangé) ... */}
       <div className="flex items-center gap-2">
         <img
           src={logo}
           alt="logo"
-          className="w-[55px] h-[55px] md:w-[65px] md:h-[65px] object-contain"
+          className="w-[55px] h-[55px] md:w-[65px] md:h-[65px] object-contain cursor-pointer"
+          onClick={() => navigate("")}
         />
       </div>
 
       {/* Menu desktop */}
       <nav className="hidden lg:flex flex-1 justify-center">
-        <ul className="flex items-center gap-10 text-[16px] font-medium text-gray-800">
+        <ul className="flex items-center gap-16 text-[16px] font-medium text-gray-800">
           {navItems.map((item) => (
             <NavLink
               key={item.id}
@@ -117,29 +93,18 @@ function Navbar() {
       >
         <ul className="flex flex-col items-center gap-8 text-[20px] font-medium text-gray-800">
           {navItems.map((item) => (
-            <li
-              key={item.to}
+            <NavLink
+              key={item.id}
+              to={item.to}
               // Suppression de onClick={toggleMenu} car il est maintenant dans handleScrollToSection
               className="hover:text-[#6c63ff] transition duration-200"
               // Utilisation du gestionnaire unifié
-              onClick={() => handleScrollToSection(item.to)} 
+              onClick={toggleMenu}
             >
               {item.label}
-            </li>
+            </NavLink>
           ))}
         </ul>
-        {/* ... (votre bouton de connexion mobile inchangé) ... */}
-        {/* <button
-          onClick={() => {
-            navigate("/login");
-            toggleMenu();
-          }}
-          className="flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold 
-                      bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] hover:from-[#6c63ff] hover:to-[#8a2be2] 
-                      shadow-lg transition-all duration-300 mt-10"
-        >
-          Se connecter <FaArrowRight />
-        </button> */}
       </div>
     </header>
   );

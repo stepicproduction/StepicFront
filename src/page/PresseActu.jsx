@@ -2,46 +2,89 @@ import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"; 
 import { Calendar } from 'lucide-react'; 
 import { getData } from '@/service/api';
+import { useNavigate } from 'react-router-dom';
+
+
+const truncateText = (text, maxLength) => {
+  if (!text) return "";
+  if (text.length <= maxLength) {
+    return text;
+  }
+  // Tronque au dernier mot complet avant la limite
+  const trimmedString = text.substring(0, maxLength);
+  return trimmedString.substring(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" "))) + '...';
+}
 
 // --- 2. COMPOSANT CARTE (Image à gauche, Texte à droite) ---
-const ArticleCard = ({ item }) => (
-  <div className="w-full items-center bg-white border border-gray-200 rounded-2xl overflow-hidden flex flex-col md:flex-row shadow-sm hover:shadow-md transition-shadow duration-300 mb-6">
-    {/* Image : Prend 100% sur mobile, et une taille fixe (ex: 300px) sur Desktop */}
-    <div className="w-full md:w-80 h-64 md:h-64 flex-shrink-0 relative">
-      <img
-        src={item.image || item.imageActu}
-        alt={item.titre || item.titreActu}
-        className="w-full h-full object-cover rounded-2xl"
-      />
-    </div>
+const ArticleCard = ({ item, categoryLabel = "ACTUALITE", tabValue }) => {
 
+  const navigate = useNavigate();
 
-    {/* Contenu Texte */}
-    <div className="p-6 flex flex-col justify-center items-start flex-1">
-      {/* Date */}
-      <div className="flex items-center text-indigo-600 text-sm font-semibold mb-3 bg-indigo-50 px-3 py-1 rounded-full">
-        {/* Si tu n'as pas l'icône Calendar, retire cette ligne */}
-        <Calendar className="w-4 h-4 mr-2" /> 
-        {item.datePub || item.date_pub}
+  const title = item.titre || item.titreActu;
+  const description = item.contenu || item.contenuActu;
+  const imageSrc = item.image || item.imageActu;
+  const datePub = item.datePub || item.date_pub;
+
+  const shouldShowButton = tabValue !== "entreprise";
+
+  const DESCRIPTION_MAX_LENGTH = 180;
+
+  const authorInfo = `PAR STEPIC.INFO ACTUALITÉ`
+
+  const handleViewMore = () => {
+    navigate("/actu_detaille/" + item.id);
+  }
+
+  return(
+
+    <div className="w-full items-center bg-white border border-gray-200 rounded-2xl overflow-hidden flex flex-col md:flex-row shadow-sm hover:shadow-md transition-shadow duration-300 mb-6"
+      onClick={handleViewMore}
+    >
+      {/* Image : Prend 100% sur mobile, et une taille fixe (ex: 300px) sur Desktop */}
+      <div className="w-full md:w-80 h-64 md:h-64 flex-shrink-0 relative">
+        <img
+          src={imageSrc}
+          alt={title}
+          className="w-full h-full object-cover"
+        />
+
+        <div className="absolute top-0 left-0 bg-red-600 text-white text-xs font-bold uppercase px-3 py-1 rounded-br-lg">
+          {categoryLabel}
+        </div>
       </div>
 
-      {/* Titre */}
-      <h3 className="text-2xl font-bold text-gray-900 mb-3">
-        {item.titre || item.titreActu}
-      </h3>
 
-      {/* Description */}
-      <p className="text-gray-600 text-base leading-relaxed mb-4">
-        {item.contenu || item.contenuActu}
-      </p>
+      {/* Contenu Texte */}
+      <div className="p-4 md:p-6 flex flex-col justify-between items-start flex-1 h-64 md:h-64">
+        
+        {/* Titre */}
+        <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 leading-snug">
+          {title}
+        </h3>
 
-      {/* Bouton lire plus (Optionnel)
-      <button className="text-indigo-600 font-semibold hover:underline mt-auto">
-        Lire la suite &rarr;
-      </button> */}
+        {/* Info Auteur & Date */}
+        <div className="text-xs text-gray-500 font-medium mb-3">
+            {authorInfo} | {datePub}
+        </div>
+
+        {/* Description tronquée */}
+        <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-4 flex-1">
+          {truncateText(description, DESCRIPTION_MAX_LENGTH)}
+        </p>
+
+        {/* Bouton Voir Plus */}
+        { shouldShowButton && <button className="text-sm font-semibold text-gray-900 border border-gray-300 px-4 py-2 rounded hover:bg-sky-600 hover:text-gray-200 transition duration-300 self-start mt-auto cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation(); // Empêche l'événement de cliquer sur la carte de se déclencher
+            handleViewMore();
+          }}
+        >
+          VOIR PLUS
+        </button>}
+      </div>
     </div>
-  </div>
-);
+  )
+};
 
 // --- 3. TON COMPOSANT PRINCIPAL ---
 const PresseActu = () => {
@@ -69,6 +112,7 @@ const PresseActu = () => {
     }
   }
 
+  // Fonction appelée par ArticleCard
   useEffect(() => {
     Promise.all([
       fetchActu(),
@@ -106,7 +150,7 @@ const PresseActu = () => {
         {/* --- Contenu Entreprise --- */}
         <TabsContent value="entreprise" className="w-full flex flex-col gap-6 animate-in fade-in zoom-in duration-300">
           {actu.map((item) => (
-            <ArticleCard key={item.id} item={item} />
+            <ArticleCard key={item.id} item={item} tabValue="entreprise" />
           ))}
           
           {/* Message si vide (au cas où) */}
@@ -118,7 +162,7 @@ const PresseActu = () => {
         {/* --- Contenu Infos --- */}
         <TabsContent value="info" className="w-full flex flex-col gap-6 animate-in fade-in zoom-in duration-300">
           {presse.map((item) => (
-            <ArticleCard key={item.id} item={item} />
+            <ArticleCard key={item.id} item={item} tabValue="info" />
           ))}
 
           {presse.length === 0 && (

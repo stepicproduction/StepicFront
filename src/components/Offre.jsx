@@ -46,20 +46,19 @@ function Offre({ nom, description, image, button, categorieId}) {
              {/* {sousTitre} */} 
           </p>
 
-          <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+          <p className="text-sm sm:text-base text-gray-600 leading-relaxed h-32 overflow-hidden flex items-center">
             {description}
           </p>
         </div>
 
         {/* --- BOUTON --- */}
-        <div className="mt-auto w-full flex justify-center">
+        <div className="mt-auto w-full flex justify-end">
           <Button
-            variant="default"
+            variant="link"
             size="default"
             onClick={redirect}
             className="flex items-center justify-center gap-2 px-6 py-2 rounded-full text-white font-semibold 
-                       bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] hover:from-[#6c63ff] hover:to-[#8a2be2]
-                       shadow-lg transition-colors duration-300 cursor-pointer 
+                       duration-300 cursor-pointer text-[#0B1D5D]
                        h-10 md:h-12 w-40 md:w-48"
           >
             {button} <FaLongArrowAltRight />

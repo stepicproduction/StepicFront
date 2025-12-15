@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+"use client";
+
+import React, { useState, useEffect, useRef } from 'react';
 import { H2 } from '@/components/Typographie';
 import { useNavigate } from 'react-router-dom';
 import { getData } from '@/service/api';
-import { getRelativeTime } from '../service/getRelativeTime'
+import { getRelativeTime } from '../service/getRelativeTime';
+import { motion, animate, useMotionValue, useMotionValueEvent, useScroll } from "framer-motion";
 
-
-// --- 2. Composant StarRating ---
+// --- Composant StarRating ---
 const StarRating = ({ note }) => {
   const MAX_STARS = 5;
   return (
@@ -13,7 +15,7 @@ const StarRating = ({ note }) => {
       {Array.from({ length: MAX_STARS }, (_, i) => (
         <svg
           key={i}
-          className={`w-5 h-5 ${i < note ? 'text-yellow-400' : 'text-gray-300'}`}
+          className={`w-5 h-5 ${i < note ? "text-yellow-400" : "text-gray-300"}`}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -24,109 +26,168 @@ const StarRating = ({ note }) => {
   );
 };
 
+// --- Animation scroll mask ---
+const left = `0%`;
+const right = `100%`;
+const leftInset = `20%`;
+const rightInset = `80%`;
+const transparent = `#0000`;
+const opaque = `#000`;
 
+function useScrollOverflowMask(scrollXProgress) {
+  const maskImage = useMotionValue(
+    `linear-gradient(90deg, ${opaque}, ${opaque} ${left}, ${opaque} ${rightInset}, ${transparent})`
+  );
 
-// --- 3. Composant Temoignage ---
+  useMotionValueEvent(scrollXProgress, "change", (value) => {
+    if (value === 0) {
+      animate(
+        maskImage,
+        `linear-gradient(90deg, ${opaque}, ${opaque} ${left}, ${opaque} ${rightInset}, ${transparent})`
+      );
+    } else if (value === 1) {
+      animate(
+        maskImage,
+        `linear-gradient(90deg, ${transparent}, ${opaque} ${leftInset}, ${opaque} ${right}, ${opaque})`
+      );
+    } else if (
+      scrollXProgress.getPrevious() === 0 ||
+      scrollXProgress.getPrevious() === 1
+    ) {
+      animate(
+        maskImage,
+        `linear-gradient(90deg, ${transparent}, ${opaque} ${leftInset}, ${opaque} ${rightInset}, ${transparent})`
+      );
+    }
+  });
+
+  return maskImage;
+}
+
+// --- Composant Temoignage (cartes carrées) ---
 const Temoignage = ({ image, nom, prenom, designation, message, date, note, email }) => {
+  const initial = email ? email[0].toUpperCase() : nom[0].toUpperCase();
 
-  const initial = email ? email[0].toUpperCase() : nom[0].toUpperCase()
-  console.log(initial)
-
+  const variants = {
+    hidden: { opacity: 0, y: 50, scale: 0.95 },
+    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.8, ease: "easeOut" } },
+  };
 
   return (
-    <div className="relative bg-white rounded-2xl shadow-md border border-gray-200 w-full max-w-md mx-auto pt-10">
-      
-      {/* Bande bleue avec l’image et les infos */}
-      <div className="bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] relative px-5 py-4 rounded-br-[50px] overflow-visible">
-        {/* Image du profil */}
-        <div className={` ${image ? "absolute -top-5 -left-5 z-20 flex items-center justify-center " : "absolute -top-5 -left-5 z-20 w-33 h-33 rounded-full border-4 border-white shadow-lg object-cover flex items-center justify-center bg-gradient-to-r from-[#8a2be2] to-[#6c63ff]"}`}>
-          {image? <img
-            src={image}
-            alt={nom}
-            className="w-33 h-33 rounded-full border-4 border-white shadow-lg object-cover"
-          /> : <span className='text-white text-6xl'> {initial} </span>}
+    <motion.div
+      variants={variants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      className="flex-shrink-0 w-[320px] sm:w-[360px] md:w-[380px]"
+    >
+      <div className="flex flex-col bg-white p-4 shadow-xl h-[420px] sm:h-[390px] rounded-2xl">
+        {/* Photo + nom/prénom/désignation */}
+        <div className="flex flex-row items-center gap-4 mb-4">
+          <div className="w-24 h-24 rounded-full overflow-hidden shadow-lg flex-shrink-0 border-2 border-white">
+            {image ? (
+              <img src={image} alt={nom} className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] flex items-center justify-center text-white text-4xl font-bold">
+                {initial}
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-col">
+            <h3 className="text-lg font-semibold text-gray-900">{nom} {prenom}</h3>
+            <p className="text-sm text-gray-600">{designation}</p>
+          </div>
         </div>
 
-        {/* Nom, prénom et désignation sur trois lignes */}
-        <div className="ml-35 text-white">
-          <p className="font-bold text-base leading-none">{nom}</p>
-          <p className="font-[20px] text-sm">{prenom}</p>
-          <p className="text-xs font-[15px] pt-2">{designation}</p>
+        {/* Message + Note */}
+        <div className="flex flex-col justify-between h-full">
+          <p className="text-sm leading-relaxed mb-4 text-black pt-7">{message}</p>
+
+          <div className="flex justify-between items-end mt-auto">
+            <div className="bg-white rounded-full shadow-xl inline-flex px-3 py-2 mb-2">
+              <StarRating note={note} />
+            </div>
+            <p className="text-xs text-gray-500 text-right">Publié {getRelativeTime(date)}</p>
+          </div>
         </div>
       </div>
-
-      {/* Contenu du témoignage */}
-      <div className="p-6 mt-8">
-        <div className="mb-3">
-          <StarRating note={note} />
-        </div>
-
-        <p className="text-gray-700 text-sm leading-relaxed mb-4">
-          {message}
-        </p>
-
-        <div className="flex justify-end pt-2 border-t border-gray-100">
-          <p className="text-xs text-gray-500 font-medium">
-            Publié  {getRelativeTime(date)}
-          </p>
-        </div>
-      </div>
-    </div>
+    </motion.div>
   );
 };
 
-// --- 4. Composant Principal TemoignageSection ---
+// --- Section Témoignage avec scroll horizontal ---
 function TemoignageSection() {
-
-  const navigate = useNavigate()
-
-  const [temoin, setTemoin] = useState([])
+  const navigate = useNavigate();
+  const [temoin, setTemoin] = useState([]);
 
   const fetchTemoignage = async () => {
     try {
-      const response = await getData("temoignages/valide/")
-      console.log(response.data)
-      setTemoin(response.data)
+      const response = await getData("temoignages/valide/");
+      setTemoin(response.data);
     } catch (err) {
-      console.log("Erreur lors de la récupération de données du témoignages : ", err)
+      console.log("Erreur :", err);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchTemoignage()
-  }, [])
+    fetchTemoignage();
+  }, []);
+
+  const ref = useRef(null);
+  const { scrollXProgress } = useScroll({ container: ref });
+  const maskImage = useScrollOverflowMask(scrollXProgress);
 
   return (
-    <div className="py-10 px-4 sm:px-8 md:py-20 md:px-32 max-w-7xl mx-auto overflow-hidden">
-      <H2 className="text-xl sm:text-2xl md:text-3xl text-center mb-8">Témoignages</H2>
+    <div className="py-10 px-4 sm:px-8 md:py-20 max-w-7xl mx-auto">
 
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 justify-center">
-        {temoin.map((temoin) => (
+      <H2 className="text-xl sm:text-2xl md:text-3xl text-center mb-12">Témoignages</H2>
+
+      {/* Circle Progress */}
+      <svg width="80" height="80" viewBox="0 0 100 100" className="mx-auto mb-8 rotate-[-90deg]">
+        <circle cx="50" cy="50" r="30" pathLength="1" className="stroke-gray-300" fill="none" strokeWidth="10%" />
+        <motion.circle
+          cx="50"
+          cy="50"
+          r="30"
+          stroke="var(--accent)"
+          strokeWidth="10%"
+          fill="none"
+          style={{ pathLength: scrollXProgress }}
+        />
+      </svg>
+
+      {/* Scroll horizontal animé */}
+      <motion.div
+        ref={ref}
+        className="flex overflow-x-scroll gap-6 px-3 py-4"
+        style={{ maskImage }}
+      >
+        {temoin.map((t) => (
           <Temoignage
-            key={temoin.id}
-            image={temoin.image}
-            nom={temoin.nomClient}
-            prenom={temoin.prenomClient}
-            designation={temoin.role}
-            message={temoin.messageClient}
-            date={temoin.dateTem}
-            note={temoin.note}
-            email={temoin.emailClient}
+            key={t.id}
+            image={t.image}
+            nom={t.nomClient}
+            prenom={t.prenomClient}
+            designation={t.role}
+            message={t.messageClient}
+            date={t.dateTem}
+            note={t.note}
+            email={t.emailClient}
           />
         ))}
-      </div>
-       <div className="mt-32 flex justify-end px-4">
-        <button
-          variant="default"
-          size="default"
-          className="px-6 py-2 rounded-full text-[#0B1D5D] border border-[#0B1D5D] hover:bg-[#0B1D5D] hover:text-white font-semibold shadow-lg transition-all duration-300 cursor-pointer
-              text-sm md:text-base whitespace-nowrap h-14 md:h-12 mt-2 sm:mt-3"
+      </motion.div>
+
+      {/* Bouton */}
+      <div className="mt-16 flex justify-end px-4">
+        <motion.button
           onClick={() => navigate('/temoin')}
-          whileHover={{ scale: 1.05, y: -2, transition: { duration: 0.2 } }}
+          className="px-6 py-2 rounded-full text-[#0B1D5D] border border-[#0B1D5D] hover:bg-[#0B1D5D] hover:text-white font-semibold shadow-lg transition-all duration-300 cursor-pointer text-sm md:text-base whitespace-nowrap h-14 md:h-12"
+          whileHover={{ scale: 1.05, y: -2 }}
           whileTap={{ scale: 0.95 }}
         >
-         Partagez votre histoire
-        </button>        
+          Partagez votre histoire
+        </motion.button>
       </div>
     </div>
   );

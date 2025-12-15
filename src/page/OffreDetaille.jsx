@@ -14,6 +14,16 @@ import {
 import { Outlet } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+
+const textAnim = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: "easeOut" }
+  }
+};
 
 const OffreDetaille = () => {
 
@@ -66,9 +76,45 @@ const OffreDetaille = () => {
 
 
   return (
-    <div className="relative flex flex-col min-h-screen bg-gray-100 mt-[100px] px-4 sm:px-10">
+    <div className="relative flex flex-col min-h-screen bg-gray-100">
+      <div
+        className="min-h-[50vh] h-[95vh] w-full bg-center bg-cover rounded-2xl mb-8 px-2 text-center relative flex flex-col justify-center items-center"
+        style={{
+          backgroundImage: 'url(/src/assets/offre.webp)',
+          backgroundRepeat: 'no-repeat',  
+          backgroundSize: 'cover',
+        }}
+      >
+          {/* OVERLAY NOIR */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-black/70 to-transparent rounded-2xl"></div>
 
-      <header className="px-5 pt-8 pb-0 lg:px-10 lg:pt-12 sticky top-0 z-20 shadow-sm">
+        <motion.h2
+          variants={textAnim}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="text-4xl sm:text-5xl md:text-6xl
+            font-bold text-white
+            mb-6 sm:mb-8 md:mb-10
+            leading-tight drop-shadow-sm"
+        >
+          Découvrez nos offres !
+        </motion.h2>
+
+        {/* TEXTE */}
+        <motion.p 
+          variants={textAnim}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="relative text-center text-lg text-gray-50 mb-12 max-w-3xl mx-auto pt-7 z-10">
+          Si vous aspirez à voir vos idées prendre vie, à collaborer avec des passionnés sur des projets qui ont du sens,
+          et à écrire avec nous le prochain chapitre de notre succès, alors votre parcours et votre personnalité trouvent
+          ici l'écoute et le terrain de jeu qu'ils méritent.
+        </motion.p>
+  </div>
+
+      <header className="px-5 pt-8 pb-0 lg:px-10 lg:pt-12 sticky top-0 z-20 sm:px-10 flex justify-center ">
         {/* Barre de Navigation Principale (Niveau 1) */}
         <nav className="">
 
@@ -101,7 +147,7 @@ const OffreDetaille = () => {
 
       {/* Contenu principal */}
       <main className="
-        flex-1 p-8 text-black">
+        flex-1 p-8 text-black px-4 sm:px-10">
         {/* L'Outlet sera maintenant correctement affiché sous la barre de navigation */}
         <Outlet />
       </main>

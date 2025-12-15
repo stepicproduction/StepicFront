@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea'; // Ajout de Textarea pour la description
-import { Search, Edit, Trash2, HandPlatter } from "lucide-react"; 
+import { Search, Edit, Trash2, HandPlatter, FileText } from "lucide-react"; 
 import { Button } from '../ui/button';
 import toast, { Toaster } from "react-hot-toast";
 import {
@@ -114,6 +114,16 @@ function DashService() {
       toast.error("Erreur lors de la mise à jour du service", {duration : 3000})
     }
   };
+
+  const downloadPdf = async () => { 
+    try { 
+      await getData("/services/pdf_service/") 
+      toast.success("PDF téléchargé avec succès", {duration : 3000})
+    } catch(err) { 
+      console.log("Erreur lors de l'export PDF : ", err) 
+      toast.error("Erreur lors du téléchargement du pdf", {duration : 3000})
+    }
+  }
   
   // Filtrage
   const filteredServices = services.filter((s) =>
@@ -229,6 +239,28 @@ function DashService() {
             className="w-full pl-10 h-10 rounded-lg border-gray-300 focus:ring-indigo-500 text-gray-700"
           />
         </div>
+        <button
+                  className="
+                    flex items-center gap-2 
+                    bg-gray-100 hover:bg-gray-200 
+                    text-gray-800
+                    cursor-pointer 
+                    px-4 py-2 
+                    rounded-xl 
+                    shadow-sm 
+                    transition
+                  "
+                  onClick={() => downloadPdf()}
+                >
+                  {/* Icône PDF à gauche (emoji document) */}
+                  <span className="text-xl">📄</span>
+
+                  {/* Texte */}
+                  <span className="font-medium">PDF à télécharger</span>
+
+                  {/* Petit parchemin à droite */}
+                  <span className="text-xl">📜</span>
+            </button>
       </div>
 
       {/* --- Tableau --- */}

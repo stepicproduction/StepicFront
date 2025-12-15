@@ -1,8 +1,8 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { Mail, Trash2, Eye, Inbox, MessageSquare, Clock, UserCheck } from "lucide-react"; 
+import { Mail, Trash2, Eye, Inbox, MessageSquare, Clock, UserCheck, Send, Reply} from "lucide-react"; 
 import DataTable from "react-data-table-component";
 import { Button } from '../ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription} from '../ui/dialog';
 import toast, { Toaster } from "react-hot-toast";
 import { getData, deleteData, updateData } from "@/service/api";
 import {
@@ -22,6 +22,19 @@ function DashMessage() {
     const today = new Date().toISOString().slice(0, 10); 
 
     const [messages, setMessages] = useState([]);
+
+    const [showResponseArea, setShowResponseArea] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const handleOpenResponse = () => {
+        setLoading(true);
+
+        // Attendre 2 secondes avant d'afficher la zone de réponse
+        setTimeout(() => {
+            setLoading(false);
+            setShowResponseArea(true);
+        }, 2000);
+    };
 
     const [selectedMessage, setSelectedMessage] = useState(null);
     const [filterStatus, setFilterStatus] = useState("Tous"); // État du filtre
@@ -57,6 +70,7 @@ function DashMessage() {
         // Ouvrir la modale
         //setSelectedMessage(message);
     };
+    
 
     const handleDeleteMessage = async (id) => {
         try {
@@ -89,6 +103,8 @@ function DashMessage() {
                 return messages;
         }
     }, [messages, filterStatus, today]);
+
+    const isMessageLong = selectedMessage?.contenu && selectedMessage.contenu.length > 100;
 
     // --- Styles personnalisés pour le DataTable ---
     const customStyles = {
@@ -252,10 +268,11 @@ function DashMessage() {
                     noDataComponent={<div className='p-8 text-gray-500 text-lg'>Aucun message trouvé avec le filtre "{filterStatus}".</div>}
                 />
             </div>
+            
 
             {/* --- Détail du message (Modale) --- */}
             <Dialog open={!!selectedMessage} onOpenChange={() => setSelectedMessage(null)}>
-                <DialogContent className="sm:max-w-[600px] bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-indigo-200 p-6">
+                <DialogContent className="sm:max-w-[500px] [&>button]:bg-red-500 [&>button]:w-8 [&>button]:h-8 [&>button]:flex [&>button]:justify-center [&>button]:items-center [&>button]:rounded-full [&>button]:text-white [&>button]:hover:bg-red-600 [&>button]:hover:cursor-pointer py-10 px-10">
                     <DialogHeader>
                         <DialogTitle className="text-2xl font-bold text-indigo-700 flex items-center gap-2 border-b border-indigo-100 pb-2">
                             <Mail size={24} className="text-indigo-500" /> {selectedMessage?.sujet}
@@ -266,27 +283,74 @@ function DashMessage() {
                                 <p>Email: <span className="font-bold text-blue-600 hover:underline">{selectedMessage?.emailClient}</span></p>
                                 <p>Reçu le: <span className="font-bold">{selectedMessage?.dateMess === today ? `Aujourd'hui (${selectedMessage?.dateMess})` : selectedMessage?.dateMess}</span></p>
                             </div>
+                            
                         </DialogDescription>
                     </DialogHeader>
                     
-                    <div className="mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50 max-h-96 overflow-y-auto shadow-inner">
-                        <p className="text-gray-800 whitespace-pre-line leading-relaxed">
-                            {selectedMessage?.contenu}
-                        </p>
+                    {/* --- Message reçu + Icône d’envoi --- */}
+            <div className="mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50 max-h-96 overflow-y-auto shadow-inner">
+                <p className="text-gray-800 whitespace-pre-line leading-relaxed flex items-start justify-between relative">
+                    {/* Contenu du message */}
+                    <span className={`${isMessageLong ? 'mr-10' : ''}`}> 
+                        {selectedMessage?.contenu}
+                    </span>
+
+                    {/* Icône Reply (avec positionnement absolu pour les messages longs) */}
+                    <Reply
+                        size={isMessageLong ? 24 : 27} // Taille de 24 si long, 27 si court (légèrement réduit)
+                        onClick={handleOpenResponse}
+                        className={`rounded-full border border-blue-500 text-blue-500 cursor-pointer 
+                            transition duration-300 hover:border-blue-700 hover:text-blue-700
+                            ${loading ? "opacity-50 pointer-events-none" : ""}
+
+                            // Classes de positionnement conditionnel
+                            ${isMessageLong 
+                                ? "absolute bottom-0 right-0 p-1" // Position absolue en bas à droite si long, avec un petit padding
+                                : "p-2 ml-4 flex-shrink-0"       // Position normale à droite si court, avec un padding standard
+                            }`}
+                    />
+                </p>
+
+                {/* Petit texte “patientez...” */}
+                {loading && (
+                    <p className="text-blue-600 mt-3 animate-pulse">
+                         Veuillez patienter...
+                    </p>
+                )}
+            </div>
+
+
+            {/* --- Zone de Réponse (Apparaît après clic) --- */}
+            {showResponseArea && (
+                <div className="animate-fadeIn">
+                    {/* Textarea */}
+                    <div className="mt-4">
+                        <textarea
+                            className="w-full p-3 border border-gray-300 rounded-lg 
+                                       focus:ring-indigo-500 focus:border-indigo-500 
+                                       transition duration-150 ease-in-out text-black"
+                            rows="4"
+                            placeholder="Écrivez votre réponse ici..."
+                        ></textarea>
                     </div>
 
-                    <div className="flex justify-end mt-4 gap-3">
-                        <Button 
-                            onClick={() => setSelectedMessage(null)}
-                            className="bg-gray-200 text-gray-700 hover:bg-gray-300 rounded-full"
+                    {/* Bouton Répondre */}
+                    <div className="flex justify-end mt-4">
+                        <Button
+                            onClick={() => { /* fonction d'envoi */ }}
+                            className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-full flex items-center gap-2"
                         >
-                            Fermer
+                            <Send size={20} />
+                            Répondre
                         </Button>
                     </div>
-                </DialogContent>
-            </Dialog>
-        </div>
-    );
-}
+                </div>
+            )}
+            
+                            </DialogContent>
+                        </Dialog>
+                    </div>
+                );
+            }
 
-export default DashMessage;
+        export default DashMessage;

@@ -33,6 +33,7 @@ import ProductionPage from "@/page/offrePage/ProductionPage";
 import PublicitePage from "@/page/offrePage/PublicitePage";
 import EvenementielPage from "@/page/offrePage/EvenementielPage";
 import FormationPage from "@/page/offrePage/FormationPage";
+import ActuDetaille from "@/page/ActuDetaille";
 
 const router = createBrowserRouter([
     {
@@ -104,6 +105,11 @@ const router = createBrowserRouter([
                 path : "presse_actu",
                 element : <PresseActu/>
             },
+            {
+                path : "actu_detaille/:id",
+                element : <ActuDetaille/>
+            },
+
         ]
     },
     {

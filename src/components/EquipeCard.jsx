@@ -8,7 +8,7 @@ import {
 
 const EquipeCard = ({equipe}) => {
   return (
-   <Card className="w-[90%] sm:w-[300px] md:w-[350px] p-[3px] bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] rounded-xl overflow-hidden">
+   <Card className="w-[90%] sm:w-[300px] md:w-[350px] p-[3px] bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] rounded-xl overflow-hidden hover:scale-105 transition-all duration-300">
    
     <div className="bg-white w-full h-full rounded-[inherit] py-[20px] px-[15px]">
         
