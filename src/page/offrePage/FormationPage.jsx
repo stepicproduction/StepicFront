@@ -8,7 +8,7 @@ function FormationPage() {
 
   const fetchOffre = async () => {
     try {
-      const response = await getData("services/by_categorie/3/")
+      const response = await getData("services/by_categorie/1/")
       console.log(response.data)
       setOffreFormation(response.data)
     } catch(err) {

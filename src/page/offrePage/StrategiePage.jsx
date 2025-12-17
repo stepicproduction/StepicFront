@@ -14,7 +14,7 @@ function StrategiePage() {
 
   const fetchOffre = async () => {
     try {
-      const response = await getData("services/by_categorie/1/")
+      const response = await getData("services/by_categorie/2/")
       console.log(response.data)
       setOffreStrategie(response.data)
     } catch (err) {

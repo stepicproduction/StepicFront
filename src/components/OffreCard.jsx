@@ -1,6 +1,7 @@
 import React from 'react'
 import { FaLongArrowAltRight } from "react-icons/fa"
 import { useNavigate } from 'react-router-dom'
+import { Button } from '@/components/ui/button'
 
 const OffreCard = ({ section }) => {
 
@@ -72,18 +73,19 @@ return (
         
         {/* Le bouton est retiré pour laisser la place au badge et rendre toute la carte cliquable. 
         Si vous devez absolument le garder, utilisez ceci : */}
-        <button 
-          onClick={redirect}
-          className="
-          flex items-center justify-center gap-2 
-          px-6 py-2 rounded-full 
-          text-white font-semibold 
-          bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] hover:from-[#6c63ff] hover:to-[#8a2be2] 
-          shadow-lg transition-colors duration-300 cursor-pointer w-[50%] mt-4 text-sm mx-auto"
-        >
-          {section.button}
-          {/* {section.button} <FaLongArrowAltRight /> */}
-        </button> 
+        <div className="mt-auto w-full flex justify-end">
+          <Button 
+            onClick={redirect}
+            variant="link"
+            size="default"
+            className="flex items-center justify-center gap-2 px-6 py-2 rounded-full font-semibold 
+                        duration-300 cursor-pointer text-[#0B1D5D]
+                        h-10 md:h-12 w-40 md:w-48"
+          >
+            {section.button}
+            {/* {section.button} <FaLongArrowAltRight /> */}
+          </Button> 
+        </div>
       </div>
      
     </div>

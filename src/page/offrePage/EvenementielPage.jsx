@@ -10,7 +10,7 @@ const EvenementielPage = () => {
 
   const fetchOffre = async () => {
     try {
-      const response = await getData("services/by_categorie/6/")
+      const response = await getData("services/by_categorie/7/")
       console.log(response.data)
       setOffreEvent(response.data)
     } catch(err) {

@@ -11,10 +11,14 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
-import { Outlet } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import StrategiePage from "@/page/offrePage/StrategiePage";
+import IdentitePage from "@/page/offrePage/IdentitePage";
+import CommunicationPage from "@/page/offrePage/CommunicationPage";
+import ProductionPage from "@/page/offrePage/ProductionPage";
+import PublicitePage from "@/page/offrePage/PublicitePage";
+import EvenementielPage from "@/page/offrePage/EvenementielPage";
+import FormationPage from "@/page/offrePage/FormationPage";
 
 const textAnim = {
   hidden: { opacity: 0, y: 20 },
@@ -27,52 +31,62 @@ const textAnim = {
 
 const OffreDetaille = () => {
 
-  const [activeTab, setActiveTab] = useState("Stratégie & Conseil");
-  const navigate = useNavigate()
+  const [activeTab, setActiveTab] = useState("strategie");
 
   const menuItems = [
-    { name: "Stratégie & Conseil", icon: Compass, link: "" },
-    { name: "Identité visuelle & Design", icon: Image, link: "offreIdentite" },
-    { name: "Communication digitale", icon: Globe, link: "offreCommunication" },
-    { name: "Production audiovisuelle", icon: Video, link: "offreProduction" },
-    { name: "Publicité & Médias", icon: Megaphone, link: "offrePublicite" },
-    { name: "Événementiel", icon: Calendar, link: "offreEvenementiel" },
-    { name: "Formation & Ateliers", icon: Book, link: "offreFormation" },
+    {id : "strategie", name: "Stratégie & Conseil", icon: Compass, link: "" },
+    {id : "identite", name: "Identité visuelle & Design", icon: Image, link: "offreIdentite" },
+    {id : "communication", name: "Communication digitale", icon: Globe, link: "offreCommunication" },
+    {id : "production", name: "Production audiovisuelle", icon: Video, link: "offreProduction" },
+    {id : "publicite", name: "Publicité & Médias", icon: Megaphone, link: "offrePublicite" },
+    {id : "evenementiel", name: "Événementiel", icon: Calendar, link: "offreEvenementiel" },
+    {id : "formation", name: "Formation & Ateliers", icon: Book, link: "offreFormation" },
   ];
 
   const handleTabClick = (name) => {
     setActiveTab(name)
   }
 
-  const handleSelectChange = (event) => {
-    const selectedLink = event.target.value;
-    const selectedTab = menuItems.find(tab => tab.link === selectedLink);
-    
-    if (selectedTab) {
-      setActiveTab(selectedTab.name); // Mettre à jour l'état
-      navigate(selectedLink);          // Naviguer vers la nouvelle URL
-    }
-  };
-
-  const renderMainTab = (tabName, url) => {
-    const isActive = activeTab === tabName
+  const renderMainTab = (item) => {
+    const isActive = activeTab === item.id
     const baseClasses = "flex items-center text-sm font-semibold px-4 py-3 cursor-pointer transition duration-300 whitespace-nowrap";
 
     return (
-      <Link
-        key={tabName}
-        onClick={() => handleTabClick(tabName)}
-        to={url}
+      <button
+        key={item.id}
+        onClick={() => handleTabClick(item.id)}
         className={`${baseClasses} ${
           isActive
             ? "text-white bg-[#008080] rounded-t-lg lg:rounded-md" // Onglet actif : fond vert (edX), texte blanc
             : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg" // Onglet inactif : gris, hover
         }`}
       >
-        {tabName}
-      </Link>
+        {item.name}
+      </button>
     )
   } 
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "strategie":
+        return <StrategiePage />;
+      case "identite":
+        return <IdentitePage />;
+      case "communication":
+        return <CommunicationPage />;
+      case "production":
+        return <ProductionPage />;
+      case "publicite":
+        return <PublicitePage />;
+      case "evenementiel":
+        return <EvenementielPage />;
+      case "formation":
+        return <FormationPage />;
+      default:
+        return null;
+  }
+};
+
 
 
   return (
@@ -121,14 +135,13 @@ const OffreDetaille = () => {
           {/* affichage en mobile */}
           <div className="lg:hidden relative">
             <select
-              onChange={handleSelectChange}
-              // Trouver la 'link' correspondant à l'activeTab pour la valeur de <select>
-              value={menuItems.find(tab => tab.name === activeTab)?.link || ""} 
+              onChange={(e) => setActiveTab(e.target.value)}
+              value={activeTab}
               className="w-full py-3 px-4 border border-gray-300 rounded-lg text-gray-700 bg-white shadow-sm focus:border-[#008080] focus:ring focus:ring-[#008080]/50 appearance-none"
               style={{ backgroundImage: 'url("data:image/svg+xml;charset=utf-8,...")' }} // Customiser l'icône de flèche si nécessaire
             >
               {menuItems.map((item) => (
-                <option key={item.name} value={item.link}>
+                <option key={item.id} value={item.id}>
                   {item.name}
                 </option>
               ))}
@@ -140,7 +153,7 @@ const OffreDetaille = () => {
 
               {/* affichage en desktop */}
           <ul className="hidden lg:flex lg:overflow-x-auto lg:justify-start lg:space-x-2 space-x-0 -mb-px pb-2">
-            {menuItems.map((item) => renderMainTab(item.name, item.link))}
+            {menuItems.map((item) => renderMainTab(item))}
           </ul>
         </nav>
       </header>      
@@ -148,8 +161,7 @@ const OffreDetaille = () => {
       {/* Contenu principal */}
       <main className="
         flex-1 p-8 text-black px-4 sm:px-10">
-        {/* L'Outlet sera maintenant correctement affiché sous la barre de navigation */}
-        <Outlet />
+        {renderContent()}
       </main>
     </div>
   );

@@ -128,22 +128,22 @@ const PresseActu = () => {
         <TabsList className="w-full sm:w-auto flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 lg:gap-8 bg-transparent mb-12 mt-10 mx-auto">
           <TabsTrigger
             value="entreprise"
-            className="text-base sm:text-lg font-semibold text-black px-6 py-3 rounded-xl transition-all border border-gray-100
+            className="text-base sm:text-lg font-semibold text-black px-6 py-3 rounded-xl transition-all
               data-[state=active]:bg-gradient-to-r data-[state=active]:from-sky-400 
               data-[state=active]:via-indigo-600 data-[state=active]:to-purple-600 
               data-[state=active]:text-white shadow-md"
           >
-            Entreprise
+            ENTREPRISE
           </TabsTrigger>
 
           <TabsTrigger
             value="info"
-            className="text-base sm:text-lg font-semibold text-black px-6 py-3 rounded-xl transition-all border border-gray-100
+            className="text-base sm:text-lg font-semibold text-black px-6 py-3 rounded-xl transition-all
               data-[state=active]:bg-gradient-to-r data-[state=active]:from-sky-400 
               data-[state=active]:via-indigo-600 data-[state=active]:to-purple-600 
               data-[state=active]:text-white shadow-md"
           >
-            Infos & Presse
+            INFOS & PRESSE
           </TabsTrigger>
         </TabsList>
 

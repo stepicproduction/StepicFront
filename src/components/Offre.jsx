@@ -57,7 +57,7 @@ function Offre({ nom, description, image, button, categorieId}) {
             variant="link"
             size="default"
             onClick={redirect}
-            className="flex items-center justify-center gap-2 px-6 py-2 rounded-full text-white font-semibold 
+            className="flex items-center justify-center gap-2 px-6 py-2 rounded-full font-semibold 
                        duration-300 cursor-pointer text-[#0B1D5D]
                        h-10 md:h-12 w-40 md:w-48"
           >

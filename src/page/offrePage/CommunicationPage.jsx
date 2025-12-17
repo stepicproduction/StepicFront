@@ -9,7 +9,7 @@ function CommunicationPage() {
 
   const fetchOffre = async () => {
     try {
-      const response = await getData("services/by_categorie/2/")
+      const response = await getData("services/by_categorie/3/")
       console.log(response.data)
       setOffreCommunication(response.data)
     } catch (err) {
