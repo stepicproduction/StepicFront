@@ -149,7 +149,7 @@ function HeaderSection() {
             initial="hidden"
             animate="show"
             onClick={() => navigate("/commande")}
-            className="flex items-center justify-center gap-2 px-6 py-2 rounded-full  text-white font-semibold bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] hover:from-[#6c63ff] hover:to-[#8a2be2] shadow-lg transition-colors duration-300  h-10 w-50 md:h-12 md:w-48 cursor-pointer"
+            className="flex items-center justify-center gap-2 px-6 py-2 rounded-full  text-white font-semibold bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] hover:from-[#6c63ff] hover:to-[#8a2be2] shadow-lg transition-colors duration-300  h-10.5 w-53 md:h-12 md:w-48 cursor-pointer"
           >
             Commander
           </motion.button>

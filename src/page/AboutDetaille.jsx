@@ -28,6 +28,16 @@ import informatique from "../assets/informatique.webp";
 import { getData } from '@/service/api';
 import EquipeCard from '@/components/EquipeCard';
 import { motion } from 'framer-motion';
+import img1 from '../assets/image1.webp';
+import img2 from '../assets/image2.webp';
+import img3 from '../assets/image3.webp';
+import img4 from '../assets/image4.webp';
+import img5 from '../assets/image5.webp';
+import img6 from '../assets/image6.webp'; 
+import img7 from '../assets/image7.webp';
+import img8 from '../assets/image8.webp';
+import img9 from '../assets/image9.webp';
+import img10 from '../assets/image10.webp';
 
 function AboutDetaille() {
   const [about, setAbout] = useState([]);
@@ -57,16 +67,16 @@ function AboutDetaille() {
   }, []);
 
   const partenaires = [
-    { id: 1, name: "Partenaire 1", image: "src/assets/image1.webp", link: "https://www.actioncontrelafaim.org/" },
-    { id: 2, name: "Partenaire 2", image: "src/assets/image2.webp", link: "https://www.welthungerhilfe.org/" },
-    { id: 3, name: "Partenaire 3", image: "src/assets/image3.webp", link: "https://madagascar.fes.de/index.html" },
-    { id: 4, name: "Partenaire 4", image: "src/assets/image4.webp", link: "https://www.transparency.mg/" },
-    { id: 5, name: "Partenaire 5", image: "src/assets/image5.webp", link: "https://mihari-network.org/" },
-    { id: 6, name: "Partenaire 6", image: "src/assets/image6.webp", link: "https://www.secours-islamique.org/" },
-    { id: 7, name: "Partenaire 7", image: "src/assets/image7.webp", link: "https://msis-tatao.org/education/score/" },
-    { id: 8, name: "Partenaire 8", image: "src/assets/image8.webp", link: "https://www.facebook.com/Ordre.des.journalistes.de.Madagascar" },
-    { id: 9, name: "Partenaire 9", image: "src/assets/image9.webp", link: "https://jcimada.org/" },
-    { id: 10, name: "Partenaire 10", image: "src/assets/image10.webp", link: "https://www.facebook.com/consultingplusmadagascar" },
+    { id: 1, name: "Partenaire 1", image: img1, link: "https://www.actioncontrelafaim.org/" },
+    { id: 2, name: "Partenaire 2", image: img2, link: "https://www.welthungerhilfe.org/" },
+    { id: 3, name: "Partenaire 3", image: img3, link: "https://madagascar.fes.de/index.html" },
+    { id: 4, name: "Partenaire 4", image: img4, link: "https://www.transparency.mg/" },
+    { id: 5, name: "Partenaire 5", image: img5, link: "https://mihari-network.org/" },
+    { id: 6, name: "Partenaire 6", image: img6, link: "https://www.secours-islamique.org/" },
+    { id: 7, name: "Partenaire 7", image: img7, link: "https://msis-tatao.org/education/score/" },
+    { id: 8, name: "Partenaire 8", image: img8, link: "https://www.facebook.com/Ordre.des.journalistes.de.Madagascar" },
+    { id: 9, name: "Partenaire 9", image: img9, link: "https://jcimada.org/" },
+    { id: 10, name: "Partenaire 10", image: img10, link: "https://www.facebook.com/consultingplusmadagascar" },
   ];
 
   const fadeUp = {
