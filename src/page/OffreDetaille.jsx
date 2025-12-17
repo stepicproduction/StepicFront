@@ -19,6 +19,9 @@ import ProductionPage from "@/page/offrePage/ProductionPage";
 import PublicitePage from "@/page/offrePage/PublicitePage";
 import EvenementielPage from "@/page/offrePage/EvenementielPage";
 import FormationPage from "@/page/offrePage/FormationPage";
+import offre from "@/assets/offre.webp";
+
+const backgroundImageURL = offre;
 
 const textAnim = {
   hidden: { opacity: 0, y: 20 },
@@ -94,7 +97,9 @@ const OffreDetaille = () => {
       <div
         className="min-h-[50vh] h-[95vh] w-full bg-top sm:bg-center bg-cover rounded-2xl mb-8 px-2 text-center relative flex flex-col justify-center items-center"
         style={{
-          background: 'url(/src/assets/offre.webp) cover no-repeat',
+          backgroundImage: `url('${backgroundImageURL}')`,
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
         }}
       >
           {/* OVERLAY NOIR */}

@@ -7,10 +7,11 @@ import { H2 } from "@/components/Typographie";
 import { createData } from "@/service/api";
 import StepicPosition from "../components/StepicPosition";
 import { motion } from "framer-motion";
+import headerContact from "@/assets/headerContact.webp";
 
 const PRIMARY_PURPLE = '#6c63ff'
 const DARK_PURPLE = '#8a2be2'
-const backgroundImageURL = 'src/assets/headerContact.webp';
+const backgroundImageURL = headerContact;
 
 // Animation texte
 const textAnim = {
@@ -75,7 +76,9 @@ function ContactPage() {
           className="relative min-h-[50vh] flex flex-col rounded-xl justify-center items-center 
                      text-center text-white px-4 sm:px-6 md:px-8 lg:px-10 overflow-hidden w-full bg-top sm:bg-center"
           style={{
-            background: `url('${backgroundImageURL}') cover no-repeat`,
+            backgroundImage: `url('${backgroundImageURL}')`,
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
             minHeight: '700px' 
           }}
         >
@@ -136,7 +139,7 @@ function ContactPage() {
     whileInView="visible"
     viewport={{ once: true }}
     className="
-      relative text-center text-lg max-w-3xl z-10 text-gray-500
+      relative text-center text-sm sm:text-base max-w-3xl z-10 text-gray-500
     "
   >
     Que vous soyez prêt à lancer votre projet, à demander un devis détaillé, ou

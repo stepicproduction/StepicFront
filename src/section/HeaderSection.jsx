@@ -2,6 +2,12 @@ import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import { motion, useScroll, useTransform } from "framer-motion";
+import photo2 from "@/assets/photo2.jpg";
+import header1 from "@/assets/header1.webp";
+import header2 from "@/assets/header2.webp";
+import header3 from "@/assets/header3.webp";
+import header4 from "@/assets/header4.webp";
+import header5 from "@/assets/header5.webp";
 
 function HeaderSection() {
   const navigate = useNavigate();
@@ -59,12 +65,12 @@ function HeaderSection() {
 
   // ---- SLIDESHOW BACKGROUND ----
   const images = [
-    "/src/assets/photo2.jpg",       // demandé en premier
-    "/src/assets/header1.webp",
-    "/src/assets/header2.webp",
-    "/src/assets/header3.webp",
-    "/src/assets/header4.webp",
-    "/src/assets/header5.webp",
+    photo2,
+    header1,
+    header2,
+    header3,
+    header4,
+    header5,
   ];
 
   const [currentImage, setCurrentImage] = useState(0);
@@ -97,7 +103,9 @@ function HeaderSection() {
         <div
           className="w-full h-full bg-top sm:bg-center"
           style={{
-            background: `url(${images[currentImage]}) cover no-repeat`,
+            backgroundImage: `url(${images[currentImage]})`,
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
             transition: "background-image 1s ease-in-out",
           }}
         ></div>

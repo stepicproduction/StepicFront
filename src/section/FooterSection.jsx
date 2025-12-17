@@ -50,7 +50,7 @@ export default function Footer({ active = "home" }) {
           </Link>
 
           <p className="text-gray-400 mb-6 leading-relaxed"> 
-            Chaque pas nous rapproche du pic de l'excellence audiovisuelle. Rejoignez-nous dans cette aventure créative.
+            Chaque pas nous rapproche du pic. Rejoignez-nous dans cette aventure créative.
           </p> 
 
           {/* Réseaux sociaux */} 
