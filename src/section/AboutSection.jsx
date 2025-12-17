@@ -84,16 +84,16 @@ function AboutSection() {
       </motion.div>
 
       {/* GRID */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 md:gap-16 place-items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-12 md:gap-16 place-items-center">
 
         {/* IMAGE */}
         <motion.div
-          className="col-span-12 lg:col-span-6 w-full flex justify-center"
+          className="col-span-12 lg:col-span-6 w-full flex justify-center px-2"
           variants={imageVariants}
         >
           <div
-            className={`p-[3px] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-tr from-[${DARK_PURPLE}] to-[${PRIMARY_PURPLE}] w-full max-w-[500px]`}
-          >
+            className={`p-[3px] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-tr from-[${DARK_PURPLE}] to-[${PRIMARY_PURPLE}] w-full max-w-[350px] sm:max-w[450px] lg:max-w-[500px]`}
+          > 
             <motion.div
               className="w-full h-full rounded-[calc(1.5rem-3px)] overflow-hidden bg-white"
               whileHover={{ scale: 1.05, rotateY: 3, transition: { duration: 0.3 } }}
@@ -101,7 +101,7 @@ function AboutSection() {
               <img
                 src={aboutResume}
                 alt="À propos"
-                className="w-full h-auto object-cover"
+                className="w-full h-auto object-cover block"
                 loading="lazy"
               />
             </motion.div>
@@ -110,10 +110,10 @@ function AboutSection() {
 
         {/* TEXTE */}
         <motion.div
-          className="col-span-12 lg:col-span-6 text-center lg:text-left"
+          className="col-span-12 lg:col-span-6 text-center lg:text-left px-2"
           variants={contentVariants}
         >
-          <p className='text-base text-black leading-relaxed mb-4'>
+          <p className='text-sm sm:text-base text-black leading-relaxed sm:leading-loose text-justify mb-6'>
             {about.length > 0
               ? (about.find(item => item.id === 1) || {}).contenu || "Contenu introuvable"
               : "Chargement..."}
@@ -121,7 +121,7 @@ function AboutSection() {
 
           {/* BOUTON */}
           <motion.div
-            className="flex justify-center lg:justify-start pt-4"
+            className="flex justify-center lg:justify-start pt-2"
             variants={buttonVariants}
           >
             <Button

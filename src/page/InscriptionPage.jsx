@@ -137,7 +137,7 @@ function CommandePage() {
                                            bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] hover:from-[#6c63ff] hover:to-[#8a2be2] 
                                            shadow-lg transition-colors duration-300 cursor-pointer w-full sm:w-auto mt-4"
                             >
-                                Faire une nouvelle inscription
+                                Nouvelle inscription
                             </button>
                         </div>
 

@@ -91,7 +91,7 @@ function Navbar() {
                     transform transition-transform duration-500 ease-in-out 
                     z-40 ${isOpen ? "translate-x-0" : "translate-x-full"}`}
       >
-        <ul className="flex flex-col items-center gap-8 text-[20px] font-medium text-gray-800">
+        <ul className="flex flex-col items-center gap-8 text-base font-medium text-gray-800">
           {navItems.map((item) => (
             <NavLink
               key={item.id}

@@ -39,25 +39,27 @@ const Step2 = ({ register, errors, handleNext, handlePrevious }) => {
           )}
         </div>
 
-        <div className='flex flex-col sm:flex-row justify-center gap-4 w-full max-w-sm'>
+        <div className='flex sm:flex-row justify-center gap-4 w-full max-w-sm'>
           <button
             type='button'
-            className="flex items-center justify-center gap-2 px-6 py-3 rounded-full text-white font-semibold 
+            className="flex items-center justify-center gap-2 px-4 py-1 sm:px-6 sm:py-3 rounded-full text-white font-semibold 
               bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] hover:from-[#6c63ff] hover:to-[#8a2be2] 
-              shadow-lg transition-colors duration-300 cursor-pointer w-full sm:w-1/2"
+              shadow-lg transition-colors duration-300 cursor-pointer w-15 h-15 sm:w-full sm:h-auto"
             onClick={handlePrevious}
           >
-            <FaArrowLeft /> Précédent
+            <FaArrowLeft /> 
+            <span className="hidden sm:inline">Précédent</span>
           </button>
 
           <button
             type='button'
-            className="flex items-center justify-center gap-2 px-6 py-3 rounded-full text-white font-semibold 
+            className="flex items-center justify-center gap-2 px-4 py-1 sm:px-6 sm:py-3 rounded-full text-white font-semibold 
               bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] hover:from-[#6c63ff] hover:to-[#8a2be2] 
-              shadow-lg transition-colors duration-300 cursor-pointer w-full sm:w-1/2"
+              shadow-lg transition-colors duration-300 cursor-pointer w-15 h-15 sm:w-full sm:h-auto"
             onClick={handleNext}
           >
-            Suivant <FaArrowRight />
+            <span className="hidden sm:inline">Suivant</span>
+             <FaArrowRight />
           </button>
         </div>
       </div>

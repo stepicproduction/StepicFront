@@ -92,7 +92,7 @@ const OffreDetaille = () => {
   return (
     <div className="relative flex flex-col min-h-screen bg-gray-100">
       <div
-        className="min-h-[50vh] h-[95vh] w-full bg-center bg-cover rounded-2xl mb-8 px-2 text-center relative flex flex-col justify-center items-center"
+        className="min-h-[50vh] h-[95vh] w-full bg-top sm:bg-center bg-cover rounded-2xl mb-8 px-2 text-center relative flex flex-col justify-center items-center"
         style={{
           backgroundImage: 'url(/src/assets/offre.webp)',
           backgroundRepeat: 'no-repeat',  
@@ -126,7 +126,7 @@ const OffreDetaille = () => {
           et à écrire avec nous le prochain chapitre de notre succès, alors votre parcours et votre personnalité trouvent
           ici l'écoute et le terrain de jeu qu'ils méritent.
         </motion.p>
-  </div>
+      </div>
 
       <header className="px-5 pt-8 pb-0 lg:px-10 lg:pt-12 sticky top-0 z-20 sm:px-10 flex justify-center ">
         {/* Barre de Navigation Principale (Niveau 1) */}
@@ -137,7 +137,7 @@ const OffreDetaille = () => {
             <select
               onChange={(e) => setActiveTab(e.target.value)}
               value={activeTab}
-              className="w-full py-3 px-4 border border-gray-300 rounded-lg text-gray-700 bg-white shadow-sm focus:border-[#008080] focus:ring focus:ring-[#008080]/50 appearance-none"
+              className="w-[300px] py-3 px-4 border border-gray-300 rounded-lg text-gray-700 bg-white shadow-sm focus:border-[#008080] focus:ring focus:ring-[#008080]/50 appearance-none"
               style={{ backgroundImage: 'url("data:image/svg+xml;charset=utf-8,...")' }} // Customiser l'icône de flèche si nécessaire
             >
               {menuItems.map((item) => (

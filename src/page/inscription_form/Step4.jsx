@@ -90,7 +90,7 @@ const Step4 = ({ formData, handlePrevious, handleSubmit, isSubmitting }) => {
         Etape 4 : Confirmation
       </h3>
 
-      <div className="bg-gray-50 p-6 rounded-lg shadow-inner mb-8 w-full text-lg">
+      <div className="bg-gray-50 p-6 rounded-lg shadow-inner mb-8 w-full wrap-break-word text-lg">
         <h4 className="font-bold mb-3 border-b pb-1">Détails :</h4>
         <p className="mb-2"><strong>Nom :</strong> {formData.nomClient} {formData.prenomClient}</p>
         <p className="mb-2"><strong>Email :</strong> {formData.emailClient}</p>
@@ -106,25 +106,26 @@ const Step4 = ({ formData, handlePrevious, handleSubmit, isSubmitting }) => {
       </div> 
 
       {/* Boutons */}
-      <div className="flex flex-col sm:flex-row justify-center gap-4 w-full">
-        <button 
-          type="button" 
-          className="flex items-center justify-center gap-2 px-6 py-3 rounded-full text-white font-semibold 
-                     bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] hover:from-[#6c63ff] hover:to-[#8a2be2] 
-                     shadow-lg transition-colors duration-300 cursor-pointer h-14 md:h-12 w-full sm:w-48"
-          onClick={handlePrevious}
-        >
-          <FaArrowLeft /> Précédent
-        </button>
-        <button 
-          type="submit" 
-          disabled={isSubmitting}
-          className="flex items-center justify-center gap-2 px-6 py-3 rounded-full text-white font-semibold 
-                     bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 
-                     shadow-lg transition-colors duration-300 cursor-pointer h-14 md:h-12 w-full sm:w-48 disabled:opacity-50"
-        >
-          {isSubmitting ? 'Envoi...' : <>Confirmer <FaCheckCircle /></>}
-        </button>
+      <div className='flex  sm:flex-row justify-center gap-4 w-full'>
+          <button type='button' className="flex items-center justify-center gap-2 px-4 py-1 sm:px-6 sm:py-3 rounded-full text-white font-semibold 
+              bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] hover:from-[#6c63ff] hover:to-[#8a2be2] 
+              shadow-lg transition-colors duration-300 cursor-pointer w-15 h-15 sm:w-full sm:h-auto" 
+              onClick={handlePrevious}>
+              <FaArrowLeft />
+              <span className="hidden sm:inline">Précédent</span>
+          </button>
+
+          <button 
+              type='submit' 
+              disabled={isSubmitting || isLoading}
+              className="flex items-center justify-center gap-2 px-4 py-1 sm:px-6 sm:py-3 rounded-full text-white font-semibold 
+              bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 
+              shadow-lg transition-colors duration-300 cursor-pointer w-15 h-15 sm:w-full sm:h-auto disabled:opacity-50" 
+              onClick={handleSubmit}>
+              {(isSubmitting || isLoading) ? 'Envoi...' : <>
+              <span className="hidden sm:inline">Confirmer</span>
+                <FaCheckCircle /></>}
+          </button>
       </div>
     </div>
 

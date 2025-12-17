@@ -95,11 +95,10 @@ function HeaderSection() {
         className="absolute inset-0 w-full h-full bg-cover bg-center will-change-transform"
       >
         <div
-          className="w-full h-full"
+          className="w-full h-full bg-top sm:bg-center"
           style={{
             backgroundImage: `url(${images[currentImage]})`,
             backgroundSize: "cover",
-            backgroundPosition: "center",
             transition: "background-image 1s ease-in-out",
           }}
         ></div>
