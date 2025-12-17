@@ -55,7 +55,7 @@ const ArticleCard = ({ item, categoryLabel = "ACTUALITE", tabValue }) => {
 
 
       {/* Contenu Texte */}
-      <div className="p-4 md:p-6 flex flex-col justify-between items-start flex-1 h-64 md:h-64">
+      <div className="p-4 md:p-6 flex flex-col justify-between items-start flex-1 h-64 md:h-auto">
         
         {/* Titre */}
         <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 leading-snug">

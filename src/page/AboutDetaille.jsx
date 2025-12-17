@@ -88,45 +88,45 @@ function AboutDetaille() {
     <div className="pt-[100px] py-16 md:py-20 lg:py-28">
 
       {/* -------- Mission -------- */}
-      <motion.div className="flex flex-col md:flex-row justify-center items-center gap-8 lg:gap-40 mb-[100px]"
+      <motion.div className="flex flex-col md:flex-row justify-center items-center gap-8 lg:gap-20 mb-[100px]"
                   initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-        <div className="w-full md:w-[50%] lg:w-[35%] text-justify px-4 text-black">
+        <div className="w-full md:w-[50%] lg:w-[45%] text-justify px-4 text-black">
           <H2>Notre Mission</H2>
-          <p className='text-base leading-relaxed mb-4'>
+          <p className='text-sm sm:text-base leading-relaxed sm:leading-loose mb-4'>
             {about.length > 0 ? (about.find((item) => item.id === 2 ) || {}).contenu : 'chargement...'}
           </p>
         </div>
-        <img src={aboutDetaille2} loading='lazy' alt="mission" className="w-[90%] md:w-[400px] lg:w-[500px] h-auto rounded-lg"/>
+        <img src={aboutDetaille2} loading='lazy' alt="mission" className="w-[90%] md:w-[400px] lg:w-[450px] xl:w-[500px] h-auto rounded-lg"/>
       </motion.div>
 
       {/* -------- Nos offres -------- */}
-      <motion.div className="flex flex-col-reverse md:flex-row justify-center items-center gap-8 lg:gap-40 mb-[100px]"
+      <motion.div className="flex flex-col-reverse md:flex-row justify-center items-center gap-8 lg:gap-20 mb-[100px]"
                   initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-        <img src={aboutDetaille1} loading='lazy' alt="offres" className="w-[90%] md:w-[400px] lg:w-[500px] h-auto rounded-lg"/>
-        <div className="w-full md:w-[50%] lg:w-[35%] text-justify px-4">
+        <img src={aboutDetaille1} loading='lazy' alt="offres" className="w-[90%] md:w-[400px] lg:w-[450px] xl:w-[500px] h-auto rounded-lg"/>
+        <div className="w-full md:w-[50%] lg:w-[45%] text-justify px-4">
           <H2>Nos Services</H2>
 
           {/* ✅ Phrase ajoutée */}
-          <p className='text-base h-auto md:h-[117px] text-black leading-relaxed mb-4'>
+          <p className='text-smsm:text-base h-auto md:h-[117px] text-black leading-relaxed sm:leading-loose mb-4'>
             Nous concevons et produisons également une large gamme de supports :
           </p>
           
           <Accordion className="w-full rounded-md bg-mauve6" type="single" collapsible>
             <AccordionItem value="item-1">
-              <AccordionTrigger className=" text-[18px] text-black">Spots publicitaires</AccordionTrigger>
-              <AccordionContent className='text-base leading-relaxed mb-4 text-black'>
+              <AccordionTrigger className=" text-base sm:text-lg text-black">Spots publicitaires</AccordionTrigger>
+              <AccordionContent className='text-sm sm:text-base leading-relaxed sm:leading-loose mb-4 text-black'>
                 Frappez fort avec des messages courts et percutants, conçus pour marquer les esprits à la TV, à la radio ou en ligne.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2">
-              <AccordionTrigger className=" text-[18px] text-black">Créations graphiques</AccordionTrigger>
-              <AccordionContent className='text-base leading-relaxed mb-4 text-black'>
+              <AccordionTrigger className=" text-base sm:text-lg text-black">Créations graphiques</AccordionTrigger>
+              <AccordionContent className='text-sm sm:text-base leading-relaxed sm:leading-loose mb-4 text-black'>
                 Donnez vie à vos idées avec des visuels uniques et modernes qui reflètent l’identité de votre marque.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3">
-              <AccordionTrigger className=" text-[18px] text-black">Productions audiovisuelles (PAD)</AccordionTrigger>
-              <AccordionContent className='text-base leading-relaxed mb-4 text-black'>
+              <AccordionTrigger className=" text-base sm:text-lg text-black">Productions audiovisuelles (PAD)</AccordionTrigger>
+              <AccordionContent className='text-sm sm:text-base leading-relaxed sm:leading-loose mb-4 text-black'>
                 Captez l’attention grâce à des vidéos et contenus audio qui racontent votre histoire et engagent votre public.
               </AccordionContent>
             </AccordionItem>
@@ -135,13 +135,13 @@ function AboutDetaille() {
       </motion.div>
 
       {/* -------- Formations -------- */}
-      <motion.div className="flex flex-col md:flex-row justify-center items-center gap-8 lg:gap-40 mb-[100px]"
+      <motion.div className="flex flex-col md:flex-row justify-center items-center gap-8 lg:gap-20 mb-[100px]"
                   initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-        <div className="w-full md:w-[50%] lg:w-[35%] text-justify px-4 text-black">
+        <div className="w-full md:w-[50%] lg:w-[45%] text-justify px-4 text-black">
           <H2>Nos Formations</H2>
-          <p className='text-base leading-relaxed mb-4'>Au-delà de nos prestations de communication, nous proposons des formations pratiques et professionnelles dans trois domaines clés :</p>
+          <p className='text-sm sm:text-base leading-relaxed sm:leading-loose mb-4'>Au-delà de nos prestations de communication, nous proposons des formations pratiques et professionnelles dans trois domaines clés :</p>
         </div>
-        <Carousel className="w-full md:w-[400px] lg:w-[500px] h-auto px-2 py-3">
+        <Carousel className="w-full md:w-[400px] lg:w-[450px] xl:w-[500px] h-auto px-2 py-3">
           <CarouselContent className="m-auto">
             {[{img: langue, title:"Langues étrangères", desc:"Acquérir une maîtrise linguistique solide et s’ouvrir à de nouvelles perspectives internationales."},
               {img: multimedia, title:"Multimédia", desc:"Se former aux métiers créatifs et devenir acteur des innovations du monde moderne."},
@@ -150,8 +150,8 @@ function AboutDetaille() {
               <CarouselItem key={idx}>
                 <Card className="w-[90%] sm:w-[350px] md:w-[400px] bg-blue-900/70 text-white border border-white/20 shadow-xl shadow-indigo-500/50 px-[15px] py-[20px] m-auto backdrop-blur-lg">
                   <div className="w-[85%] m-auto"><img src={item.img} loading='lazy' alt={item.title}/></div>
-                  <CardHeader className="text-black">
-                    <CardTitle className="text-center">{item.title}</CardTitle>
+                  <CardHeader className="text-gray-600">
+                    <CardTitle className="text-center mb-1.5">{item.title}</CardTitle>
                     <CardDescription className="text-white">{item.desc}</CardDescription>
                   </CardHeader>
                 </Card>
@@ -164,12 +164,12 @@ function AboutDetaille() {
       </motion.div>
 
       {/* -------- Particularité -------- */}
-      <motion.div className="flex flex-col-reverse md:flex-row justify-center items-center gap-8 lg:gap-40 mb-[100px]"
+      <motion.div className="flex flex-col-reverse md:flex-row justify-center items-center gap-8 lg:gap-20 mb-[100px]"
                   initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-        <img src={aboutDetaille3} loading='lazy' alt="particularité" className="w-[90%] md:w-[400px] lg:w-[500px] h-auto rounded-lg"/>
-        <div className="w-full md:w-[50%] lg:w-[35%] text-justify px-4 text-black">
+        <img src={aboutDetaille3} loading='lazy' alt="particularité" className="w-[90%] md:w-[400px] lg:w-[450px] xl:w-[500px] h-auto rounded-lg"/>
+        <div className="w-full md:w-[50%] lg:w-[45%] text-justify px-4 text-black">
           <H2>Pourquoi nous?</H2>
-          <p className='text-base leading-relaxed mb-4'>
+          <p className='text-sm sm:text-base leading-relaxed sm:leading-loose mb-4'>
             Ce qui fait la différence chez STEPIC, c’est notre capacité à allier expertise technique, créativité et pédagogie, tout en restant à l’écoute des besoins spécifiques de nos clients pour leur offrir des solutions sur mesure et un accompagnement personnalisé.
           </p>
         </div>
@@ -178,7 +178,7 @@ function AboutDetaille() {
       {/* -------- Équipe -------- */}
       <motion.div className="mb-[100px] px-4" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
         <H2 className="text-center mb-4 text-black">Découvrez notre équipe</H2>
-        <p className='text-base leading-relaxed mb-4 mx-auto max-w-3xl text-center text-black'>
+        <p className='text-sm sm:text-base leading-relaxed sm:leading-loose mb-4 mx-auto max-w-3xl text-justify text-black'>
           Une équipe composée de talents passionnés dans les domaines de la communication, du multimédia et de l’informatique. Chaque membre apporte son expertise unique pour offrir des solutions adaptées aux besoins de nos clients.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 justify-items-center max-w-7xl mx-auto">
@@ -189,7 +189,7 @@ function AboutDetaille() {
       {/* -------- Partenaires -------- */}
       <motion.div className='min-h-screen px-6 py-16' initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
         <H2>Nos références</H2>
-        <p className='text-gray-600 mb-12 text-lg text-center'>
+        <p className='text-sm sm:text-base leading-relaxed sm:leading-loose text-black mb-12 text-center'>
           Des institutions pour lesquelles nous avons réalisé des projets avec succès:
         </p>
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8'>

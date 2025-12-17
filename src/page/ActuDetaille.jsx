@@ -23,11 +23,24 @@ const ActuDetaille = () => {
     }, [id]);
 
     if (isLoading) {
-        return <div className="text-center py-20">Chargement de l'article...</div>;
+       return (
+            <div className="min-h-screen flex flex-col items-center justify-center space-y-4">
+                {/* Un petit spinner animé en CSS ou une simple phrase */}
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#6c63ff]"></div>
+                <p className="text-[#6c63ff] font-medium animate-pulse">Chargement de l'actualité...</p>
+            </div>
+        );
     }
 
     if (!article) {
-        return <div className="text-center py-20 text-red-600">Article non trouvé.</div>;
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="text-center p-10 bg-red-50 rounded-xl border border-red-100">
+                    <p className="text-red-600 font-semibold text-lg">Article non trouvé.</p>
+                    <button onClick={() => window.history.back()} className="mt-4 text-gray-600 underline">Retour</button>
+                </div>
+            </div>
+        );
     }
 
     // Préparation des données pour l'affichage (similaire à l'image)
@@ -54,9 +67,9 @@ const ActuDetaille = () => {
                     </div>
                     
                     {/* Titre */}
-                    <h1 className="text-4xl font-extrabold text-gray-900 mb-4 leading-tight">
+                    <h2 className="text-2xl lg:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">
                         {title}
-                    </h1>
+                    </h2>
                     
                     {/* Méta Info (Source et Date) */}
                     <div className="text-gray-500 text-sm mb-6 flex items-center space-x-4 border-b pb-4">
@@ -72,12 +85,12 @@ const ActuDetaille = () => {
                     <img
                         src={imageSrc}
                         alt={title}
-                        className="w-[60%] h-auto object-cover rounded-lg mb-8 shadow-lg"
+                        className="w-full sm:w-[60%] h-auto object-cover rounded-lg mb-8 shadow-lg"
                     />
                     
 
                     {/* Contenu complet de l'article */}
-                    <p className="text-gray-700 text-sm md:text-base leading-relaxed mb-4 flex-1">
+                    <p className="whitespace-pre-line text-gray-700 text-sm sm:text-base leading-relaxed mb-4 flex-1">
                         {content}
                     </p>
                     
