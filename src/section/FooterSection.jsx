@@ -8,6 +8,7 @@ import { FaYoutube } from "react-icons/fa6";
 import { FaTiktok } from "react-icons/fa6"; 
 import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import { animateScroll as scroll } from 'react-scroll';
 
 export default function Footer({ active = "home" }) { 
   const [showTopBtn, setShowTopBtn] = useState(false); 
@@ -36,7 +37,13 @@ export default function Footer({ active = "home" }) {
     }; 
   }, []); 
 
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" }); 
+  const scrollToTop = () => {
+    scroll.scrollToTop({
+      duration: 2000,    // 1.5 seconde (ajuste à ta guise)
+      delay: 0,
+      smooth: 'easeInOutQuart' // Ajoute une accélération/décélération fluide
+    });
+  };
 
   return ( 
     <footer className="bg-blue-950 text-gray-300 relative"> 
@@ -72,7 +79,7 @@ export default function Footer({ active = "home" }) {
               <FaLinkedinIn className="text-white" /> 
             </a> 
             <a 
-              href="mailto:stepicproduction@gmail.com" 
+              href="mailto:stepic.mada@gmail.com" 
               className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors duration-300" 
             > 
               <FaEnvelope className="text-white" /> 
@@ -86,7 +93,7 @@ export default function Footer({ active = "home" }) {
               <FaYoutube className="text-white" /> 
             </a> 
             <a 
-              href="mailto:stepicproduction@gmail.com" 
+              href="mailto:stepic.mada@gmail.com" 
               target="_blank" 
               rel="noreferrer" 
               className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-black transition-colors duration-300" 
@@ -133,7 +140,7 @@ export default function Footer({ active = "home" }) {
           <div className="space-y-4"> 
             <div className="flex items-center"> 
               <FaEnvelope className="text-white mr-4 text-xl" /> 
-              <span className="text-gray-400">stepicproduction@gmail.com</span> 
+              <span className="text-gray-400">stepic.mada@gmail.com</span> 
             </div> 
             <div className="flex items-center"> 
               <FaPhone className="text-white mr-4 text-xl" /> 

@@ -54,7 +54,7 @@ const ActuDetaille = () => {
     const categorie = "À la une, Actualité, Politique";
 
   return (
-<div className="min-h-screen w-full bg-white text-black py-10 px-4 sm:px-6 md:px-16 lg:px-24 xl:px-32 max-w-7xl mx-auto pt-30">
+    <div className="min-h-screen w-full bg-white text-black py-10 px-4 sm:px-6 md:px-16 lg:px-24 xl:px-32 max-w-7xl mx-auto pt-30">
             
             <div className="flex flex-col lg:flex-row gap-10">
                 

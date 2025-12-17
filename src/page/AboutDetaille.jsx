@@ -150,8 +150,8 @@ function AboutDetaille() {
               <CarouselItem key={idx}>
                 <Card className="w-[90%] sm:w-[350px] md:w-[400px] bg-blue-900/70 text-white border border-white/20 shadow-xl shadow-indigo-500/50 px-[15px] py-[20px] m-auto backdrop-blur-lg">
                   <div className="w-[85%] m-auto"><img src={item.img} loading='lazy' alt={item.title}/></div>
-                  <CardHeader className="text-gray-600">
-                    <CardTitle className="text-center mb-1.5">{item.title}</CardTitle>
+                  <CardHeader className="text-gray-900">
+                    <CardTitle className="text-center text-lg mb-1.5">{item.title}</CardTitle>
                     <CardDescription className="text-white">{item.desc}</CardDescription>
                   </CardHeader>
                 </Card>

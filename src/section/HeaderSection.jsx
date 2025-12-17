@@ -194,7 +194,7 @@ function HeaderSection() {
             <ScrollLink
               to="showreel"
               smooth={true}
-              duration={600}
+              duration={2000}
               offset={-60}
               className="
                 flex items-center justify-center gap-2 px-6 py-2 rounded-full  text-white

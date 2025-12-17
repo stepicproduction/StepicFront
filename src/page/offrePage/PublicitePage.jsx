@@ -7,6 +7,7 @@ import { H2 } from '@/components/Typographie'
 const PublicitePage = () => {
 
   const [offrePublicite, setOffrePublicite] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
   const fetchOffre = async () => {
     try {
@@ -19,8 +20,18 @@ const PublicitePage = () => {
   }
 
   useEffect(() => {
-    fetchOffre()
+    fetchOffre().finally(() => setIsLoading(false))
   }, [])
+
+  if (isLoading) {
+       return (
+            <div className="min-h-screen flex flex-col items-center justify-center space-y-4">
+                {/* Un petit spinner animé en CSS ou une simple phrase */}
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#6c63ff]"></div>
+                <p className="text-[#6c63ff] font-medium animate-pulse">Chargement...</p>
+            </div>
+        );
+    }
 
   return (
     <div className="min-h-screen flex flex-col justify-start items-center  py-20 px-4">

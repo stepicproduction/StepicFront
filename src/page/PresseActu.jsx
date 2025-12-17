@@ -3,6 +3,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar } from 'lucide-react'; 
 import { getData } from '@/service/api';
 import { useNavigate } from 'react-router-dom';
+import { FaYoutube, FaTiktok } from "react-icons/fa6";
+import { FaFacebookF, FaLinkedinIn, FaInstagram } from "react-icons/fa"; 
 
 
 const truncateText = (text, maxLength) => {
@@ -121,7 +123,73 @@ const PresseActu = () => {
   }, [])
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-start bg-white text-black py-10 px-4 sm:px-6 md:px-16 lg:px-24 xl:px-32 max-w-7xl mx-auto pt-15">
+    <div className="min-h-screen w-full flex flex-col items-center justify-start bg-white text-black py-10 px-4 sm:px-6 md:px-16 lg:px-24 xl:px-32 max-w-7xl mx-auto pt-15 relative">
+      
+      <div className="fixed right-2 bottom-41 lg:bottom-auto lg:right-4 lg:top-[35%] lg:-translate-y-1/2 z-[100] flex items-center gap-2 lg:gap-4">
+      
+      {/* Texte vertical - Visible uniquement sur Large Screen (lg) */}
+      <div className="hidden lg:flex items-center gap-3 [writing-mode:vertical-lr] rotate-180">
+        <span className="text-[11px] font-bold tracking-[0.2em] text-gray-500 uppercase">
+          Suivez-nous sur les réseaux
+        </span>
+        <div className="h-10 w-[1px] bg-gradient-to-t from-[#6c63ff] to-transparent"></div>
+      </div>
+
+      {/* Conteneur d'icônes style "Glassmorphism" */}
+      <div className="flex flex-col gap-2 lg:gap-3 p-1.5 lg:p-2 bg-white/30 backdrop-blur-md border border-white/40 rounded-full shadow-2xl">
+        
+        {/* Facebook */}
+        <a 
+          href="https://www.facebook.com/STEPICINFOS" 
+          target="_blank" 
+          rel="noreferrer" 
+          className="w-9 h-9 lg:w-10 lg:h-10 bg-white rounded-full flex items-center justify-center text-gray-600 shadow-sm hover:bg-[#1877F2] hover:text-white transition-all duration-300 hover:scale-110" 
+        > 
+          <FaFacebookF size={14} className="lg:text-base" /> 
+        </a>
+
+        {/* LinkedIn */}
+        <a 
+          href="https://www.linkedin.com/in/stepic-infos-aa86b6356/" 
+          target="_blank" 
+          rel="noreferrer" 
+          className="w-9 h-9 lg:w-10 lg:h-10 bg-white rounded-full flex items-center justify-center text-gray-600 shadow-sm hover:bg-[#0A66C2] hover:text-white transition-all duration-300 hover:scale-110" 
+        > 
+          <FaLinkedinIn size={14} className="lg:text-base" /> 
+        </a>
+
+        {/* Instagram */}
+        <a 
+          href="https://www.instagram.com/stepic.mada/" 
+          target="_blank" 
+          rel="noreferrer"
+          className="w-9 h-9 lg:w-10 lg:h-10 bg-white rounded-full flex items-center justify-center text-gray-600 shadow-sm hover:bg-gradient-to-tr hover:from-[#f9ce34] hover:via-[#ee2a7b] hover:to-[#6228d7] hover:text-white transition-all duration-300 hover:scale-110" 
+        > 
+          <FaInstagram size={14} className="lg:text-base" /> 
+        </a>
+
+        {/* YouTube */}
+        <a 
+          href="https://youtube.com/@STEPICINFOS" 
+          target="_blank" 
+          rel="noreferrer" 
+          className="w-9 h-9 lg:w-10 lg:h-10 bg-white rounded-full flex items-center justify-center text-gray-600 shadow-sm hover:bg-[#FF0000] hover:text-white transition-all duration-300 hover:scale-110" 
+        > 
+          <FaYoutube size={14} className="lg:text-base" /> 
+        </a>
+
+        {/* TikTok */}
+        <a 
+          href="https://www.tiktok.com/@stepic_infos" 
+          target="_blank" 
+          rel="noreferrer" 
+          className="w-9 h-9 lg:w-10 lg:h-10 bg-white rounded-full flex items-center justify-center text-gray-600 shadow-sm hover:bg-black hover:text-white transition-all duration-300 hover:scale-110" 
+        > 
+          <FaTiktok size={14} className="lg:text-base" /> 
+        </a>
+        
+      </div>
+    </div>
       <Tabs defaultValue="entreprise" className="w-full">
         
         {/* Liste des onglets */}
