@@ -94,9 +94,7 @@ const OffreDetaille = () => {
       <div
         className="min-h-[50vh] h-[95vh] w-full bg-top sm:bg-center bg-cover rounded-2xl mb-8 px-2 text-center relative flex flex-col justify-center items-center"
         style={{
-          backgroundImage: 'url(/src/assets/offre.webp)',
-          backgroundRepeat: 'no-repeat',  
-          backgroundSize: 'cover',
+          background: 'url(/src/assets/offre.webp) cover no-repeat',
         }}
       >
           {/* OVERLAY NOIR */}

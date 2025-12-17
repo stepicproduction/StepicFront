@@ -75,9 +75,7 @@ function ContactPage() {
           className="relative min-h-[50vh] flex flex-col rounded-xl justify-center items-center 
                      text-center text-white px-4 sm:px-6 md:px-8 lg:px-10 overflow-hidden w-full bg-top sm:bg-center"
           style={{
-            backgroundImage: `url('${backgroundImageURL}')`,
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat', 
+            background: `url('${backgroundImageURL}') cover no-repeat`,
             minHeight: '700px' 
           }}
         >

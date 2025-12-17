@@ -97,8 +97,7 @@ function HeaderSection() {
         <div
           className="w-full h-full bg-top sm:bg-center"
           style={{
-            backgroundImage: `url(${images[currentImage]})`,
-            backgroundSize: "cover",
+            background: `url(${images[currentImage]}) cover no-repeat`,
             transition: "background-image 1s ease-in-out",
           }}
         ></div>
