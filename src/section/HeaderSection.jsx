@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import photo2 from "@/assets/photo2.jpg";
 import header1 from "@/assets/header1.webp";
 import header2 from "@/assets/header2.webp";
@@ -78,10 +78,26 @@ function HeaderSection() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % images.length);
-    }, 5000); // change toutes les 5 secondes
+    }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [images.length]);
+
+  const bgVariants = {
+    initial: { opacity: 0, scale: 1.03 },
+    animate: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 1.2, ease: "easeInOut" },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.97,
+      transition: { duration: 1.2, ease: "easeInOut" },
+    },
+  };
+
+
 
   return (
     <section
@@ -100,15 +116,22 @@ function HeaderSection() {
         style={{ y: backgroundY }}
         className="absolute inset-0 w-full h-full bg-cover bg-center will-change-transform"
       >
-        <div
-          className="w-full h-full bg-top sm:bg-center"
-          style={{
-            backgroundImage: `url(${images[currentImage]})`,
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            transition: "background-image 1s ease-in-out",
-          }}
-        ></div>
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={currentImage}
+            variants={bgVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `url(${images[currentImage]})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
+          />
+        </AnimatePresence>
       </motion.div>
 
       {/* OVERLAY */}
