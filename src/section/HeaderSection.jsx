@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import photo2 from "@/assets/photo2.jpg";
+import photo2 from "@/assets/photo2.webp";
 import header1 from "@/assets/header1.webp";
 import header2 from "@/assets/header2.webp";
 import header3 from "@/assets/header3.webp";
