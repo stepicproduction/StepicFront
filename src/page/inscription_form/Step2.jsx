@@ -1,6 +1,6 @@
 import React from 'react'
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa'
-import coordoonees from "../../assets/coordonnees.png"
+import coordoonees from "../../assets/coordonnees.webp"
 
 const Step2 = ({ register, errors, handleNext, handlePrevious }) => {
  return (

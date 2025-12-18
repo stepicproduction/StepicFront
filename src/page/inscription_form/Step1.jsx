@@ -1,6 +1,6 @@
 import React from 'react'
 import { FaArrowRight } from 'react-icons/fa'
-import personalData from "../../assets/personalData.png"
+import personalData from "../../assets/personalData.webp"
 
 const Step1 = ({ register, errors, handleNext }) => {
   return (

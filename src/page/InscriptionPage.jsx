@@ -10,7 +10,7 @@ import Step3 from "./inscription_form/Step3";
 import Step4 from "./inscription_form/Step4"; 
 import { FaCheckCircle } from 'react-icons/fa';
 import Confetti from 'react-confetti'; // Importe le composant Confetti
-import fin from "../assets/fin.png"
+import fin from "../assets/fin.webp"
 import { useLocation } from 'react-router-dom';
 import { createData } from "@/service/api";
 

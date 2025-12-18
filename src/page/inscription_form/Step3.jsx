@@ -1,7 +1,7 @@
 import React from 'react'
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom'
-import choix from "../../assets/choix.png"
+import choix from "../../assets/choix.webp"
 import { useState, useEffect } from 'react'
 import { getData } from '@/service/api'
 

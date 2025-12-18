@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"; 
-import logo from "../assets/logo_stepic2.png"; 
+import logo from "../assets/logo_stepic2.webp"; 
 import { FaFacebookF, FaLinkedinIn, FaEnvelope, FaArrowUp } from "react-icons/fa"; 
 import { FiHome, FiInfo, FiBriefcase, FiImage, FiBell, FiMail } from "react-icons/fi"; 
 import { IoLocation } from "react-icons/io5"; 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom'
-import choix from "../../assets/choix.png"
+import choix from "../../assets/choix.webp"
 import { getData } from '@/service/api' // Assurez-vous que le chemin est correct
 
 const Step3 = ({ register, watch, errors, handlePrevious, handleNext, setValue }) => {

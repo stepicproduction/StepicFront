@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { H2, P } from '@/components/Typographie';
-import aboutResume from '../assets/aboutResume.png';
+import aboutResume from '../assets/aboutResume.webp';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { getData } from '@/service/api';

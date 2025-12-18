@@ -1,6 +1,6 @@
 import React from 'react'
 import { FaArrowLeft, FaCheckCircle } from 'react-icons/fa'
-import confirmation from "../../assets/confirmation.png"
+import confirmation from "../../assets/confirmation.webp"
 import { useState, useEffect } from 'react'
 import { getData, createData } from '@/service/api'
 
