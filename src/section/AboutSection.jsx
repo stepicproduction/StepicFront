@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { H2 } from '@/components/Typographie';
+import { H2, P } from '@/components/Typographie';
 import aboutResume from '../assets/aboutResume.png';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -19,6 +19,7 @@ function AboutSection() {
     const fetchAbout = async () => {
       try {
         const response = await getData("/about/");
+        console.log(response.data)
         setAbout(response.data);
       } catch (err) {
         console.error("Erreur GET :", err);
@@ -26,6 +27,10 @@ function AboutSection() {
     };
     fetchAbout();
   }, []);
+
+  const item = about.find(item => item.id === 1) || {};
+  const words = item.contenu ? item.contenu.split(" ") : [];
+  //console.log(words)
 
   // Intersection Observer pour déclencher les animations
   useEffect(() => {
@@ -113,15 +118,29 @@ function AboutSection() {
           className="col-span-12 lg:col-span-6 text-center lg:text-left px-2"
           variants={contentVariants}
         >
-          <p className='text-sm sm:text-base text-black leading-relaxed sm:leading-loose text-justify mb-6'>
-            {about.length > 0
-              ? (about.find(item => item.id === 1) || {}).contenu || "Contenu introuvable"
-              : "Chargement..."}
-          </p>
+          
+            {words.length > 0 ? (
+              <div className="flex flex-wrap text-justify"> {/* Conteneur pour gérer l'alignement */}
+              {words.map((word, index) => (
+                <motion.p
+                  key={index}
+                  // Changement : 'leading-snug' pour moins d'espace vertical et 'mr-1.5' pour l'espace entre mots
+                  className='text-sm sm:text-base text-black leading-relaxed sm:leading-loose text-justify inline-block mr-1.5'
+                  initial={{ filter: 'blur(10px)', opacity: 0, y: 12 }}
+                  animate={{ filter: 'blur(0)', opacity: 1, y: 0}}
+                  transition={{ delay: index * 0.1, duration: 0.5 }} // Délai réduit pour plus de fluidité
+                >
+                  {word}
+          </motion.p>
+              ))}
+            </div>
+          ) : (
+            <p className='text-black text-sm sm:text-base'>Chargement du contenu...</p>
+          )}
 
           {/* BOUTON */}
           <motion.div
-            className="flex justify-center lg:justify-start pt-2"
+            className="flex justify-center lg:justify-start pt-8"
             variants={buttonVariants}
           >
             <Button

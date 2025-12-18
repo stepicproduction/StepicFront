@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import logo from "../assets/LOGO_STEPIC.webp";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { FaArrowRight } from "react-icons/fa6";
-import { Link as ScrollLink, scroller } from "react-scroll"; // Renommage pour éviter le conflit
 import { useNavigate, useLocation } from "react-router-dom"; // Ajout de useLocation
 import { NavLink } from "react-router-dom";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +11,8 @@ function Navbar() {
   const navigate = useNavigate();
   const location = useLocation(); // Pour connaître l'URL actuelle
   const toggleMenu = () => setIsOpen(!isOpen);
+  const [hidden , setHidden] = useState(false);
+  const { scrollY } = useScroll();
 
   const navItems = [
     { id:1, to: "", label: "Accueil" },
@@ -21,8 +22,24 @@ function Navbar() {
     { id:6, to: "contact", label: "Contact" },
   ];
 
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious();
+    if(latest > previous && latest > 150){
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  }
+  )
+
   return (
-    <header
+    <motion.header
+      variants={{
+          visible : { y : 0},
+          hidden : {y : "-100%"}
+        }}
+        animate={hidden ? "hidden" : "visible"}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
       className="fixed top-0 left-0 w-full h-[80px] px-6 sm:px-12 lg:px-32 flex justify-between items-center bg-gradient-to-br from-white/10 via-white/70 to-transparent backdrop-blur-lg shadow-2xl z-50 transition-all duration-300"
     >
       {/* ... (votre code logo inchangé) ... */}
@@ -106,7 +123,7 @@ function Navbar() {
           ))}
         </ul>
       </div>
-    </header>
+    </motion.header>
   );
 }
 

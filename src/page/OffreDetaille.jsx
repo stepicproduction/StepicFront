@@ -19,6 +19,7 @@ import ProductionPage from "@/page/offrePage/ProductionPage";
 import PublicitePage from "@/page/offrePage/PublicitePage";
 import EvenementielPage from "@/page/offrePage/EvenementielPage";
 import FormationPage from "@/page/offrePage/FormationPage";
+import LocationPage from "./offrePage/LocationPage";
 import offre from "@/assets/offre.webp";
 
 const backgroundImageURL = offre;
@@ -37,13 +38,14 @@ const OffreDetaille = () => {
   const [activeTab, setActiveTab] = useState("strategie");
 
   const menuItems = [
-    {id : "strategie", name: "Stratégie & Conseil", icon: Compass, link: "" },
-    {id : "identite", name: "Identité visuelle & Design", icon: Image, link: "offreIdentite" },
-    {id : "communication", name: "Communication digitale", icon: Globe, link: "offreCommunication" },
-    {id : "production", name: "Production audiovisuelle", icon: Video, link: "offreProduction" },
-    {id : "publicite", name: "Publicité & Médias", icon: Megaphone, link: "offrePublicite" },
-    {id : "evenementiel", name: "Événementiel", icon: Calendar, link: "offreEvenementiel" },
-    {id : "formation", name: "Formation & Ateliers", icon: Book, link: "offreFormation" },
+    {id : "strategie", name: "Stratégie & Conseil", icon: Compass},
+    {id : "identite", name: "Identité visuelle & Design", icon: Image},
+    {id : "communication", name: "Communication digitale", icon: Globe },
+    {id : "production", name: "Production audiovisuelle", icon: Video},
+    {id : "publicite", name: "Publicité & Médias", icon: Megaphone },
+    {id : "evenementiel", name: "Événementiel", icon: Calendar },
+    {id : "formation", name: "Formation & Ateliers", icon: Book},
+    {id : "location", name: "Location Sono", icon: Book },
   ];
 
   const handleTabClick = (name) => {
@@ -85,6 +87,8 @@ const OffreDetaille = () => {
         return <EvenementielPage />;
       case "formation":
         return <FormationPage />;
+      case "location":
+        return <LocationPage />;
       default:
         return null;
   }

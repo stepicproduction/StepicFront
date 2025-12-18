@@ -1,13 +1,13 @@
-import React from "react"; 
+import React, { useState } from "react"; 
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { H2 } from "@/components/Typographie";
 import { createData } from "@/service/api";
 import StepicPosition from "../components/StepicPosition";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import headerContact from "@/assets/headerContact.webp";
+import { SendHorizonal as Send, Loader, Check } from "lucide-react";
 
 const PRIMARY_PURPLE = '#6c63ff'
 const DARK_PURPLE = '#8a2be2'
@@ -52,20 +52,35 @@ function ContactPage() {
     resolver: zodResolver(schema),
   });
 
+  const [loading ,setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
   const onSubmit = async (data) => {
     console.log(data)
     try {
+      setLoading(true)
+      setSuccess(false)
+
       await createData("messages/", data)
+
+      setLoading(false)
+      setSuccess(true)
+
+      setTimeout(() => {
+        setSuccess(false);
+      }, 2000);
+  
+      reset({
+        nomClient : '',
+        emailClient : '',
+        sujet : '',
+        contenu : ''
+      })
+
     } catch (err) {
       console.log("Erreur lors de l'envoie du message : ", err)
+      setLoading(false);
     }
-
-    reset({
-      nomClient : '',
-      emailClient : '',
-      sujet : '',
-      contenu : ''
-    })
   }
 
   return (
@@ -139,7 +154,7 @@ function ContactPage() {
     whileInView="visible"
     viewport={{ once: true }}
     className="
-      relative text-center text-sm sm:text-base max-w-3xl z-10 text-gray-500
+      relative text-justify text-sm sm:text-base max-w-3xl z-10 text-gray-500
     "
   >
     Que vous soyez prêt à lancer votre projet, à demander un devis détaillé, ou
@@ -250,10 +265,47 @@ function ContactPage() {
             variant="default"
             size="lg"
             className="
-              flex items-center justify-center gap-2 px-6 py-2 rounded-full  text-white font-semibold bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] hover:from-[#6c63ff] hover:to-[#8a2be2] shadow-lg transition-colors duration-300 h-10 w-40 md:h-12 md:w-48 cursor-pointer
+              flex items-center justify-center gap-2 px-3 py-2 rounded-full  text-white font-semibold bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] hover:from-[#6c63ff] hover:to-[#8a2be2] shadow-lg transition-colors duration-300 h-10 w-20 md:h-12 md:w-22 cursor-pointer
             "
           >
-            Envoyer
+            <AnimatePresence mode="wait">
+              {!loading && !success && (
+                <motion.span
+                  key="send"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Send size={20} />
+                </motion.span>
+              )}
+
+              {loading && (
+                <motion.span
+                  key="loading"
+                  initial={{ opacity: 0, rotate: -90 }}
+                  animate={{ opacity: 1, rotate: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="animate-spin"
+                >
+                  <Loader size={20} />
+                </motion.span>
+              )}
+
+              {success && (
+                <motion.span
+                  key="success"
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Check size={22} />
+                </motion.span>
+              )}
+            </AnimatePresence>
           </Button>
         </div>
 

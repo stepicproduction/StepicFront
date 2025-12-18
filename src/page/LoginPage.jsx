@@ -96,20 +96,14 @@ function LoginPage() {
 
   // Si l'état de chargement est actif, nous affichons l'écran de chargement
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center w-full h-screen bg-white">
-        {/* Utilisation de votre image de logo pour l'écran de chargement */}
-        <div className="flex flex-col items-center p-8 bg-gradient-to-br from-blue-700 via-blue-900 to-indigo-800 backdrop-blur-lg rounded-xl shadow-2xl">
-            <img 
-                src="/logo_stepic1.png" // Chemin vers votre image de logo
-                alt="Chargement Stepic" 
-                className="h-20 w-20 animate-spin mb-4" // Taille et animation
-            />
-            <p className="text-white text-lg font-light">Connexion en cours...</p>
-        </div>
-      </div>
-    );
-  }
+       return (
+            <div className="min-h-screen flex flex-col items-center justify-center space-y-4">
+                {/* Un petit spinner animé en CSS ou une simple phrase */}
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#6c63ff]"></div>
+                <p className="text-[#6c63ff] font-medium animate-pulse">Connexion en cours...</p>
+            </div>
+      );
+  }  
 
   // Affiche le formulaire de connexion si pas en cours de chargement
   return (

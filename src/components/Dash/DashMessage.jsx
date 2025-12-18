@@ -76,8 +76,10 @@ function DashMessage() {
         try {
             await deleteData(`/messages/${id}/`)
             fetchMess()
+            toast.success("Suppression avec succès", {duration : 3000})
         } catch(err) {
             console.log("Erreur lors de la suppression du message : ", err)
+            toast.error("Erreur lors de la suppression du message", {duration : 3000})   
         }
     };
 
