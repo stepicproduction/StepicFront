@@ -65,7 +65,8 @@ export default function Footer({ active = "home" }) {
             <a 
               href="https://www.facebook.com/RAOBISON.Steven601" 
               target="_blank" 
-              rel="noreferrer" 
+              rel="noreferrer"
+              aria-label="Page Facebook STEPIC" 
               className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors duration-300" 
             > 
               <FaFacebookF className="text-white" /> 
@@ -74,12 +75,14 @@ export default function Footer({ active = "home" }) {
               href="https://www.linkedin.com/in/stepic-450aa8273/" 
               target="_blank" 
               rel="noreferrer" 
+              aria-label="Profil Linkedin STEPIC"
               className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors duration-300" 
             > 
               <FaLinkedinIn className="text-white" /> 
             </a> 
             <a 
               href="mailto:stepic.mada@gmail.com" 
+              aria-label="Envoyer un email à STEPIC"
               className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors duration-300" 
             > 
               <FaEnvelope className="text-white" /> 
@@ -88,6 +91,7 @@ export default function Footer({ active = "home" }) {
               href="http://youtube.com/%40stepic_production4859" 
               target="_blank" 
               rel="noreferrer" 
+              aria-label="Chaîne YouTube STEPIC Production"
               className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors duration-300" 
             > 
               <FaYoutube className="text-white" /> 
@@ -96,6 +100,7 @@ export default function Footer({ active = "home" }) {
               href="mailto:stepic.mada@gmail.com" 
               target="_blank" 
               rel="noreferrer" 
+              aria-label="Compte TikTok STEPIC"
               className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-black transition-colors duration-300" 
             > 
               <FaTiktok className="text-white" /> 

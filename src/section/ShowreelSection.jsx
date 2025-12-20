@@ -36,7 +36,7 @@ function ShowreelSection() {
         "
       >
         <ReactPlayer
-          src={firstLink}
+          src={firstLink.replace("youtube.com", "youtube-nocookie.com")}
           controls={true}
           width='100%'
           height='85%'

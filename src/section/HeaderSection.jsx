@@ -196,6 +196,7 @@ function HeaderSection() {
               smooth={true}
               duration={2000}
               offset={-60}
+              href="#showreel"
               className="
                 flex items-center justify-center gap-2 px-6 py-2 rounded-full  text-white
                 border border-white

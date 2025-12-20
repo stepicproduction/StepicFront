@@ -128,6 +128,7 @@ const ProjetSection = () => {
           <div className="mt-10 relative w-full flex justify-center items-center">
             {/* Flèche gauche */}
             <motion.button
+              aria-label="précédent"
               onClick={goPrev}
               className="absolute left-1 sm:left-4 md:left-6 top-1/2 -translate-y-1/2
                         bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] p-2 rounded-full 
@@ -165,6 +166,7 @@ const ProjetSection = () => {
 
             {/* Flèche droite */}
             <motion.button
+              aria-label="suivant"
               onClick={goNext}
               className="absolute right-1 sm:right-4 md:right-6 top-1/2 -translate-y-1/2
                         bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] p-2 rounded-full 

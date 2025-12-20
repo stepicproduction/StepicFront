@@ -59,28 +59,29 @@ function Navbar() {
       <nav className="hidden lg:flex flex-1 justify-center">
         <ul className="flex items-center gap-16 text-[16px] font-medium text-gray-800">
           {navItems.map((item) => (
-            <NavLink
-              key={item.id}
-              to={item.to}
-              className={({ isActive }) =>
-                `cursor-pointer relative group transition-all duration-300`
-              }
-            >
-              {({ isActive }) => (
-                <div
-                  className={`
-                    py-2 inline-block font-semibold 
-                    group-hover:text-[#8a2be2] 
-                    after:content-[""] after:absolute after:bottom-2 after:left-1/2 after:-translate-x-1/2 
-                    after:h-0.5 after:bg-[#8a2be2] after:w-0 group-hover:after:w-full
-                    after:transition-all after:duration-300 
-                    ${isActive ? "text-[#8a2be2] after:w-full" : "text-gray-800 after:w-0"}
-                  `}
-                >
-                  {item.label}
-                </div>
-              )}
-            </NavLink>
+            <li key={item.id}>
+              <NavLink
+                to={item.to}
+                className={({ isActive }) =>
+                  `cursor-pointer relative group transition-all duration-300`
+                }
+              >
+                {({ isActive }) => (
+                  <div
+                    className={`
+                      py-2 inline-block font-semibold 
+                      group-hover:text-[#8a2be2] 
+                      after:content-[""] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 
+                      after:h-0.5 after:bg-[#8a2be2] after:w-0 group-hover:after:w-full
+                      after:transition-all after:duration-300 
+                      ${isActive ? "text-[#8a2be2] after:w-full" : "text-gray-800 after:w-0"}
+                    `}
+                  >
+                    {item.label}
+                  </div>
+                )}
+              </NavLink>
+            </li>
           ))}
         </ul>
       </nav>
@@ -113,16 +114,17 @@ function Navbar() {
       >
         <ul className="flex flex-col items-center gap-8 text-base font-medium text-gray-800">
           {navItems.map((item) => (
-            <NavLink
-              key={item.id}
-              to={item.to}
-              // Suppression de onClick={toggleMenu} car il est maintenant dans handleScrollToSection
-              className="hover:text-[#6c63ff] transition duration-200"
-              // Utilisation du gestionnaire unifié
-              onClick={toggleMenu}
-            >
-              {item.label}
-            </NavLink>
+            <li key={item.id}>
+              <NavLink
+                to={item.to}
+                // Suppression de onClick={toggleMenu} car il est maintenant dans handleScrollToSection
+                className="hover:text-[#6c63ff] transition duration-200"
+                // Utilisation du gestionnaire unifié
+                onClick={toggleMenu}
+              >
+                {item.label}
+              </NavLink>
+            </li>
           ))}
         </ul>
       </div>
