@@ -44,7 +44,6 @@ function HomePage() {
         <ShowreelSection/>
         <ActualiteSection/>
         <TemoignageSection/>
-        {/* <ContactSection/> */}
     </div>
   )
 }
