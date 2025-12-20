@@ -107,7 +107,7 @@ function AboutDetaille() {
           <H2>Nos Services</H2>
 
           {/* ✅ Phrase ajoutée */}
-          <p className='text-smsm:text-base h-auto md:h-[117px] text-black leading-relaxed sm:leading-loose mb-4'>
+          <p className='text-sm sm:text-base h-auto md:h-[117px] text-black leading-relaxed sm:leading-loose mb-4'>
             Nous concevons et produisons également une large gamme de supports :
           </p>
           
