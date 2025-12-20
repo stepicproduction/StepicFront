@@ -53,7 +53,7 @@ export default function Footer({ active = "home" }) {
         {/* Logo & description */} 
         <div> 
           <Link to="/" className="flex items-center mb-1 cursor-pointer">
-            <img src={logo} alt="logo" className="w-[70px] h-[70px]" /> 
+            <img src={logo} alt="logo" loading="lazy" width="70" className="w-[70px] h-[70px]" /> 
           </Link>
 
           <p className="text-gray-400 mb-6 leading-relaxed"> 

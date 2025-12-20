@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { P, H2 } from '@/components/Typographie';
+import { H2 } from '@/components/Typographie';
 import aboutDetaille1 from '../assets/aboutDetaille1.webp';
 import aboutDetaille2 from '../assets/aboutDetaille2.webp';
 import aboutDetaille3 from '../assets/aboutDetaille3.webp';

@@ -47,6 +47,9 @@ function Navbar() {
         <img
           src={logo}
           alt="logo"
+          width="55"
+          height="55"  
+          loading="lazy"        
           className="w-[55px] h-[55px] md:w-[65px] md:h-[65px] object-contain cursor-pointer"
           onClick={() => navigate("")}
         />
