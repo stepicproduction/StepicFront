@@ -141,8 +141,12 @@ function TemoignageSection() {
   return (
     <div className="py-10 px-4 sm:px-8 md:py-20 max-w-7xl mx-auto">
 
-      <H2 className="text-xl sm:text-2xl md:text-3xl text-center mb-12">Témoignages</H2>
-
+      <div>
+        <H2 className="text-xl sm:text-2xl md:text-3xl text-center mb-12">Ils nous font confiance</H2>
+        <div className='max-w-7xl mx-auto relative px-5 md:px-36'>
+          <p className='text-sm sm:text-base leading-loose text-black text-justify'>« Au-delà des chiffres, ce sont les retours de nos partenaires qui nous poussent à l'excellence. Découvrez les expériences de ceux qui ont choisi STEPIC pour transformer leurs ambitions en réalité. »</p>
+        </div>
+      </div>
       {/* Circle Progress */}
       <svg width="80" height="80" viewBox="0 0 100 100" className="mx-auto mb-8 rotate-[-90deg]">
         <circle cx="50" cy="50" r="30" pathLength="1" className="stroke-gray-300" fill="none" strokeWidth="10%" />

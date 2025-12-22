@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"; 
-import { Calendar } from 'lucide-react'; 
 import { getData } from '@/service/api';
 import { useNavigate } from 'react-router-dom';
 import { FaYoutube, FaTiktok } from "react-icons/fa6";

@@ -13,6 +13,7 @@ import { createData } from "@/service/api";
 import { useAuth } from '@/service/AuthContext'
 import { useLocation } from "react-router-dom";
 import { getToken } from "@/service/api";
+import logo from "../assets/logo_stepic2.webp"
 
 // Mise à jour du message d'erreur pour l'email
 const schema = z.object({
@@ -128,7 +129,7 @@ function LoginPage() {
           {/* Logo Permanent - Utilisation de votre image de logo */}
           <div className="mb-4"> {/* Supprimé le padding et border car le logo est déjà stylé */}
             <img 
-                src="/logo_stepic1.png" 
+                src={logo} 
                 alt="Logo Stepic" 
                 className="w-20 h-20 drop-shadow-lg" 
             />

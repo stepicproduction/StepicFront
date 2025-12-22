@@ -36,12 +36,14 @@ function HomePage() {
     }, [location.state])
 
   return (
-    <div>
+    <div className='relative'>
         <HeaderSection/>
         <AboutSection/>
         <OffreSection/>
-        <ProjetSection/>
-        <ShowreelSection/>
+        <div className='relative'>
+            <ProjetSection/>
+            <ShowreelSection/>
+        </div>
         <ActualiteSection/>
         <TemoignageSection/>
     </div>

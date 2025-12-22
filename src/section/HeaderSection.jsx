@@ -13,14 +13,6 @@ function HeaderSection() {
   const navigate = useNavigate();
   const sectionRef = useRef(null);
 
-  // ---- PARALLAX BACKGROUND ----
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "-25%"]);
-
-  const sub ="Langues · Informatique · Multimédia · Communication · Presse · Événementiel"
 
   // ---- ANIMATIONS INVERSÉES (Ordre : Boutons -> Sous-titre -> Titre) ----
   
@@ -87,7 +79,6 @@ function HeaderSection() {
     >
       {/* BACKGROUND PARALLAX & SLIDESHOW */}
       <motion.div
-        style={{ y: backgroundY }}
         className="absolute inset-0 w-full h-full bg-cover bg-center will-change-transform"
       >
         <AnimatePresence initial={false}>
@@ -104,7 +95,11 @@ function HeaderSection() {
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
             }}
-          />
+          >
+            {currentImage === 0 && (
+              <img src={images[0]} alt="" className="hidden" fetchpriority="high" />
+            )}
+          </motion.div>
         </AnimatePresence>
       </motion.div>
 
@@ -139,9 +134,9 @@ function HeaderSection() {
           variants={subtitleVariant}
           initial="hidden"
           animate="show"
-          className="text-lg sm:text-xl text-gray-200 mb-10 italic max-w-2xl border-l-4 border-purple-600 pl-6 py-2 leading-relaxed"
+          className="text-lg sm:text-xl text-gray-200 mb-10 italic max-w-2xl border-l-4 border-purple-600 pl-6 py-2"
         >
-          "Langues · Informatique · Multimédia <br /> Communication · Presse · Événementiel"
+          <span className="text-4xl text-purple-400 font-serif">“</span>Langues · Informatique · Multimédia <br /> Communication · Presse · Événementiel <span className="text-4xl text-purple-400 font-serif">”</span>
         </motion.p>
 
         {/* BOUTONS (Apparaissent en 1er) */}

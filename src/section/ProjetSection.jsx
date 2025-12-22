@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState, useEffect } from "react";
 import { H2 } from "@/components/Typographie";
 import { getData } from "@/service/api";
@@ -180,12 +178,21 @@ const ProjetSection = () => {
 
 
   return (
-    <section id="projets" className="w-full py-30 text-white overflow-hidden">
-      <H2 className="text-center text-lg sm:text-xl md:text-3xl mb-10">
-        Nos projets
-      </H2>
-      {isMobile ? <MobileSlider /> : <DesktopCarousel />}
-    </section>
+    <motion.section id="projets" className="w-full sticky top-0 z-10 min-h-screen transition-all bg-white">
+      <div className="py-10 md:py-20">
+        <H2 className="text-center text-lg sm:text-xl md:text-3xl mb-10">
+          Nos réalisations
+        </H2>
+        <div className="max-w-7xl mx-auto relative px-5 md:px-36">
+          <span className="hidden md:block absolute top-0 left-25 text-8xl text-purple-400 font-serif">“</span>
+          <span className="md:hidden absolute top-0 left-0 text-5xl text-purple-400 font-serif">“</span>
+          <p className="text-sm sm:text-base text-black leading-relaxed sm:leading-loose text-justify">Chaque projet est une nouvelle occasion de repousser nos limites. De la conception à la livraison finale, nous transformons vos défis en succès mesurables. Ces réalisations témoignent de notre engagement envers la qualité et de notre capacité à donner vie à des visions ambitieuses, quel que soit le domaine d'intervention.</p>
+          <span className="hidden md:block absolute bottom-0 right-25 text-8xl text-purple-400 font-serif">”</span>
+          <span className="md:hidden absolute -bottom-5 right-0 text-5xl text-purple-400 font-serif">”</span>
+        </div>
+        {isMobile ? <MobileSlider /> : <DesktopCarousel />}
+      </div>
+    </motion.section>
   );
 };
 
