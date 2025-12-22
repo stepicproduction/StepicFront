@@ -51,7 +51,7 @@ const ActuDetaille = () => {
 
     // Simulation des infos méta
     const source = `PAR STEPIC.INFO ACTUALITÉ`; 
-    const categorie = "À la une, Actualité, Politique";
+    const categorie = "Actualité";
 
   return (
     <div className="min-h-screen w-full bg-white text-black py-10 px-4 sm:px-6 md:px-16 lg:px-24 xl:px-32 max-w-7xl mx-auto pt-30">
@@ -96,10 +96,6 @@ const ActuDetaille = () => {
                     
                 </main>
                 
-                {/* --- Barre latérale (Sidebar) --- */}
-                {/* <aside className="lg:w-1/3">
-                    <SidebarActu allActu={allActu} currentActuId={article.id} />
-                </aside> */}
                 
             </div>
         </div>  

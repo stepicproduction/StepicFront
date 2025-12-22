@@ -62,7 +62,7 @@ const OffreDetaille = () => {
         onClick={() => handleTabClick(item.id)}
         className={`${baseClasses} ${
           isActive
-            ? "text-white bg-[#008080] rounded-t-lg lg:rounded-md" // Onglet actif : fond vert (edX), texte blanc
+            ? "text-white bg-[#8a2be2] rounded-t-lg lg:rounded-md" // Onglet actif : fond vert (edX), texte blanc
             : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg" // Onglet inactif : gris, hover
         }`}
       >
@@ -140,7 +140,7 @@ const OffreDetaille = () => {
         <nav className="">
 
           {/* affichage en mobile */}
-          <div className="lg:hidden relative">
+          <div className="min-[1420px]:hidden relative">
             <select
               onChange={(e) => setActiveTab(e.target.value)}
               value={activeTab}
@@ -159,7 +159,7 @@ const OffreDetaille = () => {
           </div>
 
               {/* affichage en desktop */}
-          <ul className="hidden lg:flex lg:overflow-x-auto lg:justify-start lg:space-x-2 space-x-0 -mb-px pb-2">
+          <ul className="hidden min-[1420px]:flex min-[1420px]:overflow-x-auto min-[1420px]:justify-start min-[1420px]:space-x-2 space-x-0 -mb-px pb-2">
             {menuItems.map((item) => renderMainTab(item))}
           </ul>
         </nav>

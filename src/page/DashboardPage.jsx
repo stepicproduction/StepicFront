@@ -6,12 +6,14 @@ import { Outlet } from 'react-router-dom'
 
 function DashboardPage() {
   return (
-    <div>
+    // On s'assure que le conteneur prend toute la largeur sans overflow horizontal parasite
+    <div className="relative flex min-h-screen w-full overflow-hidden">
       <SidebarProvider>
         <AppSide />
-        <div className='w-full flex flex-col'>
+        {/* On ajoute une transition sur la marge/largeur pour accompagner la sidebar */}
+        <div className='flex flex-col flex-1 min-w-0 transition-[width,margin] duration-300 ease-in-out'>
           <HeaderDash />
-          <main className='bg-gray-100 min-h-[100vh] text-black px-4 py-6'>
+          <main className='bg-gray-100 flex-1 text-black px-4 py-6 overflow-y-auto'>
             <Outlet />
           </main>
         </div>

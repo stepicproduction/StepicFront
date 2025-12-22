@@ -11,7 +11,6 @@ import {
   DropdownMenuTrigger, 
 } from './ui/dropdown-menu'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { Button } from './ui/button'
 import ModifModalPassword from './Dash/Modals/mdp/ModifModalPassword'
 import ModifModalImage from './Dash/Modals/mdp/ModifModalImage'
 import { createData, patchFormData } from '@/service/api'
@@ -156,8 +155,6 @@ function HeaderDash() {
     <div className='w-full bg-white h-[80px] px-7 text-black flex items-center justify-between gap-2'>
        <div className='flex items-center gap-4'>
         <SidebarTrigger className="border-none hover:bg-white"/>
-        {/* AJOUTEZ CECI */}
-        {/* <h2 className='text-xl font-semibold'>{pageTitle}</h2>  */}
         <span className='text-gray-500'>Dashboard /</span><span className='font-semibold'>{pageTitle}</span>
       </div>
 

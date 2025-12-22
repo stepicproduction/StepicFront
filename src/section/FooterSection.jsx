@@ -81,14 +81,14 @@ export default function Footer({ active = "home" }) {
               <FaLinkedinIn className="text-white" /> 
             </a> 
             <a 
-              href="mailto:stepic.mada@gmail.com" 
+              href="mailto:admin@stepic-mada.com" 
               aria-label="Envoyer un email à STEPIC"
               className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors duration-300" 
             > 
               <FaEnvelope className="text-white" /> 
             </a> 
             <a 
-              href="http://youtube.com/%40stepic_production4859" 
+              href="https://youtube.com/%40stepic_production4859" 
               target="_blank" 
               rel="noreferrer" 
               aria-label="Chaîne YouTube STEPIC Production"
@@ -97,7 +97,7 @@ export default function Footer({ active = "home" }) {
               <FaYoutube className="text-white" /> 
             </a> 
             <a 
-              href="mailto:stepic.mada@gmail.com" 
+              href="https://www.tiktok.com/@stepic_production" 
               target="_blank" 
               rel="noreferrer" 
               aria-label="Compte TikTok STEPIC"
