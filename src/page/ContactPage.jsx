@@ -264,9 +264,9 @@ function ContactPage() {
             type="submit"
             variant="default"
             size="lg"
-            className="
-              flex items-center justify-center gap-2 px-3 py-2 rounded-full  text-white font-semibold bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] hover:from-[#6c63ff] hover:to-[#8a2be2] shadow-lg transition-colors duration-300 h-10 w-20 md:h-12 md:w-22 cursor-pointer
-            "
+            className={` ${loading ? "cursor-not-allowed opacity-8" : "cursor-pointer"}
+              flex items-center justify-center gap-2 px-3 py-2 rounded-full  text-white font-semibold bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] hover:from-[#6c63ff] hover:to-[#8a2be2] shadow-lg transition-colors duration-300 h-10 w-48 md:h-12 
+            `}
           >
             <AnimatePresence mode="wait">
               {!loading && !success && (
@@ -277,21 +277,24 @@ function ContactPage() {
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Send size={20} />
+                 Envoyer
                 </motion.span>
               )}
 
               {loading && (
-                <motion.span
-                  key="loading"
-                  initial={{ opacity: 0, rotate: -90 }}
-                  animate={{ opacity: 1, rotate: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="animate-spin"
-                >
-                  <Loader size={20} />
-                </motion.span>
+                <div className="flex gap-1.5 justify-center">
+                  <motion.span
+                    key="loading"
+                    initial={{ opacity: 0, rotate: -90 }}
+                    animate={{ opacity: 1, rotate: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="animate-spin"
+                  >
+                    <Loader size={20} />
+                  </motion.span>
+                  En cours d'envoie...
+                </div>
               )}
 
               {success && (
@@ -301,8 +304,9 @@ function ContactPage() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
+                  className="flex gap-1.5 justify-center"
                 >
-                  <Check size={22} />
+                  <Check size={22} /> Envoie avec succès
                 </motion.span>
               )}
             </AnimatePresence>

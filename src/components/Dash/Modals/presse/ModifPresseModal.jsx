@@ -90,7 +90,7 @@ const ModifPresseModal = ({value, onUpdate}) => {
                 <Pencil size={16} />
             </button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[500px] [&>button]:text-red-500 [&>button]:hover:text-red-600 [&>button]:hover:cursor-pointer">
+        <DialogContent className="sm:max-w-[500px] overflow-y-auto [&>button]:text-red-500 [&>button]:hover:text-red-600 [&>button]:hover:cursor-pointer bg-white">
             <DialogHeader>
                 <DialogTitle className="text-2xl font-bold text-blue-700">Modifier la presse</DialogTitle>
             </DialogHeader>

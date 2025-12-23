@@ -202,7 +202,7 @@ function DashMessage() {
                             <Trash2 className='h-4 w-4' /> 
                             </Button>
                         </AlertDialogTrigger>
-                        <AlertDialogContent>
+                        <AlertDialogContent className="bg-white text-gray-400">
                             <AlertDialogHeader>
                             <AlertDialogTitle className="text-rose-600">Confirmer la suppression</AlertDialogTitle>
                             <AlertDialogDescription>
@@ -221,7 +221,7 @@ function DashMessage() {
                             <AlertDialogAction 
                                 onClick={() => handleDeleteMessage(row.id)}
                                 variant="destructive" 
-                                className="rounded-full bg-rose-600 hover:bg-rose-700" 
+                                className="rounded-full bg-rose-600 hover:bg-rose-700 text-white" 
                             >
                                 Confirmer
                             </AlertDialogAction>
@@ -274,7 +274,7 @@ function DashMessage() {
 
             {/* --- Détail du message (Modale) --- */}
             <Dialog open={!!selectedMessage} onOpenChange={() => setSelectedMessage(null)}>
-                <DialogContent className="sm:max-w-[500px] [&>button]:bg-red-500 [&>button]:w-8 [&>button]:h-8 [&>button]:flex [&>button]:justify-center [&>button]:items-center [&>button]:rounded-full [&>button]:text-white [&>button]:hover:bg-red-600 [&>button]:hover:cursor-pointer py-10 px-10">
+                <DialogContent className="sm:max-w-[500px] [&>button]:bg-red-500 [&>button]:w-8 [&>button]:h-8 [&>button]:flex [&>button]:justify-center [&>button]:items-center [&>button]:rounded-full [&>button]:text-white [&>button]:hover:bg-red-600 [&>button]:hover:cursor-pointer py-10 px-10 bg-white">
                     <DialogHeader>
                         <DialogTitle className="text-2xl font-bold text-indigo-700 flex items-center gap-2 border-b border-indigo-100 pb-2">
                             <Mail size={24} className="text-indigo-500" /> {selectedMessage?.sujet}

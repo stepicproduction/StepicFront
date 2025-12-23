@@ -60,7 +60,7 @@ export const getUserColumns = (handleUpdate, handleDelete) => [
               <MdDelete className="h-5 w-5" />
             </Button>
           </AlertDialogTrigger>
-          <AlertDialogContent>
+          <AlertDialogContent className="bg-white text-gray-400">
             <AlertDialogHeader>
               <AlertDialogTitle className="text-rose-600">
                 Confirmer la suppression
@@ -80,7 +80,7 @@ export const getUserColumns = (handleUpdate, handleDelete) => [
               </AlertDialogCancel>
               <AlertDialogAction onClick={() => handleDelete(row.id)} 
                 variant="destructive" 
-                className="rounded-full bg-rose-600 hover:bg-rose-700"
+                className="rounded-full bg-rose-600 hover:bg-rose-700 text-white"
               >
                 Supprimer
               </AlertDialogAction>

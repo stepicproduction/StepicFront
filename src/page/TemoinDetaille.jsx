@@ -4,6 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { createFormData } from '@/service/api';
+import { Loader, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
@@ -45,6 +47,8 @@ const temoinSchema = z.object(
 function TemoinDetaille() {
 
   const [note, setNote] = useState(0);
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)  
 
   const {
     register,
@@ -73,10 +77,22 @@ function TemoinDetaille() {
     }
 
     try {
+      setLoading(true)
+      setSuccess(false)
+            
       await createFormData("temoignages/", formData)
       console.log("Données envoyés avec succès")
+
+      setLoading(false)
+      setSuccess(true)
+
+      setTimeout(() => {
+        setSuccess(false);
+      }, 2000);
+
     } catch (err) {
       console.log("Erreur lors de l'envoie du temoignage : ", err)
+      setLoading(false)
     }
 
     reset({
@@ -209,9 +225,42 @@ function TemoinDetaille() {
         </div>
         <button
           type="submit"
-          className="md:col-span-2 w-full max-w-xs mx-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-full cursor-pointer"
+          className={`${loading ? "cursor-not-allowed opacity-10" : "cursor-pointer"} md:col-span-2 w-full max-w-xs mx-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-full`}
         >
-          Envoyer le Témoignage
+          <AnimatePresence>
+            {!loading && !success && (
+              <span>Envoyer le témoignage</span>
+            )}
+
+            {loading && (
+              <div className='flex gap-1.5 justify-center'>
+                <motion.span
+                  key={loading}
+                  initial={{opacity : 0, rotate : -90}}
+                  animate={{ opacity: 1, rotate: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="animate-spin"
+                >
+                  <Loader size={20} />
+                </motion.span>
+                Envoie du témoignage
+              </div>
+            )}
+
+            {success && (
+              <motion.span
+                key="success"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className='flex gap-1.5 justify-center'
+              >
+                <Check size={22} /> Envoyé avec succès
+              </motion.span>
+            )}
+          </AnimatePresence>
         </button>
       </form>
     </div>

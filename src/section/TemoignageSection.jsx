@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getData } from '@/service/api';
 import { getRelativeTime } from '../service/getRelativeTime';
 import { motion, animate, useMotionValue, useMotionValueEvent, useScroll } from "framer-motion";
-import { Loader, Check } from 'lucide-react';
+
 
 
 const textVariants = {
@@ -133,7 +133,7 @@ const Temoignage = ({ image, nom, prenom, designation, message, date, note, emai
 function TemoignageSection() {
   const navigate = useNavigate();
   const [temoin, setTemoin] = useState([]);
-  const [loading, setLoading] = useState(false)
+
 
   const fetchTemoignage = async () => {
     try {

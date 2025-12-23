@@ -173,7 +173,7 @@ function DashRegister() {
                       <Trash2 className='h-4 w-4' /> 
                   </Button>
               </AlertDialogTrigger>
-              <AlertDialogContent>
+              <AlertDialogContent className="bg-white text-gray-400">
                   <AlertDialogHeader>
                       <AlertDialogTitle className="text-rose-600">Confirmer la suppression</AlertDialogTitle>
                       <AlertDialogDescription>
@@ -187,7 +187,7 @@ function DashRegister() {
                       <AlertDialogAction 
                           onClick={() => handleDelete(row.id)}
                           variant="destructive" 
-                          className="rounded-full bg-rose-600 hover:bg-rose-700" 
+                          className="rounded-full bg-rose-600 hover:bg-rose-700 text-white" 
                       >
                           Confirmer
                       </AlertDialogAction>
