@@ -46,7 +46,7 @@ const ModifModalPassword = ({ open, setOpen, onUpdate }) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[500px] [&>button]:bg-red-500 [&>button]:w-8 [&>button]:h-8 [&>button]:flex [&>button]:justify-center [&>button]:items-center [&>button]:rounded-full [&>button]:text-white [&>button]:hover:bg-red-600 [&>button]:hover:cursor-pointer py-10 px-10">
+        <DialogContent className="sm:max-w-[500px] [&>button]:bg-red-500 [&>button]:w-8 [&>button]:h-8 [&>button]:flex [&>button]:justify-center [&>button]:items-center [&>button]:rounded-full [&>button]:text-white [&>button]:hover:bg-red-600 [&>button]:hover:cursor-pointer py-10 px-10 bg-white">
             <DialogHeader>
                 <DialogTitle className="text-2xl font-bold text-blue-700">Changer le mot de passe</DialogTitle>
             </DialogHeader>

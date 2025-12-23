@@ -75,7 +75,7 @@ function HeaderSection() {
     <section
       id="home"
       ref={sectionRef}
-      className="relative min-h-screen flex items-center px-6 sm:px-12 md:px-20 lg:px-32 overflow-hidden"
+      className="relative min-h-screen flex items-center px-6 sm:px-12 lg:px-32 overflow-hidden"
     >
       {/* BACKGROUND PARALLAX & SLIDESHOW */}
       <motion.div
@@ -107,7 +107,7 @@ function HeaderSection() {
       <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent z-1"></div>
 
       {/* CONTENT ALIGNÉ À GAUCHE */}
-      <div className="relative z-10 w-full max-w-4xl text-left">
+      <div className="relative z-10 w-full sm:max-w-4xl text-left">
         
         <motion.span 
           initial={{ opacity: 0, y: -10 }}
@@ -123,9 +123,8 @@ function HeaderSection() {
           variants={titleVariant}
           initial="hidden"
           animate="show"
-          className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-6 leading-[1.2] drop-shadow-xl"
+          className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-6 leading-[1.1] sm:leading-[1.2] drop-shadow-xl"
         >
-          {/* STEPIC, l'art du <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-500">multimédia</span> et de l'audiovisuel */}
           STEPIC, booster des talents : Informatique, Langues et création <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-500">Multimédia</span>.
         </motion.h1>
 
@@ -148,7 +147,7 @@ function HeaderSection() {
         >
           <button
             onClick={() => navigate("/commande")}
-            className="group relative flex items-center justify-center gap-2 px-8 py-4 rounded-full text-white font-bold bg-purple-600 shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all duration-300 hover:scale-105 hover:bg-purple-700 active:scale-95 cursor-pointer"
+            className="group relative flex items-center justify-center gap-2 px-8 py-4 rounded-full text-white font-bold bg-purple-600 shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all duration-300 hover:scale-105 hover:bg-purple-700 active:scale-95 cursor-pointer h-12 sm:h-auto"
           >
             Commander
             <span className="group-hover:translate-x-1 transition-transform">→</span>
@@ -160,7 +159,7 @@ function HeaderSection() {
             duration={2000}
             offset={-60}
             href="#showreel"
-            className="flex items-center justify-center px-8 py-4 rounded-full text-white border-2 border-white/40 font-bold backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-white cursor-pointer active:scale-95"
+            className="flex items-center justify-center px-8 py-4 rounded-full text-white border-2 border-white/40 font-bold backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-white cursor-pointer active:scale-95 h-12 sm:h-auto"
           >
             Voir démonstration
           </ScrollLink>

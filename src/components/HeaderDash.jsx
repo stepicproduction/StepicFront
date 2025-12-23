@@ -170,7 +170,7 @@ function HeaderDash() {
                 <img src={imgProfil} className='h-10 w-10 rounded-full object-cover border border-gray-200 shadow-sm cursor-pointer'/>
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className='w-xs text-center px-8 py-4'>
+            <DropdownMenuContent className='w-xs text-center px-8 py-4 bg-white text-gray-400'>
               <DropdownMenuLabel>
                 <div className='flex flex-col items-center justify-center gap-2 relative'>
                   {userImage ? <img src={userImage} className='h-30 w-30 rounded-full object-cover border border-gray-200 shadow-sm cursor-pointer'/> : <UserRound />}
