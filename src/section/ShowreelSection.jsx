@@ -4,6 +4,39 @@ import ReactPlayer from 'react-player'; // Import spécifique pour YouTube
 import { H2 } from '@/components/Typographie';
 import { motion, useTransform } from 'framer-motion';
 
+
+// Animation pour le titre "Showreel"
+const titleVariants = {
+  hidden: { 
+    opacity: 0, 
+    letterSpacing: "-0.5em", // Les lettres sont resserrées au début
+    filter: "blur(12px)"     // Effet de flou artistique
+  },
+  visible: { 
+    opacity: 1, 
+    letterSpacing: "0.1em",  // Elles s'écartent avec élégance
+    filter: "blur(0px)",
+    transition: { 
+      duration: 1.2, 
+      ease: "easeOut" 
+    } 
+  }
+};
+
+// Animation pour le paragraphe (L'expertise STEPIC...)
+const subTextVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { 
+      duration: 1, 
+      delay: 0.5, // Apparaît juste après le titre
+      ease: "easeOut" 
+    } 
+  }
+};
+
 function ShowreelSection() {
   const [url, setUrl] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -31,52 +64,82 @@ function ShowreelSection() {
       id='showreel'
       >
       <motion.div 
+        initial="hidden"
+        whileInView="visible"
         className='max-w-6xl mx-auto'>
         
         {/* EN-TÊTE */}
         <div className='mb-12 text-center'>
-          <H2 className="text-white mb-6">Showreel</H2>
+          <motion.div
+            variants={titleVariants}
+            initial="hidden"
+            whileInView="visible"
+          >
+            <H2 className="text-white mb-6">Showreel</H2>
+          </motion.div>
           
-          <div className='max-w-3xl mx-auto relative'>
-            <p className="text-base md:text-lg leading-relaxed text-gray-300 italic font-serif">
+          <motion.div
+            variants={subTextVariants}
+            initial="hidden"
+            whileInView="visible" 
+            className='max-w-3xl mx-auto'>
+            <p className="text-sm sm:text-base leading-relaxed sm:leading-loose text-gray-300 italic font-serif">
               « L'expertise STEPIC en images. Parce qu'une démonstration vaut mille mots, explorez notre showreel pour découvrir la qualité et la diversité de nos réalisations audiovisuelles et numériques. »
             </p>
-          </div>
+          </motion.div>
         </div>
 
         {/* LECTEUR VIDÉO */}
         <div className="max-w-5xl mx-auto">
-          {loading ? (
-            <div className="aspect-video bg-gray-800 animate-pulse rounded-2xl flex items-center justify-center">
-               <p className='text-gray-400'>Chargement du lecteur...</p>
-            </div>
-          ) : firstLink ? (
-            <div className="relative group">
-              {/* Effet de Halo (Glow) en arrière-plan */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-1000"></div>
-              
-              {/* Conteneur du Player */}
-              <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/5 bg-black">
+          <div className="relative group">
+
+            {/* Glow - hors flux */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-2xl blur opacity-20" />
+
+            {/* CONTENEUR À HAUTEUR FIXE */}
+            <div className="relative aspect-video rounded-2xl overflow-hidden bg-black shadow-2xl border border-white/5 flex items-center justify-center">
+
+              {/* Loader */}
+              {loading && (
+                <p className="text-gray-400 animate-pulse">
+                  Chargement du lecteur...
+                </p>
+              )}
+
+              {/* Player */}
+              {!loading && firstLink && (
                 <ReactPlayer
                   src={firstLink.replace("youtube.com", "youtube-nocookie.com")}
-                  controls={true}
-                  width='100%'
-                  height='100%'
+                  controls
+                  width="100%"
+                  height="100%"
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0
+                  }}
                   config={{
                     youtube: {
-                      playerVars: { 
+                      playerVars: {
                         modestbranding: 1,
-                        rel: 0 
+                        rel: 0
                       }
                     }
                   }}
                 />
-              </div>
+              )}
+
+              {/* Fallback */}
+              {!loading && !firstLink && (
+                <p className="text-gray-500">
+                  Aucune vidéo disponible pour le moment.
+                </p>
+              )}
+
             </div>
-          ) : (
-            <p className='text-center text-gray-500'>Aucune vidéo disponible pour le moment.</p>
-          )}
+          </div>
         </div>
+
       </motion.div>
     </section>
   );

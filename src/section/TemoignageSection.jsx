@@ -1,11 +1,24 @@
-"use client";
-
 import React, { useState, useEffect, useRef } from 'react';
 import { H2 } from '@/components/Typographie';
 import { useNavigate } from 'react-router-dom';
 import { getData } from '@/service/api';
 import { getRelativeTime } from '../service/getRelativeTime';
 import { motion, animate, useMotionValue, useMotionValueEvent, useScroll } from "framer-motion";
+import { Loader, Check } from 'lucide-react';
+
+
+const textVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { 
+      duration: 1, 
+      delay: 0.5, // Apparaît juste après le titre
+      ease: "easeOut" 
+    } 
+  }
+};
 
 // --- Composant StarRating ---
 const StarRating = ({ note }) => {
@@ -120,6 +133,7 @@ const Temoignage = ({ image, nom, prenom, designation, message, date, note, emai
 function TemoignageSection() {
   const navigate = useNavigate();
   const [temoin, setTemoin] = useState([]);
+  const [loading, setLoading] = useState(false)
 
   const fetchTemoignage = async () => {
     try {
@@ -139,14 +153,17 @@ function TemoignageSection() {
   const maskImage = useScrollOverflowMask(scrollXProgress);
 
   return (
-    <div className="py-10 px-4 sm:px-8 md:py-20 max-w-7xl mx-auto">
-
-      <div>
+    <div className="py-10 px-4 sm:px-8 md:py-20 max-w-7xl mx-auto relative">
+      <motion.div 
+        variants={textVariants}
+        initial="hidden"
+        whileInView="visible"
+      >
         <H2 className="text-xl sm:text-2xl md:text-3xl text-center mb-12">Ils nous font confiance</H2>
         <div className='max-w-7xl mx-auto relative px-5 md:px-36'>
           <p className='text-sm sm:text-base leading-loose text-black text-justify'>« Au-delà des chiffres, ce sont les retours de nos partenaires qui nous poussent à l'excellence. Découvrez les expériences de ceux qui ont choisi STEPIC pour transformer leurs ambitions en réalité. »</p>
         </div>
-      </div>
+      </motion.div>
       {/* Circle Progress */}
       <svg width="80" height="80" viewBox="0 0 100 100" className="mx-auto mb-8 rotate-[-90deg]">
         <circle cx="50" cy="50" r="30" pathLength="1" className="stroke-gray-300" fill="none" strokeWidth="10%" />

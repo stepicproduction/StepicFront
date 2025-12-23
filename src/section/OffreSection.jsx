@@ -16,6 +16,12 @@ const cardVariants = {
   }),
 };
 
+const wordVariants = {
+  hidden : {opacity : 0, y : -20, scale : 0},
+  visible : {opacity : 1, y : 0, scale :1 , transition: { duration: 1, type : "spring", stiffness : 100, damping : 12 }},
+}
+
+
 function OffreSection() {
   const [offres, setOffres] = useState([]);
   const navigate = useNavigate();
@@ -38,9 +44,16 @@ function OffreSection() {
       id="offre"
       className="py-10 px-4 sm:px-8 md:py-20 md:px-32 max-w-7xl mx-auto"
     >
-      <H2 className="text-[40px] leading-1.3 text-center font-semibold mb-[30px]">
-        Nos Offres
-      </H2>
+      <motion.div 
+        variants={wordVariants}
+        initial="hidden"
+        whileInView="visible"
+      >
+        <H2 className="text-[40px] leading-1.3 text-center font-semibold mb-[30px]">
+          Nos Offres
+        </H2>
+        <p className="text-sm sm:text-base text-black leading-relaxed sm:leading-loose">« Parce que votre projet mérite l'excellence, nous combinons expertise technique et vision innovante pour vous offrir des services qui font la différence. Que ce soit pour le web ou l'image, nos offres sont le moteur de votre croissance numérique. »</p>
+      </motion.div>
 
       <div className="mt-20 grid grid-cols-1 min-[1050px]:grid-cols-12 gap-6 md:gap-8 place-items-center">
         {offres.map((offre, i) => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { H2 } from "@/components/Typographie";
 import { getData } from "@/service/api";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, delay } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // Fonction pour boucler l'index
@@ -9,6 +9,33 @@ const wrapIndex = (min, max, val) => {
   const range = max - min;
   return ((val - min) % range + range) % range + min;
 };
+
+const textVariants = {
+  hidden: { opacity: 0, x: -30 },
+  visible: { 
+    opacity: 1, 
+    x: 0, 
+    transition: { 
+      duration: 0.8, 
+      ease: "easeOut",
+      delay: 0.2 // Attend que le titre commence à apparaître
+    } 
+  }
+};
+
+const quoteVariants = {
+  hidden: { opacity: 0, scale: 0.5 },
+  visible: { 
+    opacity: 0.3, // Très léger en fond
+    scale: 1, 
+    transition: { duration: 1, ease: "backOut", delay: 0.7 } 
+  }
+};
+
+const wordVariants = {
+  hidden : {opacity : 0, y : -20, scale : 0},
+  visible : {opacity : 1, y : 0, scale :1 , transition: { duration: 1, type : "spring", stiffness : 100, damping : 12, delay: 0.6 }},
+}
 
 const ProjetSection = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -63,8 +90,8 @@ const ProjetSection = () => {
     ];
 
     return (
-      <div className="relative w-full flex justify-center items-center py-10 overflow-hidden">
-        {/* Flèche gauche */}
+      <div className="relative w-full flex justify-center items-center py-10 ">
+        {/* Flèche gauche overflow-hidden*/}
         <button
           onClick={goPrev}
           className="absolute left-4 sm:left-6 md:left-10 top-1/2 -translate-y-1/2 
@@ -87,13 +114,14 @@ const ProjetSection = () => {
             {items.map((projet, index) => (
               <div
                 key={index}
-                className="group relative w-[280px] md:w-[330px] h-[400px] rounded-2xl shadow-xl overflow-hidden cursor-pointer mx-auto hover:scale-105 transition-transform"
+                className="group relative w-[280px] md:w-[330px] h-[400px] rounded-2xl shadow-xl cursor-pointer mx-auto hover:scale-105 transition-transform"
                 style={{
                   backgroundImage: `url(${projet.image})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}
               >
+                {/* overflow-hidden */}
                 {/* Overlay hover desktop */}
                 <div className="absolute inset-0 bg-blue-900/30 group-hover:bg-blue-900/60 transition-all" />
                 <div className="absolute inset-0 flex items-center justify-center bg-blue-900/70 p-4 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -143,7 +171,7 @@ const ProjetSection = () => {
                 initial={{ opacity: 0, x: direction * 300, scale: 0.9 }}
                 animate={{ opacity: 1, x: 0, scale: 1, transition: { type: "spring", stiffness: 250, damping: 20 } }}
                 exit={{ opacity: 0, x: direction * -300, scale: 0.9, transition: { type: "spring", stiffness: 250, damping: 20 } }}
-                className="relative w-[300px] h-[300px] shadow-xl overflow-hidden cursor-pointer rounded-xl mx-auto flex-shrink-0"
+                className="relative w-[300px] h-[300px] shadow-xl cursor-pointer rounded-xl mx-auto flex-shrink-0"
                 style={{
                   backgroundImage: `url(${projet.image})`,
                   backgroundSize: "cover",
@@ -151,6 +179,7 @@ const ProjetSection = () => {
                 }}
                 onClick={() => setShowDescription(!showDescription)}
               >
+                {/*  overflow-hidden */}
                 <div className="absolute inset-0 bg-blue-900/40" />
                 <div
                   className={`absolute inset-0 flex items-center justify-center bg-blue-900/70 p-4 text-center transition-opacity duration-300 ${
@@ -178,16 +207,34 @@ const ProjetSection = () => {
 
 
   return (
-    <motion.section id="projets" className="w-full sticky top-0 z-10 min-h-screen transition-all bg-white">
+    <motion.section initial="hidden" whileInView="visible" id="projets" className="w-full sticky top-0 z-10 min-h-screen transition-all bg-white">
       <div className="py-10 md:py-20">
-        <H2 className="text-center text-lg sm:text-xl md:text-3xl mb-10">
-          Nos réalisations
-        </H2>
+        <motion.div 
+          variants={wordVariants}
+          initial="hidden"
+          whileInView="visible"
+          >
+          <H2 className="text-center text-lg sm:text-xl md:text-3xl mb-10">
+            Nos réalisations
+          </H2>
+        </motion.div>
         <div className="max-w-7xl mx-auto relative px-5 md:px-36">
-          <span className="hidden md:block absolute top-0 left-25 text-8xl text-purple-400 font-serif">“</span>
+          <motion.span 
+            variants={quoteVariants} 
+            initial="hidden"
+            whileInView="visible"
+            className="hidden md:block absolute top-0 left-25 text-8xl text-purple-400 font-serif">“</motion.span>
           <span className="md:hidden absolute top-0 left-0 text-5xl text-purple-400 font-serif">“</span>
-          <p className="text-sm sm:text-base text-black leading-relaxed sm:leading-loose text-justify">Chaque projet est une nouvelle occasion de repousser nos limites. De la conception à la livraison finale, nous transformons vos défis en succès mesurables. Ces réalisations témoignent de notre engagement envers la qualité et de notre capacité à donner vie à des visions ambitieuses, quel que soit le domaine d'intervention.</p>
-          <span className="hidden md:block absolute bottom-0 right-25 text-8xl text-purple-400 font-serif">”</span>
+          <motion.p 
+            variants={textVariants}
+            initial="hidden"
+            whileInView="visible" 
+            className="text-sm sm:text-base text-black leading-relaxed sm:leading-loose text-justify">Chaque projet est une nouvelle occasion de repousser nos limites. De la conception à la livraison finale, nous transformons vos défis en succès mesurables. Ces réalisations témoignent de notre engagement envers la qualité et de notre capacité à donner vie à des visions ambitieuses, quel que soit le domaine d'intervention.</motion.p>
+          <motion.span 
+            variants={quoteVariants} 
+            initial="hidden"
+            whileInView="visible"
+            className="hidden md:block absolute bottom-0 right-25 text-8xl text-purple-400 font-serif">”</motion.span>
           <span className="md:hidden absolute -bottom-5 right-0 text-5xl text-purple-400 font-serif">”</span>
         </div>
         {isMobile ? <MobileSlider /> : <DesktopCarousel />}
