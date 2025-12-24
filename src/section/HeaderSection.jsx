@@ -62,6 +62,12 @@ function HeaderSection() {
       ref={sectionRef}
       className="relative min-h-screen flex items-center px-4 sm:px-8 lg:px-32 overflow-hidden"
     >
+      <img 
+        src={photo2} 
+        alt="STEPIC, booster des talents" 
+        fetchpriority="high" 
+        className="hidden" 
+      />
       {/* BACKGROUND SLIDESHOW + PARALLAX + ROTATE */}
       <motion.div
         className="absolute inset-0 w-full h-full bg-cover bg-center will-change-transform"
