@@ -77,7 +77,7 @@ function OffreSection() {
 
       <div className="mt-32 flex justify-end px-4">
         <motion.button
-          className="flex items-center justify-center gap-2 px-6 py-2 rounded-full text-[#0B1D5D] border border-[#0B1D5D] hover:bg-[#0B1D5D] hover:text-white font-semibold shadow-lg transition-all duration-300 cursor-pointer h-14 md:h-12 w-55"
+          className="flex items-center justify-center gap-2 px-6 py-2 rounded-full text-[#0B1D5D] border border-[#0B1D5D] hover:bg-[#0B1D5D] hover:text-white shadow-lg transition-all duration-300 cursor-pointer h-14 md:h-12 w-55"
           onClick={() => navigate("/offre")}
           whileHover={{ scale: 1.05, y: -2, transition: { duration: 0.2 } }}
           whileTap={{ scale: 0.95 }}

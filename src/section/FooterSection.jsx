@@ -57,7 +57,7 @@ export default function Footer({ active = "home" }) {
           </Link>
 
           <p className="text-gray-400 mb-6 leading-relaxed"> 
-            Chaque pas nous rapproche du pic. Rejoignez-nous dans cette aventure créative.
+            "Chaque pas nous rapproche du pic. Rejoignez-nous dans cette aventure créative."
           </p> 
 
           {/* Réseaux sociaux */} 
@@ -160,7 +160,11 @@ export default function Footer({ active = "home" }) {
           </div> 
         </div> 
       </div> 
-
+      {/* partie témoignage */}
+      <p className="text-sm sm:text-base flex flex-col sm:flex-row gap-1.5 justify-center items-center">
+        <span>Vous avez travaillé avec nous ?</span>  
+        <Link to="/temoin" className="inline-flex items-center text-purple-400 hover:text-purple-300 font-semibold gap-2 group transition-all"> Partagez votre expérience</Link>
+      </p>   
       {/* Copyright */} 
       <div className="border-t border-gray-800 text-center py-4 text-gray-400 text-sm"> 
         © {new Date().getFullYear()} STEPIC. Tous droits réservés. 

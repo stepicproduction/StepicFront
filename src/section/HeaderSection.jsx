@@ -113,7 +113,7 @@ function HeaderSection() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2 }} // Apparaît après le titre pour conclure
-          className="inline-block text-purple-400 font-bold tracking-[0.3em] uppercase text-xs sm:text-sm mb-4"
+          className="inline-block text-purple-400 font-bold tracking-[0.3em] uppercase text-xs sm:text-sm mb-2 sm:mb-4"
         >
           FORMATIONS & SERVICES MULTIDISCIPLINAIRES
         </motion.span>
@@ -133,9 +133,9 @@ function HeaderSection() {
           variants={subtitleVariant}
           initial="hidden"
           animate="show"
-          className="text-lg sm:text-xl text-gray-200 mb-10 italic max-w-2xl border-l-4 border-purple-600 pl-6 py-2"
+          className="text-lg sm:text-xl text-gray-200 mb-10 italic max-w-2xl border-l-4 border-purple-600 pl-6 sm:py-2"
         >
-          <span className="text-4xl text-purple-400 font-serif">“</span>Langues · Informatique · Multimédia <br /> Communication · Presse · Événementiel <span className="text-4xl text-purple-400 font-serif">”</span>
+          <span className="hidden md:block text-4xl text-purple-400 font-serif">“</span>Langues · Informatique · Multimédia <br /> Communication · Presse · Évènementiel <span className="hidden md:block text-4xl text-purple-400 font-serif">”</span>
         </motion.p>
 
         {/* BOUTONS (Apparaissent en 1er) */}
@@ -143,7 +143,7 @@ function HeaderSection() {
           variants={btnContainerVariant}
           initial="hidden"
           animate="show"
-          className="flex flex-col sm:flex-row items-start gap-5 w-full sm:w-auto"
+          className="flex flex-col sm:flex-row items-start gap-5 w-full sm:w-auto pb-2"
         >
           <button
             onClick={() => navigate("/commande")}

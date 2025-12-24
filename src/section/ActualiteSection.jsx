@@ -103,7 +103,7 @@ function ActualiteSection() {
         <div className="w-full mt-6 flex justify-center">
           <button
             onClick={() => navigate("/presse_actu")}
-            className="px-6 py-2 rounded-full text-[#0B1D5D] border border-[#0B1D5D] hover:bg-[#0B1D5D] hover:text-white font-semibold shadow-lg transition-all duration-300 cursor-pointer text-sm md:text-base whitespace-nowrap h-14 md:h-12 mt-2 sm:mt-3"
+            className="px-6 py-2 rounded-full text-[#0B1D5D] border border-[#0B1D5D] hover:bg-[#0B1D5D] hover:text-white shadow-lg transition-all duration-300 cursor-pointer text-sm md:text-base whitespace-nowrap h-14 md:h-12 mt-2 sm:mt-3"
           >
             Voir toutes les actualités
           </button>

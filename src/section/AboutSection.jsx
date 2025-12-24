@@ -149,7 +149,7 @@ function AboutSection() {
               onClick={() => navigate("/about")}
               whileHover={{ scale: 1.05, y: -2, transition: { duration: 0.2 } }}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center justify-center gap-2 px-6 py-2 rounded-full text-[#0B1D5D] border border-[#0B1D5D] hover:bg-[#0B1D5D] hover:text-white font-semibold shadow-lg transition-all duration-300 h-10 w-40 md:h-12 md:w-48 cursor-pointer"
+              className="flex items-center justify-center gap-2 px-6 py-2 rounded-full text-[#0B1D5D] border border-[#0B1D5D] hover:bg-[#0B1D5D] hover:text-white shadow-lg transition-all duration-300 h-10 w-40 md:h-12 md:w-48 cursor-pointer"
             >
               Lire plus
             </Button>

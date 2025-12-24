@@ -1,10 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { H2 } from '@/components/Typographie';
-import { useNavigate } from 'react-router-dom';
-import { getData } from '@/service/api';
-import { getRelativeTime } from '../service/getRelativeTime';
-import { motion, animate, useMotionValue, useMotionValueEvent, useScroll } from "framer-motion";
-
+import React, { useEffect, useState } from "react";
+import { motion, useMotionValue, useAnimationFrame } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { H2 } from "@/components/Typographie";
+import { getData } from "@/service/api";
+import { getRelativeTime } from "../service/getRelativeTime";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 
 const textVariants = {
@@ -19,109 +25,67 @@ const textVariants = {
     } 
   }
 };
-
-// --- Composant StarRating ---
-const StarRating = ({ note }) => {
-  const MAX_STARS = 5;
-  return (
-    <div className="flex text-yellow-400">
-      {Array.from({ length: MAX_STARS }, (_, i) => (
-        <svg
-          key={i}
-          className={`w-5 h-5 ${i < note ? "text-yellow-400" : "text-gray-300"}`}
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.538 1.118l-2.8-2.034a1 1 0 00-1.176 0l-2.8 2.034c-.783.57-1.838-.197-1.538-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.381-1.81.588-1.81h3.462a1 1 0 00.95-.69l1.07-3.292z" />
-        </svg>
-      ))}
-    </div>
-  );
-};
-
-// --- Animation scroll mask ---
-const left = `0%`;
-const right = `100%`;
-const leftInset = `20%`;
-const rightInset = `80%`;
-const transparent = `#0000`;
-const opaque = `#000`;
-
-function useScrollOverflowMask(scrollXProgress) {
-  const maskImage = useMotionValue(
-    `linear-gradient(90deg, ${opaque}, ${opaque} ${left}, ${opaque} ${rightInset}, ${transparent})`
+/* ---------------- HOOK MOBILE ---------------- */
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(
+    window.innerWidth < breakpoint
   );
 
-  useMotionValueEvent(scrollXProgress, "change", (value) => {
-    if (value === 0) {
-      animate(
-        maskImage,
-        `linear-gradient(90deg, ${opaque}, ${opaque} ${left}, ${opaque} ${rightInset}, ${transparent})`
-      );
-    } else if (value === 1) {
-      animate(
-        maskImage,
-        `linear-gradient(90deg, ${transparent}, ${opaque} ${leftInset}, ${opaque} ${right}, ${opaque})`
-      );
-    } else if (
-      scrollXProgress.getPrevious() === 0 ||
-      scrollXProgress.getPrevious() === 1
-    ) {
-      animate(
-        maskImage,
-        `linear-gradient(90deg, ${transparent}, ${opaque} ${leftInset}, ${opaque} ${rightInset}, ${transparent})`
-      );
-    }
-  });
+  useEffect(() => {
+    const onResize = () =>
+      setIsMobile(window.innerWidth < breakpoint);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [breakpoint]);
 
-  return maskImage;
+  return isMobile;
 }
 
-// --- Composant Temoignage (cartes carrées) ---
-const Temoignage = ({ image, nom, prenom, designation, message, date, note, email }) => {
-  const initial = email ? email[0].toUpperCase() : nom[0].toUpperCase();
+/* ---------------- STAR ---------------- */
+const StarRating = ({ note }) => (
+  <div className="flex gap-1 text-yellow-400">
+    {[...Array(5)].map((_, i) => (
+      <span key={i}>{i < note ? "★" : "☆"}</span>
+    ))}
+  </div>
+);
 
-  const variants = {
-    hidden: { opacity: 0, y: 50, scale: 0.95 },
-    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.8, ease: "easeOut" } },
-  };
+/* ---------------- CARD ---------------- */
+const Card = ({ t }) => {
+  const initial = t.emailClient?.[0]?.toUpperCase() || t.nomClient[0];
 
   return (
     <motion.div
-      variants={variants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
-      className="flex-shrink-0 w-[320px] sm:w-[360px] md:w-[380px]"
+      whileHover={{ y: -6 }}
+      className="bg-white rounded-2xl p-5 shadow-xl"
     >
-      <div className="flex flex-col bg-white p-4 shadow-xl h-[420px] sm:h-[390px] rounded-2xl">
+      <div className="flex flex-col h-auto sm:h-[300px] rounded-2xl">
         {/* Photo + nom/prénom/désignation */}
-        <div className="flex flex-row items-center gap-4 mb-4">
+        <div className="flex flex-col sm:flex-row items-center gap-4 mb-4">
           <div className="w-24 h-24 rounded-full overflow-hidden shadow-lg flex-shrink-0 border-2 border-white">
-            {image ? (
-              <img src={image} alt={nom} className="w-full h-full object-cover" />
+            {t.image ? (
+              <img src={t.image} alt={t.nomClient} className="w-full h-full object-cover" />
             ) : (
               <div className="w-full h-full bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] flex items-center justify-center text-white text-4xl font-bold">
                 {initial}
               </div>
             )}
           </div>
-
-          <div className="flex flex-col">
-            <h3 className="text-lg font-semibold text-gray-900">{nom} {prenom}</h3>
-            <p className="text-sm text-gray-600">{designation}</p>
+          <div className="flex flex-col text-center sm:text-left">
+            <h3 className="text-lg font-semibold text-gray-900">{t.nomClient} {t.prenomClient}</h3>
+            <p className="text-sm text-gray-600">{t.role}</p>
           </div>
         </div>
 
         {/* Message + Note */}
         <div className="flex flex-col justify-between h-full">
-          <p className="text-sm leading-relaxed mb-4 text-black pt-7">{message}</p>
+          <p className="text-sm leading-relaxed mb-4 text-black pt-7">{t.messageClient}</p>
 
           <div className="flex justify-between items-end mt-auto">
             <div className="bg-white rounded-full shadow-xl inline-flex px-3 py-2 mb-2">
-              <StarRating note={note} />
+              <StarRating note={t.note} />
             </div>
-            <p className="text-xs text-gray-500 text-right">Publié {getRelativeTime(date)}</p>
+            <p className="text-xs text-gray-500 text-right">Publié {getRelativeTime(t.dateTem)}</p>
           </div>
         </div>
       </div>
@@ -129,89 +93,93 @@ const Temoignage = ({ image, nom, prenom, designation, message, date, note, emai
   );
 };
 
-// --- Section Témoignage avec scroll horizontal ---
-function TemoignageSection() {
+/* ---------------- SECTION ---------------- */
+export default function TemoignageSection() {
   const navigate = useNavigate();
-  const [temoin, setTemoin] = useState([]);
 
+  /* TOUS LES HOOKS ICI */
+  const [temoins, setTemoins] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const isMobile = useIsMobile();
 
-  const fetchTemoignage = async () => {
+  const fetchTem = async () => {
     try {
-      const response = await getData("temoignages/valide/");
-      setTemoin(response.data);
+      const response = await getData("temoignages/valide/")
+      const data = Array.isArray(response.data) ? response.data : [];
+      setTemoins(data);
+      setLoading(false);
     } catch (err) {
-      console.log("Erreur :", err);
+      console.log(first)
+      setTemoins([]);
+      setLoading(false);
     }
-  };
+  }
 
+  /* FETCH */
   useEffect(() => {
-    fetchTemoignage();
+    fetchTem()
   }, []);
 
-  const ref = useRef(null);
-  const { scrollXProgress } = useScroll({ container: ref });
-  const maskImage = useScrollOverflowMask(scrollXProgress);
+
+  /* CONDITIONS D’AFFICHAGE */
+ if (loading || !Array.isArray(temoins) || temoins.length < 3) return null;
+ 
+  const lastSix = temoins.slice(0, 6);
+  const hasMore = temoins.length > 6;
 
   return (
-    <div className="py-10 px-4 sm:px-8 md:py-20 max-w-7xl mx-auto relative">
-      <motion.div 
-        variants={textVariants}
-        initial="hidden"
-        whileInView="visible"
-      >
-        <H2 className="text-xl sm:text-2xl md:text-3xl text-center mb-12">Ils nous font confiance</H2>
-        <div className='max-w-7xl mx-auto relative px-5 md:px-36'>
-          <p className='text-sm sm:text-base leading-loose text-black text-justify'>« Au-delà des chiffres, ce sont les retours de nos partenaires qui nous poussent à l'excellence. Découvrez les expériences de ceux qui ont choisi STEPIC pour transformer leurs ambitions en réalité. »</p>
-        </div>
-      </motion.div>
-      {/* Circle Progress */}
-      <svg width="80" height="80" viewBox="0 0 100 100" className="mx-auto mb-8 rotate-[-90deg]">
-        <circle cx="50" cy="50" r="30" pathLength="1" className="stroke-gray-300" fill="none" strokeWidth="10%" />
-        <motion.circle
-          cx="50"
-          cy="50"
-          r="30"
-          stroke="var(--accent)"
-          strokeWidth="10%"
-          fill="none"
-          style={{ pathLength: scrollXProgress }}
-        />
-      </svg>
-
-      {/* Scroll horizontal animé */}
-      <motion.div
-        ref={ref}
-        className="flex overflow-x-scroll gap-6 px-3 py-4"
-        style={{ maskImage }}
-      >
-        {temoin.map((t) => (
-          <Temoignage
-            key={t.id}
-            image={t.image}
-            nom={t.nomClient}
-            prenom={t.prenomClient}
-            designation={t.role}
-            message={t.messageClient}
-            date={t.dateTem}
-            note={t.note}
-            email={t.emailClient}
-          />
-        ))}
-      </motion.div>
-
-      {/* Bouton */}
-      <div className="mt-16 flex justify-end px-4">
-        <motion.button
-          onClick={() => navigate('/temoin')}
-          className="px-6 py-2 rounded-full text-[#0B1D5D] border border-[#0B1D5D] hover:bg-[#0B1D5D] hover:text-white font-semibold shadow-lg transition-all duration-300 cursor-pointer text-sm md:text-base whitespace-nowrap h-14 md:h-12"
-          whileHover={{ scale: 1.05, y: -2 }}
-          whileTap={{ scale: 0.95 }}
+    <motion.section
+      variants={textVariants}
+      initial="hidden"
+      whileInView="visible"
+      className="py-24 bg-gray-50"
+      style={{ clipPath: "ellipse(150% 100% at 50% 100%)" }}
+    >
+      <div className="max-w-7xl mx-auto px-4">
+        <div 
+          className="mb-8"
         >
-          Partagez votre histoire
-        </motion.button>
+          <H2 className="text-xl sm:text-2xl md:text-3xl text-center mb-12">Ils nous font confiance</H2>
+          <div className='max-w-7xl mx-auto relative px-5 md:px-36'>
+            <p className='text-sm sm:text-base leading-loose text-black text-justify'>« Au-delà des chiffres, ce sont les retours de nos partenaires qui nous poussent à l'excellence. Découvrez les expériences de ceux qui ont choisi STEPIC pour transformer leurs ambitions en réalité. »</p>
+          </div>
+        </div>
+
+        {/* DESKTOP */}
+        {!isMobile && (
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            {lastSix.map(t => (
+              <Card key={t.id} t={t} />
+            ))}
+          </div>
+        )}
+
+        {/* MOBILE */}
+        {isMobile && (
+          <Carousel className="max-w-[400px] mx-auto">
+            <CarouselContent>
+              {temoins.map(t => (
+              <CarouselItem key={t.id} className="min-w-[85%]">
+                <Card t={t} />
+              </CarouselItem>
+            ))}
+            </CarouselContent>
+            <CarouselPrevious className="text-black cursor-pointer"/>
+            <CarouselNext className="text-black cursor-pointer"/>
+          </Carousel>
+        )}
+
+          <div className="flex justify-end mt-16">
+            <button
+              onClick={() => navigate("/temoin")}
+              className="px-6 py-2 rounded-full text-[#0B1D5D] border border-[#0B1D5D] hover:bg-[#0B1D5D] hover:text-white shadow-lg transition-all duration-300 cursor-pointer text-sm md:text-base whitespace-nowrap h-14 md:h-12 mt-2 sm:mt-3"
+            >
+              Partager votre histoire
+            </button>
+          </div>
       </div>
-    </div>
+    </motion.section>
   );
 }
-
-export default TemoignageSection;
