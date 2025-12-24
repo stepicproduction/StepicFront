@@ -43,7 +43,7 @@ const OffreDetaille = () => {
     {id : "communication", name: "Communication digitale", icon: Globe },
     {id : "production", name: "Production audiovisuelle", icon: Video},
     {id : "publicite", name: "Publicité & Médias", icon: Megaphone },
-    {id : "evenementiel", name: "Événementiel", icon: Calendar },
+    {id : "evenementiel", name: "Évènementiel", icon: Calendar },
     {id : "formation", name: "Formation & Ateliers", icon: Book},
     {id : "location", name: "Location Sono", icon: Book },
   ];
