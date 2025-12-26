@@ -21,5 +21,8 @@ export const Step3Schema = z.object({
     service: z.array(z.string()).min(1, "Veuillez sélectionner au moins un service pour continuer."),
 });
 
+export const dateSChema = z.object({
+ dateCommande: z.preprocess((arg) => (arg === "" ? undefined : arg), z.string().optional()),
+});
 // Mise à jour du Schéma Global
-export const GlobalSchema = Step1Schema.merge(Step2Schema).merge(Step3Schema);
+export const GlobalSchema = Step1Schema.merge(Step2Schema).merge(Step3Schema).merge(dateSChema);

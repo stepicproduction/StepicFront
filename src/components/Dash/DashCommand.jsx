@@ -18,14 +18,15 @@ import {
     AlertDialogCancel,
     AlertDialogAction,
 } from '../ui/alert-dialog';
-import { set } from 'zod'
 
 function DashCommand() {
   const [commandes, setCommandes] = useState([])
   const [filter, setFilter] = useState("")
   const [commandeYears, setCommandeYears] = useState([])
-  const [selectedYear, setSelectedYear] = useState("") // <-- Ajout pour le select d'année
 
+  const currentYear = new Date().getFullYear().toString();
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+  
   const fetchCommande = async () => {
     try {
       const response = await getData("/commandes/")
@@ -98,6 +99,7 @@ function DashCommand() {
     comm.nomClient.toLowerCase().includes(filter.toLowerCase()) ||
     comm.prenomClient.toLowerCase().includes(filter.toLowerCase()) ||
     comm.service_detail.map(s => s.nom).join(", ").toLowerCase().includes(filter.toLowerCase()) ||
+    comm.dateCommande.toLowerCase().includes(filter.toLowerCase()) ||
     comm.emailClient.toLowerCase().includes(filter.toLowerCase())
   )
 

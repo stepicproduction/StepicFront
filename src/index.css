@@ -5,6 +5,13 @@
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/forms";
 
+@font-face {
+  font-family: 'ErasBold';
+  src: url('./assets/fonts/eras-itc-bold.woff2') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
 *, ::before, ::after {
   box-sizing: border-box;
   
@@ -30,6 +37,9 @@ body {
   scroll-behavior: smooth;
 }
 
-h1 {
-  font-family: "Eras Bold ITC"
+h1, h2 {
+  font-family: 'ErasBold';
 }
+
+
+

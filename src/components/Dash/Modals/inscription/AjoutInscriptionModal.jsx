@@ -60,7 +60,8 @@ const AjoutInscriptionModal = ({ onCreate }) => {
             emailClient : '',
             telephoneClient : '',
             categorie : '',
-            service : ''
+            service : '',
+            dateInscription : '',
         })
 
         setDialogOpen(false)
@@ -226,6 +227,22 @@ const AjoutInscriptionModal = ({ onCreate }) => {
 
                         {errors.service && <p className='text-sm text-red-500 mt-2'>{errors.service.message}</p>}
                     </div>
+                </div>
+
+                {/* Date d'inscription (Optionnel) */}
+                <div className='flex flex-col space-y-2 mt-4'>
+                    <label htmlFor="dateInscription" className="font-medium text-gray-700">
+                        Date d'inscription (Optionnel) :
+                    </label>
+                    <Input 
+                        id="dateInscription"
+                        type="date"
+                        {...register("dateInscription")}
+                        className="col-span-3 text-gray-800 border-gray-400 rounded-lg h-10"
+                    />
+                    {errors.dateInscription && (
+                        <p className='text-red-500 text-[12px]'>{errors.dateInscription.message}</p>
+                    )}
                 </div>
 
 

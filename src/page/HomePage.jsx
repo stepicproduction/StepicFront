@@ -10,6 +10,7 @@ import ActualiteSection from "@/section/ActualiteSection";
 import TemoignageSection from "@/section/TemoignageSection";
 import ShowreelSection from "@/section/ShowreelSection";
 import AboutSection from "@/section/AboutSection";
+import Learningcta from '@/section/Learningcta';
 
 function HomePage() {
 
@@ -45,6 +46,7 @@ function HomePage() {
             <ShowreelSection/>
         </div>
         <ActualiteSection/>
+        <Learningcta/>
         <TemoignageSection/>
     </div>
   )

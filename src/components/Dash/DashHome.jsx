@@ -4,10 +4,10 @@ import { getData } from "@/service/api";
 const DashCharts = lazy(() => import("./DashCharts"));
 
 const SERVICE_COLORS = {
-  "Formation en langue française": "#4F46E5",  // Indigo
-  "Formation en langue anglaise": "#10B981",   // Vert
-  "Formation en langue allemande": "#F59E0B",  // Orange
-  "Formation en langue chinoise (Mandarin)": "#EF4444",          // Rouge
+  "Formation en langue Française": "#4F46E5",  // Indigo
+  "Formation en langue Anglaise": "#10B981",   // Vert
+  "Formation en langue Allemande": "#F59E0B",  // Orange
+  "Formation en langue Chinoise (Mandarin)": "#EF4444",          // Rouge
   "Formation en Informatique, Bureautique (Bureautique plus inclut) et Outils Internet": "#3B82F6",      // Bleu
 };
 const COLORS_TEMOIGNAGES = ["#82ca9d", "#d9534f"];

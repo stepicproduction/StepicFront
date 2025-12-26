@@ -83,7 +83,7 @@ function ShowreelSection() {
             initial="hidden"
             whileInView="visible" 
             className='max-w-3xl mx-auto'>
-            <p className="text-sm sm:text-base leading-relaxed sm:leading-loose text-gray-300 italic font-serif">
+            <p className="text-sm sm:text-base leading-relaxed sm:leading-loose text-gray-300 italic">
               «Parce qu'une démonstration vaut mille mots, explorez notre showreel pour découvrir la qualité et la diversité de nos réalisations audiovisuelles et numériques. »
             </p>
           </motion.div>

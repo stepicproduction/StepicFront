@@ -51,7 +51,8 @@ const AjoutCommandeModal = ({ onCreate }) => {
             emailClient : '',
             telephone : '',
             categorie : '',
-            service : ''
+            service : '',
+            dateCommande : '',
         })
 
         setDialogOpen(false)
@@ -216,6 +217,22 @@ const AjoutCommandeModal = ({ onCreate }) => {
 
                         {errors.service && <p className='text-sm text-red-500 mt-2'>{errors.service.message}</p>}
                     </div>
+                </div>
+
+                {/* Date d'inscription (Optionnel) */}
+                <div className='flex flex-col space-y-2 mt-4'>
+                    <label htmlFor="dateCommande" className="font-medium text-gray-700">
+                        Date d'inscription (Optionnel) :
+                    </label>
+                    <Input 
+                        id="dateCommande"
+                        type="date"
+                        {...register("dateCommande")}
+                        className="col-span-3 text-gray-800 border-gray-400 rounded-lg h-10"
+                    />
+                    {errors.dateCommande && (
+                        <p className='text-red-500 text-[12px]'>{errors.dateCommande.message}</p>
+                    )}
                 </div>
 
 

@@ -1,22 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import { H2 } from '@/components/Typographie';
-import actualite1 from "../assets/bg_presse.webp";
 import { useNavigate } from "react-router-dom";
 import { motion } from 'framer-motion';
 import ActuCard from '@/components/ActuCard';
 import { getData } from '@/service/api';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+
+
+
+function useIsMobile(breakpoint = 1080) {
+  const [isMobile, setIsMobile] = useState(
+    window.innerWidth < breakpoint
+  );
+
+  useEffect(() => {
+    const onResize = () =>
+      setIsMobile(window.innerWidth < breakpoint);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [breakpoint]);
+
+  return isMobile;
+}
 
 function ActualiteSection() {
   const navigate = useNavigate(); 
   const [isVisible, setIsVisible] = useState(false);
   const [actu, setActu] = useState([])
   const [presse, setPresse] = useState([])
+  const isMobile = useIsMobile();
 
   const fetchPresse = async () => {
     try {
         const response = await getData("presses")
         if(Array.isArray(response.data)) {
-          const lastThree = [...response.data].reverse().slice(0, 3);
+          const lastThree = [...response.data].reverse().slice(0, 2);
           console.log("top les 3 dernières presses : ", lastThree)
 
           setPresse(lastThree)
@@ -92,12 +116,31 @@ function ActualiteSection() {
       <div className="container mx-auto px-4 sm:px-6 md:px-12 mb-20 lg:mb-32">
         <div className="flex flex-col xl:flex-row items-center gap-12 xl:gap-20">
 
-          {/* Image */}
-          <motion.div variants={imageVariants} className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
-            {presse.map(p => (
-              <ActuCard key={p.id} id={p.id} image={p.image} date_pub={p.date_pub} contenu={p.contenu} titre={p.titre} />
-            ))}
-          </motion.div>
+          {/* DESKTOP */}
+          {!isMobile && (
+              <motion.div variants={imageVariants} className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+                {presse.map(p => (
+                  <ActuCard key={p.id} id={p.id} image={p.image} date_pub={p.date_pub} contenu={p.contenu} titre={p.titre} />
+                ))}
+              </motion.div>
+          )}
+
+          {/* MOBILE */}
+          {isMobile && (
+            <Carousel className="max-w-[400px] mx-auto">
+              <CarouselContent>
+                {presse.map(p => (
+                <CarouselItem key={p.id} className="min-w-[85%]">
+                  <ActuCard key={p.id} id={p.id} image={p.image} date_pub={p.date_pub} contenu={p.contenu} titre={p.titre} />
+                </CarouselItem>
+              ))}
+              </CarouselContent>
+              <CarouselPrevious className="text-black cursor-pointer"/>
+              <CarouselNext className="text-black cursor-pointer"/>
+            </Carousel>
+          )}
+
+        
 
         </div>
         <div className="w-full mt-6 flex justify-center">
