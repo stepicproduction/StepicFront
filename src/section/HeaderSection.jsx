@@ -66,7 +66,8 @@ function HeaderSection() {
         src={photo2} 
         alt="STEPIC, booster des talents" 
         fetchpriority="high" 
-        className="hidden" 
+        className="absolute inset-0 w-full h-full object-cover opacity-100 z-0"
+        style={{ display: currentImage === 0 ? 'block' : 'none' }}
       />
       {/* BACKGROUND SLIDESHOW + PARALLAX + ROTATE */}
       <motion.div
