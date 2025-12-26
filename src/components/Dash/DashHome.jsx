@@ -1,13 +1,7 @@
-import React, { useState, useEffect } from "react";
-import {
-  ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, 
-  XAxis, YAxis, CartesianGrid, Tooltip, LineChart, Line,
-} from "recharts";
+import React, { useState, useEffect, Suspense, lazy } from "react";
 import { FaBox, FaUserGraduate, FaShoppingCart, FaComments } from "react-icons/fa";
 import { getData } from "@/service/api";
-
-// --- Données Statiques SIMULANT LA RÉPONSE API ---
-// Utilisez ces structures pour modéliser la réponse de votre backend
+const DashCharts = lazy(() => import("./DashCharts"));
 
 const SERVICE_COLORS = {
   "Formation en langue française": "#4F46E5",  // Indigo
@@ -271,74 +265,17 @@ const DashHome = () => {
             
             <hr/>
 
-            {/* --- Graphiques (Utilisent les états de données de graphiques) --- */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-                
-                {/* PieChart Inscriptions par service */}
-                <div className="bg-white shadow-md rounded-xl p-4">
-                    <h3 className="font-semibold mb-4">Répartition des inscriptions par service</h3>
-                    <ResponsiveContainer width="100%" height={250}>
-                        <PieChart>
-                            <Pie
-                                data={inscriptionByService} // ⬅️ Utilisation de l'état
-                                cx="50%" cy="50%" outerRadius={80} dataKey="value" label
-                            >
-                                {inscriptionByService.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={SERVICE_COLORS[entry.name] || "#9CA3AF"} />
-                                ))}
-                            </Pie>
-                            <Tooltip />
-                        </PieChart>
-                    </ResponsiveContainer>
-                </div>
-
-                {/* DonutChart Témoignages */}
-                <div className="bg-white shadow-md rounded-xl p-4">
-                    <h3 className="font-semibold mb-4">Répartition des témoignages</h3>
-                    <ResponsiveContainer width="100%" height={250}>
-                        <PieChart>
-                            <Pie
-                                data={temoignagesData} // ⬅️ Utilisation de l'état
-                                cx="50%" cy="50%" innerRadius={50} outerRadius={80} dataKey="value" label
-                            >
-                                {temoignagesData.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={COLORS_TEMOIGNAGES[index % COLORS_TEMOIGNAGES.length]} />
-                                ))}
-                            </Pie>
-                            <Tooltip />
-                        </PieChart>
-                    </ResponsiveContainer>
-                </div>
-                
-                {/* BarChart Commandes */}
-                <div className="bg-white shadow-md rounded-xl p-4 col-span-2">
-                    <h3 className="font-semibold mb-4">Nombre de commandes par mois</h3>
-                    <ResponsiveContainer width="100%" height={250}>
-                        <BarChart data={commandesData}> 
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="mois" />
-                            <YAxis />
-                            <Tooltip />
-                            <Bar dataKey="commandes" fill="#8884d8" />
-                        </BarChart>
-                    </ResponsiveContainer>
-                </div>
-
-                {/* LineChart Inscriptions */}
-                <div className="bg-white shadow-md rounded-xl p-4 col-span-2">
-                    <h3 className="font-semibold mb-4">Évolution des inscriptions</h3>
-                    <ResponsiveContainer width="100%" height={250}>
-                        <LineChart data={inscriptionsData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="mois" />
-                            <YAxis />
-                            <Tooltip />
-                            <Line type="monotone" dataKey="inscriptions" stroke="#82ca9d" strokeWidth={2} />
-                        </LineChart>
-                    </ResponsiveContainer>
-                </div>
-
-            </div>
+            {/* Chargement différé des graphiques lourds */}
+            <Suspense fallback={<div className="h-64 flex items-center justify-center">Chargement des graphiques...</div>}>
+                <DashCharts 
+                    inscriptionByService={inscriptionByService}
+                    SERVICE_COLORS={SERVICE_COLORS}
+                    temoignagesData={temoignagesData}
+                    COLORS_TEMOIGNAGES={COLORS_TEMOIGNAGES}
+                    commandesData={commandesData}
+                    inscriptionsData={inscriptionsData}
+                />
+            </Suspense>
         </div>
     );
 };

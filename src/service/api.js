@@ -100,7 +100,6 @@ export const getDataPdf = async (url, filename) => {
     const response = await instance.get(url, { responseType: 'blob' });
     const urlBlob = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement('a');
-    link = document.createElement('a');
     link.href = urlBlob;
     link.setAttribute('download', filename);
     document.body.appendChild(link);
