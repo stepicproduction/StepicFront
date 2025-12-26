@@ -36,7 +36,7 @@ const EvenementielPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-start items-center  py-20 px-4">
-      <H2>Evenementiel</H2>
+      <H2>Évènementiel</H2>
 
       <div className="max-w-7xl w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center gap-8 mt-10">
         {offreEvent.map((section) => (

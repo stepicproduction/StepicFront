@@ -40,8 +40,8 @@ function ActualiteSection() {
     try {
         const response = await getData("presses")
         if(Array.isArray(response.data)) {
-          const lastThree = [...response.data].reverse().slice(0, 2);
-          console.log("top les 3 dernières presses : ", lastThree)
+          const lastThree = [...response.data].reverse().slice(0, 1);
+          console.log("top les 2 dernières presses : ", lastThree)
 
           setPresse(lastThree)
         }
@@ -51,8 +51,24 @@ function ActualiteSection() {
     }
   }
 
+  const fetchActu = async () => {
+    try {
+        const response = await getData("actualites")
+        if(Array.isArray(response.data)) {
+          const lastThree = [...response.data].reverse().slice(0, 1);
+          console.log("top les 2 dernières actualités entreprise : ", lastThree)
+
+          setActu(lastThree)
+        }
+    }
+    catch (err) {
+      console.log("Erreur lors de la récupération de la presse");
+    }
+  }
+
   useEffect(() => {
     fetchPresse()
+    fetchActu()
   }, [])
 
   // Observer pour déclencher l'animation au scroll
@@ -81,6 +97,18 @@ function ActualiteSection() {
     hidden: { opacity: 0, x: 50, scale: 0.95 },
     visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 1, ease: 'easeOut', delay: 0.2 } },
   };
+
+  const combinedNews = [
+  ...presse.map(p => ({
+    ...p,
+    type: "presse"
+  })),
+  ...actu.map(a => ({
+    ...a,
+    type: "actu"
+  }))
+]
+
 
   return (
     <motion.div
@@ -120,7 +148,10 @@ function ActualiteSection() {
           {!isMobile && (
               <motion.div variants={imageVariants} className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
                 {presse.map(p => (
-                  <ActuCard key={p.id} id={p.id} image={p.image} date_pub={p.date_pub} contenu={p.contenu} titre={p.titre} />
+                  <ActuCard key={p.id} id={p.id} image={p.image} date_pub={p.date_pub} contenu={p.contenu} titre={p.titre} value='info' />
+                ))}
+                {actu.map(p => (
+                  <ActuCard key={p.id} id={p.id} image={p.imageActu} date_pub={p.datePub} contenu={p.contenuActu} titre={p.titreActu} value='entreprise' />
                 ))}
               </motion.div>
           )}
@@ -129,11 +160,29 @@ function ActualiteSection() {
           {isMobile && (
             <Carousel className="max-w-[400px] mx-auto">
               <CarouselContent>
-                {presse.map(p => (
-                <CarouselItem key={p.id} className="min-w-[85%]">
-                  <ActuCard key={p.id} id={p.id} image={p.image} date_pub={p.date_pub} contenu={p.contenu} titre={p.titre} />
-                </CarouselItem>
-              ))}
+               {combinedNews.map(item => (
+                  <CarouselItem key={`${item.type}-${item.id}`} className="min-w-[85%]">
+                    {item.type === "presse" ? (
+                      <ActuCard
+                        id={item.id}
+                        image={item.image}
+                        date_pub={item.date_pub}
+                        contenu={item.contenu}
+                        titre={item.titre}
+                        value="info"
+                      />
+                    ) : (
+                      <ActuCard
+                        id={item.id}
+                        image={item.imageActu}
+                        date_pub={item.datePub}
+                        contenu={item.contenuActu}
+                        titre={item.titreActu}
+                        value="entreprise"
+                      />
+                    )}
+                  </CarouselItem>
+                ))}
               </CarouselContent>
               <CarouselPrevious className="text-black cursor-pointer"/>
               <CarouselNext className="text-black cursor-pointer"/>

@@ -26,14 +26,19 @@ const ArticleCard = ({ item, categoryLabel = "ACTUALITE", tabValue }) => {
   const imageSrc = item.image || item.imageActu;
   const datePub = item.datePub || item.date_pub;
 
-  const shouldShowButton = tabValue !== "entreprise";
+  const notEntreprise = tabValue !== "entreprise";
 
   const DESCRIPTION_MAX_LENGTH = 180;
 
   const authorInfo = `PAR STEPIC.INFO ACTUALITÉ`
 
   const handleViewMore = () => {
-    navigate("/actu_detaille/" + item.id);
+    if (notEntreprise) {
+      navigate("/actu_detaille/" + item.id);
+    } else {
+      navigate("/actu_entreprise_detaille/" + item.id);
+    }
+    
   }
 
   return(
@@ -74,14 +79,14 @@ const ArticleCard = ({ item, categoryLabel = "ACTUALITE", tabValue }) => {
         </p>
 
         {/* Bouton Voir Plus */}
-        { shouldShowButton && <button className="text-sm font-semibold text-gray-900 border border-gray-300 px-4 py-2 rounded hover:bg-sky-600 hover:text-gray-200 transition duration-300 self-start mt-auto cursor-pointer"
+        <button className="text-sm font-semibold text-gray-900 border border-gray-300 px-4 py-2 rounded hover:bg-sky-600 hover:text-gray-200 transition duration-300 self-start mt-auto cursor-pointer"
           onClick={(e) => {
             e.stopPropagation(); // Empêche l'événement de cliquer sur la carte de se déclencher
             handleViewMore();
           }}
         >
           VOIR PLUS
-        </button>}
+        </button>
       </div>
     </div>
   )

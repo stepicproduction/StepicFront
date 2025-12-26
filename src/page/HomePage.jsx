@@ -17,7 +17,7 @@ function HomePage() {
     const location = useLocation();
 
     // Logique pour gérer le défilement après la navigation
-    useEffect(() => {
+    /*useEffect(() => {
         if (location.state && location.state.scrollTo) {
             const target = location.state.scrollTo;
             
@@ -34,19 +34,19 @@ function HomePage() {
                 // window.history.replaceState({}, document.title, window.location.pathname);
             }, 100); 
         }
-    }, [location.state])
+    }, [location.state])*/
 
   return (
     <div className='relative'>
         <HeaderSection/>
         <AboutSection/>
         <OffreSection/>
+        <Learningcta/>
         <div className='relative'>
             <ProjetSection/>
             <ShowreelSection/>
         </div>
         <ActualiteSection/>
-        <Learningcta/>
         <TemoignageSection/>
     </div>
   )

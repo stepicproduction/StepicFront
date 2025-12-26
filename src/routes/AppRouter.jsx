@@ -26,6 +26,7 @@ const DashProject = lazy(() => import("@/components/Dash/DashProject"))
 const DashPresse = lazy(() => import("@/components/Dash/DashPresse"))
 const ContactPage = lazy(() => import("@/page/ContactPage"))
 const ActuDetaille = lazy(() => import("@/page/ActuDetaille"))
+const ActuEntrepriseDetaille = lazy(() => import("@/page/ActuEntrepriseDetaille"))
 const ProtectedRoute = lazy(() => import("@/service/ProtectedRoute"))
 const StrategiePage = lazy(() => import("@/page/offrePage/StrategiePage"))
 const IdentitePage = lazy(() => import("@/page/offrePage/IdentitePage"))
@@ -115,6 +116,10 @@ const router = createBrowserRouter([
             {
                 path : "actu_detaille/:id",
                 element : <ActuDetaille/>
+            },
+            {
+                path : "actu_entreprise_detaille/:id",
+                element : <ActuEntrepriseDetaille/>
             },
 
         ]

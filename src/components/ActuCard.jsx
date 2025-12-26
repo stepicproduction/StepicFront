@@ -1,8 +1,9 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Calendar } from 'lucide-react'; 
+import { is } from 'zod/v4/locales';
 
-const ActuCard = ({id, image, imageActu, contenu, contenuActu, date_pub, datePub, titre, titreActu}) => {
+const ActuCard = ({id, image, imageActu, contenu, contenuActu, date_pub, datePub, titre, titreActu, value='entreprise'}) => {
 
     const finalTitle = titre || titreActu
     const finalImage = image || imageActu
@@ -11,8 +12,18 @@ const ActuCard = ({id, image, imageActu, contenu, contenuActu, date_pub, datePub
     
     const navigate = useNavigate()
 
+    const isEntreprise = value === 'entreprise';
+
+    const category = isEntreprise ? "Entreprise" : "Info-Presse";
+
+    const buttonName = isEntreprise ? "Voir le detail" : "Lire l'article";
+
     const handleViewMore = () => {
+      if(!isEntreprise) {
         navigate("/actu_detaille/" + id)
+      } else {
+        navigate("/actu_entreprise_detaille/" + id)
+      }
     }
 
     const formatDate = (dateString) => {
@@ -48,7 +59,7 @@ const ActuCard = ({id, image, imageActu, contenu, contenuActu, date_pub, datePub
         />
         {/* Badge de catégorie flottant */}
         <div className="absolute top-4 left-4 bg-purple-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-          {/* {category} */}
+          {category}
         </div>
       </div>
 
@@ -64,7 +75,7 @@ const ActuCard = ({id, image, imageActu, contenu, contenuActu, date_pub, datePub
         
         {/* Lien "Lire la suite" qui s'anime au survol de la carte */}
         <div className="mt-auto flex items-center text-purple-600 font-bold text-sm cursor-pointer" onClick={handleViewMore}>
-          Lire l'article 
+          { buttonName }
           <span className="ml-2 transform group-hover:translate-x-2 transition-transform">→</span>
         </div>
       </div>

@@ -4,15 +4,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Step1Schema, Step2Schema, Step3Schema, GlobalSchema } from "./commande_form/schema"; 
-import Step1 from "./commande_form/Step1";
-import Step2 from "./commande_form/Step2";
-import Step3 from "./commande_form/Step3"; 
-import Step4 from "./commande_form/Step4"; 
 import { FaCheckCircle } from 'react-icons/fa';
 import Confetti from 'react-confetti'; // Importe le composant Confetti
 import fin from "../assets/fin.webp";
 import { useLocation } from 'react-router-dom';
 import { createData } from "@/service/api";
+
+const Step1 = React.lazy(() => import("./commande_form/Step1"));
+const Step2 = React.lazy(() => import("./commande_form/Step2"));
+const Step3 = React.lazy(() => import("./commande_form/Step3"));
+const Step4 = React.lazy(() => import("./commande_form/Step4"));
 
 // Hook pour obtenir la taille de la fenêtre (utile pour Confetti)
 function useWindowSize() {

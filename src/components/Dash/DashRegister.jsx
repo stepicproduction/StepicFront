@@ -24,12 +24,15 @@ function DashRegister() {
   const [inscriptions, setInscriptions] = useState([])
   const [filter, setFilter] = useState("")
   const [inscriptionsYear, setInscriptionsYear] = useState([])
-  const [selectedYear, setSelectedYear] = useState("") // <-- Ajouté pour le select
 
-  const fetchRegister = async () => {
+  const currentYear = new Date().getFullYear()
+  const [selectedYear, setSelectedYear] = useState(currentYear)
+
+
+  const fetchRegister = async (year) => {
     try {
-      const response = await getData("/inscriptions/")
-      setInscriptions(response.data)
+      const response = await getData(`inscriptions/by_year/?annee=${year}`)
+      setInscriptions(response.data.inscriptions)
     } catch (err) {
       console.log("Erreur lors de la récupération des données concernant les inscriptions : ", err);
     }
@@ -46,9 +49,16 @@ function DashRegister() {
   }
 
   useEffect(() => {
-    fetchRegister()
+    fetchRegister(currentYear)
     fetchInscriptionsYear()
   }, [])
+
+  useEffect(() => {
+    if (selectedYear) {
+      fetchRegister(selectedYear)
+    }
+  }, [selectedYear])
+
 
   const customStyles = {
     headCells: {
@@ -235,9 +245,8 @@ function DashRegister() {
           <select
             value={selectedYear}
             onChange={(e) => setSelectedYear(e.target.value)}
-            className="h-10 rounded-lg border-gray-300 focus:ring-indigo-500 text-gray-700 px-3"
+            className="h-10 rounded-lg w-24 border-gray-300 focus:ring-indigo-500 text-gray-700 px-3"
           >
-            <option value="">Sélectionner l'année</option>
             {inscriptionsYear.map((year) => (
               <option key={year} value={year}>{year}</option>
             ))}
@@ -266,7 +275,7 @@ function DashRegister() {
       {/* --- Tableau --- */}
       <div className="bg-white rounded-xl border border-gray-100 overflow-hidden overflow-x-auto shadow">
         <DataTable
-          title={<h3 className='text-xl font-semibold text-gray-700'>Liste des inscriptions en ligne</h3>}
+          title={<h3 className='text-xl font-semibold text-gray-700'>Liste des inscriptions - {selectedYear}</h3>}
           columns={columns}
           data={filteredInscriptions}
           pagination

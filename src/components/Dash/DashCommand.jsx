@@ -24,13 +24,13 @@ function DashCommand() {
   const [filter, setFilter] = useState("")
   const [commandeYears, setCommandeYears] = useState([])
 
-  const currentYear = new Date().getFullYear().toString();
+  const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState(currentYear);
   
-  const fetchCommande = async () => {
+  const fetchCommande = async (year) => {
     try {
-      const response = await getData("/commandes/")
-      setCommandes(response.data)
+      const response = await getData(`/commandes/by_year/?annee=${year}`)
+      setCommandes(response.data.commandes)
     } catch (err) {
       console.log("Erreur lors de la récupération des données concernant les commandes : ", err);
     }
@@ -47,9 +47,15 @@ function DashCommand() {
   }
 
   useEffect(() => {
-    fetchCommande()
+    fetchCommande(currentYear)
     fetchCommandeYear()
   }, [])
+
+  useEffect(() => {
+      if (selectedYear) {
+        fetchCommande(selectedYear)
+      }
+   }, [selectedYear])
 
   const handleAdd = async (data) => {
     try {
@@ -235,9 +241,8 @@ function DashCommand() {
           <select
             value={selectedYear}
             onChange={(e) => setSelectedYear(e.target.value)}
-            className="h-10 rounded-lg border-gray-300 focus:ring-indigo-500 text-gray-700 px-3"
+            className="h-10 rounded-lg border-gray-300 w-24 focus:ring-indigo-500 text-gray-700 px-3"
           >
-            <option value="">Sélectionner l'année</option>
             {commandeYears.map((year) => (
               <option key={year} value={year}>{year}</option>
             ))}
@@ -266,7 +271,7 @@ function DashCommand() {
       {/* --- Tableau --- */}
       <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow">
         <DataTable
-          title={<h3 className='text-xl font-semibold text-gray-700'>Liste des commandes en ligne</h3>}
+          title={<h3 className='text-xl font-semibold text-gray-700'>Liste des commandes - {selectedYear}</h3>}
           columns={columns}
           data={filteredCommandes}
           pagination
