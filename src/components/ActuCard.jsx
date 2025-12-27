@@ -55,6 +55,7 @@ const ActuCard = ({id, image, imageActu, contenu, contenuActu, date_pub, datePub
         <img 
           src={finalImage} 
           alt={finalTitle} 
+          loading='lazy'
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
         {/* Badge de catégorie flottant */}

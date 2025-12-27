@@ -158,10 +158,10 @@ function ActualiteSection() {
 
           {/* MOBILE */}
           {isMobile && (
-            <Carousel className="max-w-[400px] mx-auto">
+            <Carousel className="w-full max-w-[400px] mx-auto">
               <CarouselContent>
                {combinedNews.map(item => (
-                  <CarouselItem key={`${item.type}-${item.id}`} className="min-w-[85%]">
+                  <CarouselItem key={`${item.type}-${item.id}`}>
                     {item.type === "presse" ? (
                       <ActuCard
                         id={item.id}
