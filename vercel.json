@@ -1,8 +1,5 @@
 {
-  "rewrites": [
-    {
-      "source": "/((?!logo.webp).*)",
-      "destination": "/maintenance.html"
-    }
+  "routes": [
+    { "src": "/(.*)", "dest": "/maintenance.html" }
   ]
 }
