@@ -1,5 +1,6 @@
 import React from 'react'
 import logo from '@/assets/logo_stepic2.webp'
+import { Loader } from 'lucide-react'
 
 const Maintenance = () => {
   return (
@@ -8,7 +9,8 @@ const Maintenance = () => {
       <img src={logo} alt="Logo" className="w-32 mb-8 animate-pulse" />
 
       {/* Loader */}
-      <div className="w-12 h-12 border-4 border-white border-t-blue-400 rounded-full animate-spin mb-6"></div>
+      {/* <div className="w-12 h-12 border-4 border-white border-t-blue-400 rounded-full animate-spin mb-6"></div> */}
+      <span className='animate-spin mb-8'><Loader size={60} /></span>
 
       {/* Texte */}
       <p className="text-lg sm:text-xl md:text-2xl opacity-80">
