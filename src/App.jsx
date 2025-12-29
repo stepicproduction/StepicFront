@@ -3,16 +3,23 @@ import router from './routes/AppRouter'
 import { RouterProvider } from 'react-router-dom'
 import { AuthProvider } from './service/AuthContext';
 import { LazyMotion, domAnimation } from "framer-motion"
+import Maintenance from './components/Maintenance';
 
 
 function App() {
 
+  const isMaintenanceMode = true; // Mettre à true pour activer le mode maintenance
+
   return (
-    <AuthProvider>
-      <LazyMotion features={domAnimation}>
-        <RouterProvider router={router}/>
-      </LazyMotion>
-    </AuthProvider>
+    <>
+      {isMaintenanceMode ? <Maintenance /> : (
+        <AuthProvider>
+          <LazyMotion features={domAnimation}>
+            <RouterProvider router={router}/>
+          </LazyMotion>
+      </AuthProvider>
+      )}
+    </>
   )
 }
 
