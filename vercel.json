@@ -1,9 +1,5 @@
 {
-  "redirects": [
-    {
-      "source": "/((?!maintenance.html|logo.png|favicon.ico).*)",
-      "destination": "/maintenance.html",
-      "permanent": false
-    }
+  "routes": [
+    { "src": "/(.*)", "dest": "/maintenance.html" }
   ]
 }
