@@ -5,7 +5,7 @@ import { Typewriter } from "react-simple-typewriter";
 
 const Maintenance = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-black text-white text-center px-4">
+    <div className="flex flex-col items-center pt-40 min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-black text-white text-center px-4">
       {/* Logo */}
       <img src={logo} alt="Logo" className="w-32 mb-8 animate-pulse" />
 
