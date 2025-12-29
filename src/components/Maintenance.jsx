@@ -1,6 +1,7 @@
 import React from 'react'
 import logo from '@/assets/logo_stepic2.webp'
 import { Loader } from 'lucide-react'
+import { Typewriter } from "react-simple-typewriter";
 
 const Maintenance = () => {
   return (
@@ -14,7 +15,16 @@ const Maintenance = () => {
 
       {/* Texte */}
       <p className="text-lg sm:text-xl md:text-2xl opacity-80">
-        Nous vous donnons un rendez-vous à très bientôt  🚀
+        
+        <Typewriter
+          words={["Nous vous donnons un rendez-vous à très bientôt  🚀", "We look forward to seeing you very soon 🚀", "Wir freuen uns darauf, Sie sehr bald zu sehen 🚀"]}
+          loop={0}
+          cursor
+          cursorStyle="|"
+          typeSpeed={70}
+          deleteSpeed={50}
+          delaySpeed={1000}
+        />
       </p>
     </div>
   )
