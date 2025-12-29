@@ -4,6 +4,31 @@ import { getData } from '@/service/api';
 import { useNavigate } from 'react-router-dom';
 import { FaYoutube, FaTiktok } from "react-icons/fa6";
 import { FaFacebookF, FaLinkedinIn, FaInstagram } from "react-icons/fa"; 
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+
+
+
+/* ---------------- HOOK MOBILE ---------------- */
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(
+    window.innerWidth < breakpoint
+  );
+
+  useEffect(() => {
+    const onResize = () =>
+      setIsMobile(window.innerWidth < breakpoint);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [breakpoint]);
+
+  return isMobile;
+}
 
 
 const truncateText = (text, maxLength) => {
@@ -41,9 +66,31 @@ const ArticleCard = ({ item, categoryLabel = "ACTUALITE", tabValue }) => {
     
   }
 
+  const formatDate = (dateString) => {
+      if (!dateString) return "";
+      
+      // 1. Nettoyage : On récupère "YYYY-MM-DD" et "HH:mm" 
+      // en ignorant le reste (secondes/microsecondes)
+      const parts = dateString.split(' ');
+      const datePart = parts[0]; // "2025-12-16"
+      const timePart = parts[1] ? parts[1].substring(0, 5) : "00:00"; // "00:00"
+
+      // 2. Création de l'objet Date
+      const date = new Date(`${datePart}T${timePart}`);
+
+      // 3. Formatage avec Heure et Minute
+      return new Intl.DateTimeFormat('fr-FR', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+      }).format(date).replace(':', 'h'); // Optionnel : remplace ":" par "h" pour un style plus français (ex: 10h30)
+  };  
+
   return(
 
-    <div className="w-full items-center bg-white border border-gray-200 rounded-2xl overflow-hidden flex flex-col md:flex-row shadow-sm hover:shadow-md transition-shadow duration-300 mb-6"
+    <div className="w-full items-center bg-white border border-gray-200 rounded-2xl overflow-hidden flex flex-col md:flex-row shadow-sm hover:shadow-md transition-shadow duration-300 mb-6 max-w-4xl"
       onClick={handleViewMore}
     >
       {/* Image : Prend 100% sur mobile, et une taille fixe (ex: 300px) sur Desktop */}
@@ -70,7 +117,7 @@ const ArticleCard = ({ item, categoryLabel = "ACTUALITE", tabValue }) => {
 
         {/* Info Auteur & Date */}
         <div className="text-xs text-gray-500 font-medium mb-3">
-            {authorInfo} | {datePub}
+            {authorInfo} | {formatDate(datePub)}
         </div>
 
         {/* Description tronquée */}
@@ -97,6 +144,7 @@ const PresseActu = () => {
 
   const [actu, setActu] = useState([])
   const [presse, setPresse] = useState([])
+  const isMobile = useIsMobile();
 
   const fetchActu = async () => {
     try {
@@ -221,9 +269,23 @@ const PresseActu = () => {
 
         {/* --- Contenu Entreprise --- */}
         <TabsContent value="entreprise" className="w-full flex flex-col gap-6 animate-in fade-in zoom-in duration-300">
-          {actu.map((item) => (
+          {!isMobile && actu.map((item) => (
             <ArticleCard key={item.id} item={item} tabValue="entreprise" />
           ))}
+
+          {isMobile && (
+            <Carousel className="max-w-[400px] mx-auto">
+              <CarouselContent>
+                {actu.map(item => (
+                <CarouselItem key={item.id} className="min-w-[85%]">
+                  <ArticleCard key={item.id} item={item} tabValue="entreprise" />
+                </CarouselItem>
+              ))}
+              </CarouselContent>
+              <CarouselPrevious className="text-black cursor-pointer"/>
+              <CarouselNext className="text-black cursor-pointer"/>
+            </Carousel>
+          )}
           
           {/* Message si vide (au cas où) */}
           {actu.length === 0 && (
@@ -233,9 +295,23 @@ const PresseActu = () => {
 
         {/* --- Contenu Infos --- */}
         <TabsContent value="info" className="w-full flex flex-col gap-6 animate-in fade-in zoom-in duration-300">
-          {presse.map((item) => (
+          {!isMobile && presse.map((item) => (
             <ArticleCard key={item.id} item={item} tabValue="info" />
           ))}
+
+          {isMobile && (
+            <Carousel className="max-w-[400px] mx-auto">
+              <CarouselContent>
+                {presse.map(item => (
+                <CarouselItem key={item.id} className="min-w-[85%]">
+                  <ArticleCard key={item.id} item={item} tabValue="info" />
+                </CarouselItem>
+              ))}
+              </CarouselContent>
+              <CarouselPrevious className="text-black cursor-pointer"/>
+              <CarouselNext className="text-black cursor-pointer"/>
+            </Carousel>
+          )}
 
           {presse.length === 0 && (
             <p className="text-center text-gray-500">Aucune info presse.</p>

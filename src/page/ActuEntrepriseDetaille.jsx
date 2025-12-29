@@ -21,6 +21,29 @@ const ActuEntrepriseDetaille = () => {
     fetchActuById(id).finally(() => setIsLoading(false));
   }, [id]);
 
+  const formatDate = (dateString) => {
+      if (!dateString) return "";
+      
+      // 1. Nettoyage : On récupère "YYYY-MM-DD" et "HH:mm" 
+      // en ignorant le reste (secondes/microsecondes)
+      const parts = dateString.split(' ');
+      const datePart = parts[0]; // "2025-12-16"
+      const timePart = parts[1] ? parts[1].substring(0, 5) : "00:00"; // "00:00"
+
+      // 2. Création de l'objet Date
+      const date = new Date(`${datePart}T${timePart}`);
+
+      // 3. Formatage avec Heure et Minute
+      return new Intl.DateTimeFormat('fr-FR', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+      }).format(date).replace(':', 'h'); // Optionnel : remplace ":" par "h" pour un style plus français (ex: 10h30)
+  };  
+
+
     if (isLoading) {
        return (
             <div className="min-h-screen flex flex-col items-center justify-center space-y-4">
@@ -59,7 +82,7 @@ const ActuEntrepriseDetaille = () => {
                 <div className="text-gray-500 text-sm mb-6 flex items-center space-x-4 border-b pb-4">
                     <div className="flex items-center">
                         {/* <Calendar className="w-4 h-4 mr-1 text-red-600" /> */}
-                        {actu.datePub}
+                        {formatDate(actu.datePub)}
                     </div>
                 </div>
                 

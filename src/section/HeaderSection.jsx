@@ -116,7 +116,7 @@ function HeaderSection() {
             <motion.h1
               key={index}
               variants={lineVariant}
-              className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-2 sm:mb-4 leading-[1.1] sm:leading-[1.2] drop-shadow-[0_0_20px_rgba(168,85,247,0.5)] break-words"
+              className="text-4xl sm:text-5xl xl:text-6xl font-extrabold text-white mb-2 sm:mb-4 leading-[1.1] sm:leading-[1.2] drop-shadow-[0_0_20px_rgba(168,85,247,0.5)] break-words"
             >
               {index === 2 ? (
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-500">{line}</span>

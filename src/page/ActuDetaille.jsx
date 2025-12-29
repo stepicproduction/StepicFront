@@ -53,6 +53,28 @@ const ActuDetaille = () => {
     const source = `PAR STEPIC.INFO ACTUALITÉ`; 
     const categorie = "Actualité";
 
+  const formatDate = (dateString) => {
+      if (!dateString) return "";
+      
+      // 1. Nettoyage : On récupère "YYYY-MM-DD" et "HH:mm" 
+      // en ignorant le reste (secondes/microsecondes)
+      const parts = dateString.split(' ');
+      const datePart = parts[0]; // "2025-12-16"
+      const timePart = parts[1] ? parts[1].substring(0, 5) : "00:00"; // "00:00"
+
+      // 2. Création de l'objet Date
+      const date = new Date(`${datePart}T${timePart}`);
+
+      // 3. Formatage avec Heure et Minute
+      return new Intl.DateTimeFormat('fr-FR', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+      }).format(date).replace(':', 'h'); // Optionnel : remplace ":" par "h" pour un style plus français (ex: 10h30)
+  };  
+
   return (
     <div className="min-h-screen w-full bg-white text-black py-10 px-4 sm:px-6 md:px-16 lg:px-24 xl:px-32 max-w-7xl mx-auto pt-30">
             
@@ -77,7 +99,7 @@ const ActuDetaille = () => {
                         <span>|</span>
                         <div className="flex items-center">
                             {/* <Calendar className="w-4 h-4 mr-1 text-red-600" /> */}
-                            {datePub}
+                            {formatDate(datePub)}
                         </div>
                     </div>
                     
