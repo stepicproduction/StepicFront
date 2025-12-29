@@ -1,19 +1,11 @@
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/public/maintenance.html" }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "Content-Type", "value": "text/html; charset=utf-8" }
-      ]
-    },
-    {
-      "source": "/logo.webp",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000" }
-      ]
+  "routes": [
+    { 
+      "src": "/(.*)", 
+      "dest": "/public/maintenance.html",
+      "headers": {
+        "Content-Type": "text/html; charset=utf-8"
+      }
     }
   ]
 }
