@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import { H2 } from '@/components/Typographie';
 import aboutDetaille1 from '../assets/aboutDetaille1.webp';
 import aboutDetaille2 from '../assets/aboutDetaille2.webp';
@@ -86,6 +87,20 @@ function AboutDetaille() {
 
   return (
     <div className="pt-[100px] py-16 md:py-20 lg:py-28">
+
+      <Helmet>
+        <title>STEPIC Madagascar - À propos</title>
+        <meta name="description" content="Tout savoir sur STEPIC Madagascar, notre équipe et notre mission." />
+        <meta property="og:title" content="STEPIC Madagascar - À propos" />
+        <meta property="og:description" content="Tout savoir sur STEPIC Madagascar, notre équipe et notre mission." />
+        <meta property="og:image" content="https://www.stepic-mada.com/logo.png" />
+        <meta property="og:url" content="https://www.stepic-mada.com/about" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="STEPIC Madagascar - À propos" />
+        <meta name="twitter:description" content="Tout savoir sur STEPIC Madagascar, notre équipe et notre mission." />
+        <meta name="twitter:image" content="https://www.stepic-mada.com/logo.png" />
+      </Helmet>
 
       {/* -------- Mission -------- */}
       <motion.div className="flex flex-col md:flex-row justify-center items-center gap-8 lg:gap-20 mb-[100px]"

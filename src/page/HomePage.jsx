@@ -1,7 +1,6 @@
 import React from 'react'
-import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { scroller } from 'react-scroll';
+import { Helmet } from 'react-helmet';
 
 import HeaderSection from "@/section/HeaderSection";
 import OffreSection from "@/section/OffreSection";
@@ -38,6 +37,16 @@ function HomePage() {
 
   return (
     <div className='relative'>
+
+      <Helmet>
+        <title>STEPIC Madagascar - Accueil</title>
+        <meta name="description" content="Découvrez STEPIC Madagascar : nos services, formations et projets." />
+        <meta property="og:title" content="STEPIC Madagascar - Accueil" />
+        <meta property="og:description" content="Découvrez STEPIC Madagascar : nos services, formations et projets." />
+        <meta property="og:image" content="https://www.stepic-mada.com/logo.png" />
+        <meta property="og:url" content="https://www.stepic-mada.com/" />
+      </Helmet>   
+
         <HeaderSection/>
         <AboutSection/>
         <OffreSection/>

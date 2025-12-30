@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"; 
 import { getData } from '@/service/api';
 import { useNavigate } from 'react-router-dom';
@@ -176,6 +177,21 @@ const PresseActu = () => {
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-start bg-white text-black py-10 px-4 sm:px-6 md:px-16 lg:px-24 xl:px-32 max-w-7xl mx-auto pt-15 relative">
+
+      <Helmet>
+        <title>STEPIC Madagascar - Presse & Actualités</title>
+        <meta name="description" content="Découvrez les dernières actualités et presse de STEPIC Madagascar." />
+        <meta property="og:title" content="STEPIC Madagascar - Presse & Actualités" />
+        <meta property="og:description" content="Découvrez les dernières actualités et presse de STEPIC Madagascar." />
+        <meta property="og:image" content="https://www.stepic-mada.com/logo.png" />
+        <meta property="og:url" content="https://www.stepic-mada.com/presse-actu" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="STEPIC Madagascar - Presse & Actualités" />
+        <meta name="twitter:description" content="Découvrez les dernières actualités et presse de STEPIC Madagascar." />
+        <meta name="twitter:image" content="https://www.stepic-mada.com/logo.png" />
+      </Helmet>
+      
       
       <div className="fixed right-2 bottom-41 lg:bottom-auto lg:right-4 lg:top-[35%] lg:-translate-y-1/2 z-[100] flex items-center gap-2 lg:gap-4">
       

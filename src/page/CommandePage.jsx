@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"; // Importe useEffect
+import { Helmet } from "react-helmet";
 import { H2 } from "@/components/Typographie";
 import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -156,6 +157,20 @@ function CommandePage() {
     
     return (
     <div className="pt-[150px] flex flex-col gap-6 pb-7 text-black relative min-h-[80vh]">
+
+      <Helmet>
+        <title>STEPIC Madagascar - Commandes</title>
+        <meta name="description" content="Commandez dès aujourd'hui et profitez de solutions rapides et efficaces pour vos projets." />
+        <meta property="og:title" content="STEPIC Madagascar - Commandes" />
+        <meta property="og:description" content="Commandez dès aujourd'hui et profitez de solutions rapides et efficaces pour vos projets." />
+        <meta property="og:image" content="https://www.stepic-mada.com/logo.png" />
+        <meta property="og:url" content="https://www.stepic-mada.com/commande" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="STEPIC Madagascar - Commandes" />
+        <meta name="twitter:description" content="Commandez dès aujourd'hui et profitez de solutions rapides et efficaces pour vos projets." />
+        <meta name="twitter:image" content="https://www.stepic-mada.com/logo.png" />
+      </Helmet>        
 
         {/* Animation de confettis */}
         {showConfetti && (

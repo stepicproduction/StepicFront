@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"; // Importe useEffect
+import { Helmet } from "react-helmet";
 import { H2 } from "@/components/Typographie";
 import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -157,6 +158,21 @@ function CommandePage() {
     
     return (
         <div className="pt-[150px] flex flex-col gap-6 pb-7 text-black relative min-h-[80vh]"> {/* Ajoute 'relative' pour le positionnement du confetti */}
+
+            <Helmet>
+                <title>STEPIC Madagascar - Inscriptions</title>
+                <meta name="description" content="Rejoignez nos programmes de formation et donnez un coup d’accélérateur à votre carrière." />
+                <meta property="og:title" content="STEPIC Madagascar - Inscriptions" />
+                <meta property="og:description" content="Rejoignez nos programmes de formation et donnez un coup d’accélérateur à votre carrière." />
+                <meta property="og:image" content="https://www.stepic-mada.com/logo.png" />
+                <meta property="og:url" content="https://www.stepic-mada.com/inscription" />
+                <meta property="og:type" content="website" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="STEPIC Madagascar - Inscriptions" />
+                <meta name="twitter:description" content="Rejoignez nos programmes de formation et donnez un coup d’accélérateur à votre carrière." />
+                <meta name="twitter:image" content="https://www.stepic-mada.com/logo.png" />
+            </Helmet>       
+
             {/* L'animation de confettis s'affiche si showConfetti est true */}
             {showConfetti && <Confetti width={width} height={height} recycle={false} numberOfPieces={300} gravity={0.15} />}
 

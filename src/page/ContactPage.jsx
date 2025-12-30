@@ -1,4 +1,5 @@
 import React, { useState } from "react"; 
+import { Helmet } from "react-helmet";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -85,6 +86,21 @@ function ContactPage() {
 
   return (
     <div id="contact" className="bg-white">
+      
+      <Helmet>
+        <title>STEPIC Madagascar - Contact</title>
+        <meta name="description" content="Contactez STEPIC Madagascar pour toutes vos questions ou demandes de services." />
+        <meta property="og:title" content="STEPIC Madagascar - Contact" />
+        <meta property="og:description" content="Contactez STEPIC Madagascar pour toutes vos questions ou demandes de services." />
+        <meta property="og:image" content="https://www.stepic-mada.com/logo.png" />
+        <meta property="og:url" content="https://www.stepic-mada.com/contact" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="STEPIC Madagascar - Contact" />
+        <meta name="twitter:description" content="Contactez STEPIC Madagascar pour toutes vos questions ou demandes de services." />
+        <meta name="twitter:image" content="https://www.stepic-mada.com/logo.png" />
+      </Helmet>
+
       <div className=" w-full">
 
         <div

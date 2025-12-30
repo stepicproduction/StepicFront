@@ -1,5 +1,6 @@
 // OffreDetaille.jsx
 import React, { useState } from "react";
+import { Helmet } from "react-helmet";
 import {
   Compass,
   Image,
@@ -9,7 +10,6 @@ import {
   Calendar,
   Book,
   ChevronDown,
-  ChevronUp,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import StrategiePage from "@/page/offrePage/StrategiePage";
@@ -98,6 +98,21 @@ const OffreDetaille = () => {
 
   return (
     <div className="relative flex flex-col min-h-screen bg-gray-100">
+
+      <Helmet>
+        <title>STEPIC Madagascar - Offres</title>
+        <meta name="description" content="Une gamme complète de services adaptée à vos projets et ambitions." />
+        <meta property="og:title" content="STEPIC Madagascar - Offres" />
+        <meta property="og:description" content="Une gamme complète de services adaptée à vos projets et ambitions." />
+        <meta property="og:image" content="https://www.stepic-mada.com/logo.png" />
+        <meta property="og:url" content="https://www.stepic-mada.com/offre" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="STEPIC Madagascar - Offres" />
+        <meta name="twitter:description" content="Une gamme complète de services adaptée à vos projets et ambitions." />
+        <meta name="twitter:image" content="https://www.stepic-mada.com/logo.png" />
+      </Helmet>
+            
       <div
         className="min-h-[50vh] h-[95vh] w-full bg-top sm:bg-center bg-cover rounded-2xl mb-8 px-2 text-center relative flex flex-col justify-center items-center"
         style={{
