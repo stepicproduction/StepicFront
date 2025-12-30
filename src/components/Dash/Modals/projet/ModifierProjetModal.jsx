@@ -91,7 +91,7 @@ const ModifierProjetModal = ({ value, onUpdate} ) => {
         <DialogContent className="sm:max-w-[500px] [&>button]:bg-red-500 [&>button]:w-8 [&>button]:h-8 [&>button]:flex [&>button]:justify-center [&>button]:items-center [&>button]:rounded-full [&>button]:text-white [&>button]:hover:bg-red-600 [&>button]:hover:cursor-pointer py-10 px-10 bg-white">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-blue-700">
-              Créer un nouveau projet
+              Modifier le projet
             </DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit(submit)} encType="multipart/form-data">
@@ -162,7 +162,7 @@ const ModifierProjetModal = ({ value, onUpdate} ) => {
                     type="submit"
                     className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600 rounded-full"
                 >
-                Ajouter
+                Sauvegarder
                 </Button>
             </DialogFooter>
           </form>

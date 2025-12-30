@@ -120,7 +120,7 @@ const ModifInscriptionModal = ({ value, onUpdate }) => {
         </DialogTrigger>
         <DialogContent className="sm:max-w-3xl [&>button]:bg-red-500 [&>button]:w-8 [&>button]:h-8 [&>button]:flex [&>button]:justify-center [&>button]:items-center [&>button]:rounded-full [&>button]:text-white [&>button]:hover:bg-red-600 [&>button]:hover:cursor-pointer py-10 px-10 bg-white">
             <DialogHeader>
-                <DialogTitle className="text-2xl font-bold text-blue-700">Modifier l'nscription</DialogTitle>
+                <DialogTitle className="text-2xl font-bold text-blue-700">Modifier l'inscription</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit(submit)} encType="multipart/form-data" className="max-h-[70vh] overflow-y-auto p-4 space-y-4">
 
@@ -216,7 +216,7 @@ const ModifInscriptionModal = ({ value, onUpdate }) => {
 
                 <DialogFooter className="flex justify-end gap-3 mt-3">
                     <Button type="button" onClick={() => fermerModal()} className="bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-full">Annuler</Button>
-                    <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full">Ajouter</Button>
+                    <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full">Sauvegarder</Button>
                 </DialogFooter>
             </form>
         </DialogContent>

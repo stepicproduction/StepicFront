@@ -60,7 +60,7 @@ function ModifierCommandeModal({value, onUpdate}) {
         </DialogTrigger>
         <DialogContent  className="sm:max-w-[500px] [&>button]:bg-red-500 [&>button]:w-8 [&>button]:h-8 [&>button]:flex [&>button]:justify-center [&>button]:items-center [&>button]:rounded-full [&>button]:text-white [&>button]:hover:bg-red-600 [&>button]:hover:cursor-pointer py-10 px-10 bg-white">
             <DialogHeader>
-                <DialogTitle className="text-center text-[#8a2be2] text-4xl mb-7">Mis à jour de l'about</DialogTitle>
+                <DialogTitle className="text-center text-[#8a2be2] text-4xl mb-7">Mise à jour de l'about</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit(sumbit)}>
                 <div>
