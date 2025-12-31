@@ -23,6 +23,7 @@ const actuSchema = z.object(
     {
         titre : z.string().min(5, "Le nom du catégorie est trop court."),
         contenu : z.string().min(15, "La description est trop courte."),
+        source : z.string().min(5, "La source est trop courte.").optional(),
         image : z.preprocess(
             (val) => {
                 if(val instanceof FileList) return val[0];
@@ -62,7 +63,8 @@ const ModifPresseModal = ({value, onUpdate}) => {
                 resolver : zodResolver(actuSchema),
                 defaultValues : {
                     titre : value.titre,
-                    contenu : value.contenu
+                    contenu : value.contenu,
+                    source : value.source,
                 }
             }
     )
@@ -90,7 +92,7 @@ const ModifPresseModal = ({value, onUpdate}) => {
                 <Pencil size={16} />
             </button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[500px] overflow-y-auto [&>button]:text-red-500 [&>button]:hover:text-red-600 [&>button]:hover:cursor-pointer bg-white">
+        <DialogContent className="sm:max-w-[500px] max-h-[80vh] overflow-y-auto [&>button]:bg-red-500 [&>button]:w-8 [&>button]:h-8 [&>button]:flex [&>button]:justify-center [&>button]:items-center [&>button]:rounded-full [&>button]:text-white [&>button]:hover:bg-red-600 [&>button]:hover:cursor-pointer py-10 px-10 bg-white">
             <DialogHeader>
                 <DialogTitle className="text-2xl font-bold text-blue-700">Modifier la presse</DialogTitle>
             </DialogHeader>
@@ -106,6 +108,17 @@ const ModifPresseModal = ({value, onUpdate}) => {
                     />
                     {errors.titre && <p className='text-red-500 text-[12px]'>{errors.titre.message}</p>}
                 </div>
+
+                {/* source de l'actu */}
+                <div className='flex flex-col space-y-2'>
+                    <label htmlFor="source" className="font-medium text-gray-700">Source :</label>
+                    <Input
+                        id="titre"
+                        {...register("source")}
+                        className="col-span-3 text-gray-800  border-gray-400 rounded-lg h-10" 
+                    />
+                    {errors.source && <p className='text-red-500 text-[12px]'>{errors.source.message}</p>}
+                </div>                
 
                 
                 {/* sa description */}

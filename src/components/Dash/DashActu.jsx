@@ -205,15 +205,15 @@ export default function DashActu() {
       </div>
 
       <div className="flex flex-col lg:flex-row-reverse justify-between items-center mb-6 gap-4 bg-white p-5 rounded-2xl shadow-lg border border-gray-100">
-        <div className="relative w-full lg:w-96">
+        <div className="relative w-full max-w-sm">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           <Input
             type="text"
             placeholder="Rechercher par titre..."
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
-            className="pl-10 shadow-inner"
+            className="w-full pl-10 h-10 rounded-lg border-gray-300 focus:ring-indigo-500 text-gray-700"
           />
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
         </div>
 
 

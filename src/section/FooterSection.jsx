@@ -145,7 +145,7 @@ export default function Footer({ active = "home" }) {
           <div className="space-y-4"> 
             <div className="flex items-center"> 
               <FaEnvelope className="text-white mr-4 text-xl" /> 
-              <span className="text-gray-400">admin@stepic-mada.com</span> 
+              <span className="text-gray-400">⁕admin@stepic-mada.com <br />⁕stepic-mada@gmail.com <br />⁕stepicinfos@stepic-mada.com</span> 
             </div> 
             <div className="flex items-center"> 
               <FaPhone className="text-white mr-4 text-xl" /> 

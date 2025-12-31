@@ -12,6 +12,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { formatDate } from '@/service/formatDate';
 
 
 
@@ -56,7 +57,7 @@ const ArticleCard = ({ item, categoryLabel = "ACTUALITE", tabValue }) => {
 
   const DESCRIPTION_MAX_LENGTH = 180;
 
-  const authorInfo = `PAR STEPIC.INFO ACTUALITÉ`
+  const authorInfo = item.source || `STEPIC INFOS`
 
   const handleViewMore = () => {
     if (notEntreprise) {
@@ -67,27 +68,7 @@ const ArticleCard = ({ item, categoryLabel = "ACTUALITE", tabValue }) => {
     
   }
 
-  const formatDate = (dateString) => {
-      if (!dateString) return "";
-      
-      // 1. Nettoyage : On récupère "YYYY-MM-DD" et "HH:mm" 
-      // en ignorant le reste (secondes/microsecondes)
-      const parts = dateString.split(' ');
-      const datePart = parts[0]; // "2025-12-16"
-      const timePart = parts[1] ? parts[1].substring(0, 5) : "00:00"; // "00:00"
-
-      // 2. Création de l'objet Date
-      const date = new Date(`${datePart}T${timePart}`);
-
-      // 3. Formatage avec Heure et Minute
-      return new Intl.DateTimeFormat('fr-FR', {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-      }).format(date).replace(':', 'h'); // Optionnel : remplace ":" par "h" pour un style plus français (ex: 10h30)
-  };  
+ 
 
   return(
 

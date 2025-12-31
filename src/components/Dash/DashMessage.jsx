@@ -1,358 +1,207 @@
-import React, { useState, useMemo, useEffect } from "react";
-import { Mail, Trash2, Eye, Inbox, MessageSquare, Clock, UserCheck, Send, Reply} from "lucide-react"; 
-import DataTable from "react-data-table-component";
+import React, { useState, useEffect } from "react";
+import { SendHorizonal as Send, Clock, Inbox, Search, ChevronRight } from "lucide-react"; 
+import { getRelativeTime } from "@/service/getRelativeTime";
 import { Button } from '../ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription} from '../ui/dialog';
-import toast, { Toaster } from "react-hot-toast";
-import { getData, deleteData, updateData } from "@/service/api";
-import {
-  AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogCancel,
-  AlertDialogAction,
-} from '../ui/alert-dialog';
+import { Toaster, toast } from "react-hot-toast";
+import { getData, updateData, deleteData } from "@/service/api";
 
 function DashMessage() {
-    // Simuler la date d'aujourd'hui
-    const today = new Date().toISOString().slice(0, 10); 
-
+    const today = new Date().toISOString().slice(0, 10);
     const [messages, setMessages] = useState([]);
-
-    const [showResponseArea, setShowResponseArea] = useState(false);
-    const [loading, setLoading] = useState(false);
-
-    const handleOpenResponse = () => {
-        setLoading(true);
-
-        // Attendre 2 secondes avant d'afficher la zone de réponse
-        setTimeout(() => {
-            setLoading(false);
-            setShowResponseArea(true);
-        }, 2000);
-    };
-
     const [selectedMessage, setSelectedMessage] = useState(null);
-    const [filterStatus, setFilterStatus] = useState("Tous"); // État du filtre
+    const [isPanelOpen, setIsPanelOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [responseText, setResponseText] = useState("");
+    const [sending, setSending] = useState(false);
 
-    //récupérer les messages
+
+
     const fetchMess = async () => {
         try {
-            const response = await getData("/messages/")
-            console.log(response.data)
-            setMessages(response.data)
-        } catch(err) {
-            console.log("Erreur lors de la récupération des messages : ", err)
-        }
-    }
-
-    useEffect(() => {
-        fetchMess()
-    }, [])
-
-    // --- Fonctions de gestion ---
-
-    const handleViewMessage =  async (message) => {
-        // Marquer le message comme "Lu"
-        try {
-            await updateData(`/messages/${message.id}/lu/`)
-            fetchMess()
-            setSelectedMessage(message);
-            toast.success("Le message a été lu", {duration : 3000})
-        } catch (err) {
-            console.log("Erreur lors du mise à jour : ", err)
-            toast.error("Une erreur est survenue !!!", {duration : 3000})
-        }
-        // Ouvrir la modale
-        //setSelectedMessage(message);
+            const response = await getData("/messages/");
+            setMessages(response.data);
+        } catch (err) { console.error(err); }
     };
-    
 
-    const handleDeleteMessage = async (id) => {
-        try {
-            await deleteData(`/messages/${id}/`)
-            fetchMess()
-            toast.success("Suppression avec succès", {duration : 3000})
-        } catch(err) {
-            console.log("Erreur lors de la suppression du message : ", err)
-            toast.error("Erreur lors de la suppression du message", {duration : 3000})   
+    useEffect(() => { fetchMess(); }, []);
+
+    const handleSelectMessage = async (msg) => {
+        setSelectedMessage(msg);
+        setIsPanelOpen(true);
+        if (msg.statut === "Non lu") {
+            try {
+                await updateData(`/messages/${msg.id}/lu/`);
+                fetchMess();
+            } catch (err) { console.error(err); }
         }
     };
 
-    // --- Calcul des Statistiques ---
-    const stats = useMemo(() => ({
-        total: messages.length,
-        nonLus: messages.filter(msg => msg.status === "Non lu").length,
-        nonLusAujourdhui: messages.filter(msg => msg.status === "Non lu" && msg.date === today).length,
-        lus: messages.filter(msg => msg.status === "Lu").length,
-    }), [messages, today]);
-
-    // --- Logique de Filtrage du Tableau ---
-    const filteredMessages = useMemo(() => {
-        switch (filterStatus) {
-            case "Non lu":
-                return messages.filter(msg => msg.status === "Non lu");
-            case "Lu":
-                return messages.filter(msg => msg.status === "Lu");
-            case "Aujourd'hui":
-                return messages.filter(msg => msg.date === today);
-            case "Tous":
-            default:
-                return messages;
-        }
-    }, [messages, filterStatus, today]);
-
-    const isMessageLong = selectedMessage?.contenu && selectedMessage.contenu.length > 100;
-
-    // --- Styles personnalisés pour le DataTable ---
-    const customStyles = {
-        headCells: {
-            style: {
-                fontSize: '15px',
-                fontWeight: '700',
-                color: '#374151',
-                backgroundColor: '#f9fafb',
-            },
-        },
-        cells: {
-            style: {
-                fontSize: '14px',
-            },
-        }
+    //fermer le panel à droite
+    const closePanel = () => {
+        setIsPanelOpen(false);
+        // On attend la fin de l'animation pour vider le message sélectionné
+        setTimeout(() => setSelectedMessage(null), 300);
     };
 
-    // --- Définition des colonnes ---
-    const columns = [
-        { 
-            name: "Nom", 
-            selector: row => row.nomClient, 
-            sortable: true,
-            grow: 1.5,
-            cell: (row) => (
-                <div className="font-semibold text-gray-800">
-                    {row.nomClient}
-                    <p className="text-xs text-gray-500 font-normal">{row.emailClient}</p>
-                </div>
-            )
-        },
-        { 
-            name: "Sujet", 
-            selector: row => row.sujet,
-            sortable: true,
-            grow: 2,
-            cell: (row) => (
-                <div className={row.status === "Non lu" ? "font-bold text-gray-900" : "font-medium text-gray-700"}>
-                    {row.sujet}
-                </div>
-            )
-        },
-        { 
-            name: "Date", 
-            selector: row => row.dateMess,
-            sortable: true,
-            width: "120px",
-            cell: (row) => (
-                <span className="text-gray-600">
-                    {row.date === today ? "Aujourd'hui" : row.dateMess}
-                </span>
-            )
-        },
-        { 
-            name: "Statut", 
-            selector: row => row.statut,
-            cell: (row) => (
-                <span
-                    className={`px-3 py-1 text-xs font-bold rounded-full transition-colors ${
-                        row.statut === "Non lu"
-                            ? "bg-red-100 text-red-700 border border-red-300"
-                            : "bg-green-100 text-green-700"
-                    }`}
-                >
-                    {row.statut}
-                </span>
-            ),
-            width: "120px",
-        },
-        {
-            name: "Actions",
-            cell: row => (
-                <div className="flex gap-2">
-                    {/* Bouton Voir (Style Projet) */}
-                    <Button
-                        onClick={() => handleViewMessage(row)}
-                        className='bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white shadow-lg rounded-full h-8 w-8 p-1 transition-all'
-                        size="icon"
-                        title="Voir le message"
-                    >
-                        <Eye size={16} className="text-white" />
-                    </Button>
-                    
-                    {/* Bouton Supprimer (Style Projet) */}
-                    <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                            <Button 
-                            className='bg-rose-600 hover:bg-rose-700 text-white shadow-lg rounded-full h-8 w-8 p-1 transition-all'
-                            size="icon"
-                            title="Supprimer le projet"
-                            > 
-                            <Trash2 className='h-4 w-4' /> 
-                            </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent className="bg-white text-gray-400">
-                            <AlertDialogHeader>
-                            <AlertDialogTitle className="text-rose-600">Confirmer la suppression</AlertDialogTitle>
-                            <AlertDialogDescription>
-                                Voulez-vous supprimer le projet <b>{row.title}</b>? Cette action est irréversible.
-                            </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                            <AlertDialogCancel asChild>
-                                <Button 
-                                variant="secondary" 
-                                className="rounded-full text-gray-700 hover:bg-gray-200"
-                                >
-                                Annuler
-                                </Button>
-                            </AlertDialogCancel>
-                            <AlertDialogAction 
-                                onClick={() => handleDeleteMessage(row.id)}
-                                variant="destructive" 
-                                className="rounded-full bg-rose-600 hover:bg-rose-700 text-white" 
-                            >
-                                Confirmer
-                            </AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
-                </div>
-            ),
-            width: "100px",
-            ignoreRowClick: true,
-            allowOverflow: true,
-        },
-    ];
+    //filtrer les messages
+    const filteredMessages = messages.filter(msg => 
+        msg.nomClient.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        msg.sujet.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    //Envoie de message
+    const handleSendResponse = async () => {
+        if (!selectedMessage || !responseText) return;
+
+        setSending(true);
+
+       await fetch(`/messages/${selectedMessage.id}/repondre/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ body: responseText }),
+        });
+
+        setSending(false);
+        setResponseText(""); 
+        setIsPanelOpen(false);
+        setSelectedMessage(null);
+        fetchMess();
+
+        toast.success("Réponse envoyée avec succès !");
+    };
 
     return (
-        <div className='p-8 bg-white min-h-screen rounded-xl shadow-lg font-sans'>
+        <div className="h-screen bg-gray-50 flex overflow-hidden font-sans">
+            <Toaster position="top-right" />
 
-            <Toaster position="top-right" reverseOrder={false} />
-            
-            {/* --- HEADER (Style Projet) --- */}
-            <header className="flex items-center gap-3 mb-8 border-b border-indigo-400/30 pb-4">
-                <MessageSquare className='w-8 h-8 text-indigo-600' />
-                <h2 className="font-semibold text-4xl text-gray-800 tracking-wide">
-                    Boîte de Réception
-                </h2>
-            </header>
-
-          
-
-            {/* --- Tableau des Messages (DataTable) --- */}
-            <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow">
-                <DataTable
-                    title={
-                        <h3 className="text-xl font-semibold text-gray-700">
-                            Liste des Contacts ({filterStatus})
-                        </h3>
-                    }
-                    columns={columns}
-                    data={filteredMessages}
-                    pagination
-                    highlightOnHover
-                    striped
-                    responsive
-                    className="rounded-xl"
-                    customStyles={customStyles}
-                    noDataComponent={<div className='p-8 text-gray-500 text-lg'>Aucun message trouvé avec le filtre "{filterStatus}".</div>}
-                />
-            </div>
-            
-
-            {/* --- Détail du message (Modale) --- */}
-            <Dialog open={!!selectedMessage} onOpenChange={() => setSelectedMessage(null)}>
-                <DialogContent className="sm:max-w-[500px] [&>button]:bg-red-500 [&>button]:w-8 [&>button]:h-8 [&>button]:flex [&>button]:justify-center [&>button]:items-center [&>button]:rounded-full [&>button]:text-white [&>button]:hover:bg-red-600 [&>button]:hover:cursor-pointer py-10 px-10 bg-white">
-                    <DialogHeader>
-                        <DialogTitle className="text-2xl font-bold text-indigo-700 flex items-center gap-2 border-b border-indigo-100 pb-2">
-                            <Mail size={24} className="text-indigo-500" /> {selectedMessage?.sujet}
-                        </DialogTitle>
-                        <DialogDescription asChild>
-                            <div className="mt-4 space-y-2 text-gray-700 text-sm">
-                                <p>De: <span className="font-bold text-gray-900">{selectedMessage?.nomClient}</span></p>
-                                <p>Email: <span className="font-bold text-blue-600 hover:underline">{selectedMessage?.emailClient}</span></p>
-                                <p>Reçu le: <span className="font-bold">{selectedMessage?.dateMess === today ? `Aujourd'hui (${selectedMessage?.dateMess})` : selectedMessage?.dateMess}</span></p>
-                            </div>
-                            
-                        </DialogDescription>
-                    </DialogHeader>
-                    
-                    {/* --- Message reçu + Icône d’envoi --- */}
-            <div className="mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50 max-h-96 overflow-y-auto shadow-inner">
-                <p className="text-gray-800 whitespace-pre-line leading-relaxed flex items-start justify-between relative">
-                    {/* Contenu du message */}
-                    <span className={`${isMessageLong ? 'mr-10' : ''}`}> 
-                        {selectedMessage?.contenu}
-                    </span>
-
-                    {/* Icône Reply (avec positionnement absolu pour les messages longs) */}
-                    <Reply
-                        size={isMessageLong ? 24 : 27} // Taille de 24 si long, 27 si court (légèrement réduit)
-                        onClick={handleOpenResponse}
-                        className={`rounded-full border border-blue-500 text-blue-500 cursor-pointer 
-                            transition duration-300 hover:border-blue-700 hover:text-blue-700
-                            ${loading ? "opacity-50 pointer-events-none" : ""}
-
-                            // Classes de positionnement conditionnel
-                            ${isMessageLong 
-                                ? "absolute bottom-0 right-0 p-1" // Position absolue en bas à droite si long, avec un petit padding
-                                : "p-2 ml-4 flex-shrink-0"       // Position normale à droite si court, avec un padding standard
-                            }`}
-                    />
-                </p>
-
-                {/* Petit texte “patientez...” */}
-                {loading && (
-                    <p className="text-blue-600 mt-3 animate-pulse">
-                         Veuillez patienter...
-                    </p>
-                )}
-            </div>
-
-
-            {/* --- Zone de Réponse (Apparaît après clic) --- */}
-            {showResponseArea && (
-                <div className="animate-fadeIn">
-                    {/* Textarea */}
-                    <div className="mt-4">
-                        <textarea
-                            className="w-full p-3 border border-gray-300 rounded-lg 
-                                       focus:ring-indigo-500 focus:border-indigo-500 
-                                       transition duration-150 ease-in-out text-black"
-                            rows="4"
-                            placeholder="Écrivez votre réponse ici..."
-                        ></textarea>
+            {/* --- CONTENEUR PRINCIPAL --- */}
+            <main className={`flex-1 transition-all duration-500 ease-in-out flex ${isPanelOpen ? 'gap-0' : 'p-6'}`}>
+                
+                {/* --- SECTION LISTE (GRID) --- */}
+                <div className={`transition-all duration-500 h-full ${isPanelOpen ? 'w-1/3 bg-white border-r border-gray-200' : 'w-full'}`}>
+                    <div className="mb-6 px-2">
+                        <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <Inbox className="text-indigo-600" /> Boîte de réception
+                        </h2>
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                            <input 
+                                type="text"
+                                placeholder="Rechercher..."
+                                className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
                     </div>
 
-                    {/* Bouton Répondre */}
-                    <div className="flex justify-end mt-4">
-                        <Button
-                            onClick={() => { /* fonction d'envoi */ }}
-                            className="bg-indigo-600 text-white hover:bg-indigo-700 rounded-full flex items-center gap-2"
-                        >
-                            <Send size={20} />
-                            Répondre
-                        </Button>
+                    {/* Grille adaptative */}
+                    <div className={`grid gap-4 overflow-y-auto pb-10 custom-scrollbar ${isPanelOpen ? 'grid-cols-1 px-2' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
+                        {filteredMessages.map((msg) => (
+                            <div 
+                                key={msg.id}
+                                onClick={() => handleSelectMessage(msg)}
+                                className={`p-5 rounded-2xl cursor-pointer transition-all duration-300 border flex flex-col justify-between h-40 shadow-sm
+                                    ${selectedMessage?.id === msg.id 
+                                        ? 'bg-indigo-600 border-indigo-600 text-white transform scale-[0.98]' 
+                                        : 'bg-white border-gray-100 hover:border-indigo-300 hover:shadow-md text-gray-600'
+                                    }`}
+                            >
+                                <div>
+                                    <div className="flex gap-3 items-start mb-2">
+                                        <div className="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold text-xl">
+                                                {msg.nomClient.charAt(0)}
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <h3 className={`font-bold truncate ${selectedMessage?.id === msg.id ? 'text-white' : 'text-gray-900'} text-wrap`}>{msg.nomClient}</h3>
+
+                                            <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full 
+                                                ${selectedMessage?.id === msg.id ? 'bg-indigo-400 text-white' : 'text-gray-500'}`}>
+                                                {msg.dateMess === today ? "Aujourd'hui" : msg.dateMess}
+                                            </span>
+                                            {msg.statut === "Non lu" && <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]" />}
+                                        </div>
+                                    </div>
+                                    <p className={`text-sm line-clamp-1 mt-1 ${selectedMessage?.id === msg.id ? 'text-indigo-100' : 'text-gray-500'}`}>{msg.sujet}</p>
+                                </div>
+                                <div className="flex justify-end">
+                                    <ChevronRight size={18} className={selectedMessage?.id === msg.id ? 'text-white' : 'text-gray-300'} />
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
-            )}
-            
-                            </DialogContent>
-                        </Dialog>
-                    </div>
-                );
-            }
 
-        export default DashMessage;
+                {/* --- PANEL DE DROITE (CONTENU) --- */}
+                <aside 
+                    className={`fixed top-0 right-0 h-full bg-white shadow-2xl transition-all duration-500 ease-in-out z-20 flex flex-col
+                        ${isPanelOpen ? 'w-2/3 translate-x-0' : 'w-0 translate-x-full opacity-0'}`}
+                >
+                    {selectedMessage && (
+                        <div className="px-6 max-h-[100vh] overflow-y-auto">
+                            {/* Header du Panel */}
+                            <div className="pt-5 border-b pb-3 border-gray-100 flex items-center justify-between bg-white sticky top-0">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold text-xl">
+                                        {selectedMessage.nomClient.charAt(0)}
+                                    </div>
+                                     <div>
+                                        <h2 className="text-xl font-bold text-gray-900 line-clamp-1">{selectedMessage.nomClient}</h2>
+                                        <p className="text-sm text-gray-500">{selectedMessage.emailClient}</p>
+                                    </div>
+                                    
+                                </div>
+                                <div className="flex items-center justify-center gap-2 text-xs text-gray-400 tracking-widest">
+                                    <Clock size={14} />{getRelativeTime(selectedMessage.dateMess)}
+                                </div>
+                            </div>
+
+                            {/* Corps du message */}
+                            <div className="flex-1 overflow-y-auto bg-gray-50/30 mb-7">
+                                <div className="bg-white pt-4 rounded-3xl min-h-[300px] overflow-y-auto">
+                                    <h3 className="text-2xl font-bold text-gray-900 mb-3">{selectedMessage.sujet}</h3>
+                                    <p className="text-gray-700 leading-relaxed text-base whitespace-pre-wrap">
+                                        {selectedMessage.contenu}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* répondre */}
+                            <div className="bg-gray-100 flex flex-col gap-4 px-10 pt-10 pb-5 rounded-4xl min-h-[300px] overflow-y-auto">
+                                <textarea 
+                                    name="reponse" 
+                                    value={responseText} 
+                                    onChange={(e) => setResponseText(e.target.value)} 
+                                    cols="30" 
+                                    rows="10" 
+                                    className="w-full border-none bg-white rounded-2xl text-base" 
+                                    placeholder="Entrer votre réponse ici..." 
+                                />
+                                <Button 
+                                    onClick={handleSendResponse}
+                                    disabled={sending || !responseText}
+                                    className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-8 gap-2 shadow-lg shadow-indigo-100"
+                                >
+                                    Répondre <Send size={18} />
+                                </Button>
+                            </div>
+
+                            {/* Footer du Panel */}
+                            <div className="p-6 border-t border-gray-100 flex justify-end gap-3 bg-white">
+                                <Button 
+                                    variant="outline"
+                                    onClick={closePanel}
+                                    className="rounded-xl px-8 border-gray-200 text-gray-600 hover:bg-gray-50"
+                                >
+                                    Fermer
+                                </Button>
+                               
+                            </div>
+                        </div>
+                    )}
+                </aside>
+            </main>
+        </div>
+    );
+}
+
+export default DashMessage;

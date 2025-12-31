@@ -22,6 +22,7 @@ const actuSchema = z.object(
     {
         titre : z.string().min(5, "Le nom du catégorie est trop court."),
         contenu : z.string().min(15, "La description est trop courte."),
+        source : z.string().min(5, "La source est trop courte.").optional(),
         image : z.preprocess(
             (val) => {
                 if(val instanceof FileList) return val[0];
@@ -103,6 +104,17 @@ const AjoutPresseModal = ({ onCreate }) => {
                         className="col-span-3 text-gray-800  border-gray-400 rounded-lg h-10" 
                     />
                     {errors.titre && <p className='text-red-500 text-[12px]'>{errors.titre.message}</p>}
+                </div>
+                
+                {/* source de l'actu */}
+                <div className='flex flex-col space-y-2'>
+                    <label htmlFor="source" className="font-medium text-gray-700">Source :</label>
+                    <Input
+                        id="titre"
+                        {...register("source")}
+                        className="col-span-3 text-gray-800  border-gray-400 rounded-lg h-10" 
+                    />
+                    {errors.source && <p className='text-red-500 text-[12px]'>{errors.source.message}</p>}
                 </div>
 
                 

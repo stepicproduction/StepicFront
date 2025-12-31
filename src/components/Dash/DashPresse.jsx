@@ -59,6 +59,7 @@ export default function DashPresse() {
       const formData = new FormData();
       formData.append("titre", data.titre);
       formData.append("contenu", data.contenu);
+      formData.append("source", data.source);
 
       if (data.image) {
           formData.append("image", data.image); // ajouter le fichier
@@ -93,6 +94,7 @@ export default function DashPresse() {
     const formData = new FormData()
     formData.append("titre", updatedData.titre);
     formData.append("contenu", updatedData.contenu);
+    formData.append("source", updatedData.source);
 
     if (updatedData.image) {
         formData.append("image", updatedData.image); // ajouter le fichier
@@ -110,9 +112,11 @@ export default function DashPresse() {
   };
 
   const columns = [
-    { name: "id", selector: (row) => row.id },
+    { name: "id", selector: (row) => row.id, sortable: true, width: '80px' },
     {
       name: "Image",
+      width: '90px',
+      grow : 0,
       selector: (row) => row.image,
       cell: (row) =>
         row.image ? (
@@ -127,9 +131,10 @@ export default function DashPresse() {
           </div>
         ),
     },
-    { name: "Titre", selector: (row) => row.titre, sortable: true },
-    { name: "Type", selector: (row) => row.contenu },
-    { name: "Date", selector: (row) => row.date_pub },
+    { name: "Titre", selector: (row) => row.titre, sortable: true, width: '200px' },
+    { name: "Source", selector: (row) => row.source, sortable: true, width: '200px' },
+    { name: "Contenus", selector: (row) => row.contenu, sortable: false, maxWidth: '300px' },
+    { name: "Date", selector: (row) => row.date_pub, width: '150px', grow: 0 },
     {
       name: "Actions",
       cell: (row) => (
@@ -201,21 +206,21 @@ export default function DashPresse() {
       </div>
 
       <div className="flex flex-col lg:flex-row-reverse justify-between items-center mb-6 gap-4 bg-white p-5 rounded-2xl shadow-lg border border-gray-100">
-        <div className="relative w-full lg:w-96">
+        <div className="relative w-full max-w-sm">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input
             type="text"
             placeholder="Rechercher par titre ou source..."
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
-            className="pl-10 shadow-inner"
+            className="w-full pl-10 h-10 rounded-lg border-gray-300 focus:ring-indigo-500 text-gray-700"
           />
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
         </div>
 
         <AjoutPresseModal onCreate={handleAdd} />
       </div>
 
-      <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+      <div className="bg-white rounded-2xl shadow-lg p-6 border max-w-full border-gray-100">
         <DataTable
           columns={columns}
           data={filteredPresse}
