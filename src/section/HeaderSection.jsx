@@ -1,7 +1,9 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import { motion, AnimatePresence, useInView, useTransform, useScroll } from "framer-motion";
+
+// Importations d'images
 import photo2 from "@/assets/photo2.webp";
 import header1 from "@/assets/header1.webp";
 import header2 from "@/assets/header2.webp";
@@ -9,162 +11,179 @@ import header3 from "@/assets/header3.webp";
 import header4 from "@/assets/header4.webp";
 import header5 from "@/assets/header5.webp";
 
-/* -------------------- Hook Préload Images -------------------- */
+// 1. Sortir les données statiques du composant pour éviter la recréation
+const IMAGES = [photo2, header1, header2, header3, header4, header5];
+
+const BG_VARIANTS = {
+  initial: { opacity: 0, scale: 1.05 },
+  animate: { 
+    opacity: 1, 
+    scale: 1, 
+    rotate: 0.2, 
+    transition: { duration: 1.5, ease: "easeInOut" } 
+  },
+  exit: { 
+    opacity: 0, 
+    scale: 0.95, 
+    rotate: -0.2, 
+    transition: { duration: 1.5, ease: "easeInOut" } 
+  },
+};
+
+const CONTAINER_VARIANTS = {
+  show: { transition: { staggerChildren: 0.2 } },
+};
+
+/* -------------------- Hook Préload Optimisé -------------------- */
 function usePreloadImages(urls) {
   useEffect(() => {
-    urls.forEach(url => {
-      const img = new Image();
-      img.src = url;
+    const promises = urls.map((url) => {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = url;
+        img.onload = resolve;
+        img.onerror = reject;
+      });
     });
+    // On ne bloque pas le thread principal
+    Promise.all(promises).catch(err => console.error("Preload error", err));
   }, [urls]);
 }
 
-/* -------------------- HeaderSection V3 -------------------- */
+/* -------------------- HeaderSection Optimisée -------------------- */
 function HeaderSection() {
   const navigate = useNavigate();
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { margin: "-100px" });
-  const { scrollYProgress } = useScroll({ target: sectionRef });
-  const yTransform = useTransform(scrollYProgress, [0, 1], [0, 25]); // parallaxe douce
+  
+  // Amélioration InView : une seule détection suffit souvent
+  const isInView = useInView(sectionRef, { margin: "-100px", once: false });
+  const { scrollYProgress } = useScroll({ 
+    target: sectionRef,
+    offset: ["start start", "end start"] 
+  });
+  
+  const yTransform = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
 
-  // --- Images + Préload ---
-  const images = [photo2, header1, header2, header3, header4, header5];
-  usePreloadImages(images);
+  // Préchargement
+  usePreloadImages(IMAGES);
 
-  // --- Slideshow ---
+  // Slideshow logic
   const [currentImage, setCurrentImage] = useState(0);
+
   useEffect(() => {
     if (!isInView) return;
+    
     const interval = setInterval(() => {
-      setCurrentImage(prev => (prev + 1) % images.length);
+      setCurrentImage((prev) => (prev + 1) % IMAGES.length);
     }, 5000);
+    
     return () => clearInterval(interval);
-  }, [images.length, isInView]);
-
-  const bgVariants = {
-    initial: { opacity: 0, scale: 1.05, rotate: 0 },
-    animate: { opacity: 1, scale: 1, rotate: 0.2, transition: { duration: 1.5, ease: "easeInOut" } },
-    exit: { opacity: 0, scale: 0.95, rotate: -0.2, transition: { duration: 1.5, ease: "easeInOut" } },
-  };
-
-  // --- Animations Staggered ---
-  const containerVariants = {
-    hidden: {},
-    show: { transition: { staggerChildren: 0.3 } },
-  };
-  const lineVariant = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { ease: "easeOut", duration: 0.8 } } };
-  const subtitleVariant = { hidden: { opacity: 0, x: 100 }, show: { opacity: 1, x: 0, transition: { ease: "easeOut", duration: 0.8, delay: 1 } } };
-  const btnContainerVariant = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { ease: "easeOut", duration: 0.6, delay: 0.1 } } };
+  }, [isInView]);
 
   return (
     <section
       id="home"
       ref={sectionRef}
-      className="relative min-h-screen flex items-center px-4 sm:px-8 lg:px-32 overflow-hidden"
+      className="relative min-h-screen w-full flex items-center overflow-hidden bg-black px-6 sm:px-12 lg:px-32 py-20 lg:py-0"
     >
-      <img 
-        src={photo2} 
-        alt="STEPIC, booster des talents" 
-        fetchpriority="high" 
-        className="absolute inset-0 w-full h-full object-cover opacity-100 z-0"
-        style={{ display: currentImage === 0 ? 'block' : 'none' }}
-      />
-      {/* BACKGROUND SLIDESHOW + PARALLAX + ROTATE */}
+      {/* BACKGROUND SLIDESHOW OPTIMISÉ */}
       <motion.div
-        className="absolute inset-0 w-full h-full bg-cover bg-center will-change-transform"
+        className="absolute inset-0 w-full h-full will-change-transform"
         style={{ y: yTransform }}
       >
-        <AnimatePresence initial={false}>
-          <motion.div
+        <AnimatePresence mode="wait">
+          <motion.img
             key={currentImage}
-            variants={bgVariants}
+            src={IMAGES[currentImage]}
+            alt=""
+            variants={BG_VARIANTS}
             initial="initial"
             animate="animate"
             exit="exit"
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `url(${images[currentImage]})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-            }}
+            className="absolute inset-0 w-full h-full object-cover will-change-[opacity,transform]"
+            loading={currentImage === 0 ? "eager" : "lazy"}
+            decoding="async"
+            aria-hidden="true"
           />
         </AnimatePresence>
       </motion.div>
 
-      {/* OVERLAY DÉGRADÉ */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent z-1"></div>
+      {/* OVERLAY - Utilisation de CSS pur pour la performance */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent z-[1]" />
 
       {/* CONTENT */}
       <div className="relative z-10 w-full sm:max-w-4xl text-left">
         <motion.span
           initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2 }}
-          className="inline-block text-purple-400 font-bold tracking-[0.3em] uppercase text-xs sm:text-sm mb-2 sm:mb-4"
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 1 }}
+          className="inline-block text-purple-400 font-bold tracking-[0.3em] uppercase text-xs sm:text-sm mb-3 mt-2"
         >
           FORMATIONS & SERVICES MULTIDISCIPLINAIRES
         </motion.span>
 
-        {/* TITRE STAGGERED */}
-        <motion.div variants={containerVariants} initial="hidden" animate="show">
-          {[
-            "STEPIC, booster des talents :",
-            "Informatique, Langues et création",
-            "Multimédia"
-          ].map((line, index) => (
+        <motion.div 
+          variants={CONTAINER_VARIANTS} 
+          initial="hidden" 
+          animate={isInView ? "show" : "hidden"}
+        >
+          {["STEPIC, booster des talents :", "Informatique, Langues et création", "Multimédia"].map((line, index) => (
             <motion.h1
               key={index}
-              variants={lineVariant}
-              className="text-4xl sm:text-5xl xl:text-6xl font-extrabold text-white mb-2 sm:mb-4 leading-[1.1] sm:leading-[1.2] drop-shadow-[0_0_20px_rgba(168,85,247,0.5)] break-words"
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.6 } }
+              }}
+              className="text-4xl sm:text-5xl xl:text-6xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg"
             >
               {index === 2 ? (
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-500">{line}</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-500">
+                  {line}
+                </span>
               ) : line}
             </motion.h1>
           ))}
-        </motion.div>
 
-        {/* SOUS-TITRE */}
-        <motion.p
-          variants={subtitleVariant}
-          initial="hidden"
-          animate="show"
-          className="text-base sm:text-lg md:text-xl text-gray-200 mb-10 italic max-w-full md:max-w-2xl border-l-4 border-purple-600 pl-4 sm:py-2 break-words"
-        >
-          <span className="hidden md:inline text-3xl text-purple-400 font-serif">“</span>
-          Langues · Informatique · Multimédia <br /> Communication · Presse · Évènementiel
-          <span className="hidden md:inline text-3xl text-purple-400 font-serif">”</span>
-        </motion.p>
-
-        {/* BOUTONS AVEC GLOW */}
-        <motion.div
-          variants={btnContainerVariant}
-          initial="hidden"
-          animate="show"
-          className="flex flex-col sm:flex-row items-start gap-4 sm:gap-5 w-full sm:w-auto pb-2"
-        >
-          <button
-            onClick={() => navigate("/commande")}
-            className="group relative flex items-center justify-center gap-2 px-6 sm:px-8 py-3 rounded-full font-bold bg-gradient-to-r from-purple-600 to-indigo-500 shadow-[0_0_25px_rgba(168,85,247,0.6)] transition-all duration-300 hover:scale-105 hover:from-purple-700 hover:to-indigo-600 active:scale-95 cursor-pointer text-white h-12 sm:h-auto"
+          {/* SOUS-TITRE */}
+          <motion.p
+            variants={{
+              hidden: { opacity: 0, x: -20 },
+              show: { opacity: 1, x: 0, transition: { delay: 0.8 } }
+            }}
+            className="text-base sm:text-lg md:text-xl text-gray-200 mb-10 italic max-w-2xl border-l-4 border-purple-600 pl-4 py-2"
           >
-            Commander
-            <span className="group-hover:translate-x-1 transition-transform">→</span>
-          </button>
+            Langues · Informatique · Multimédia <br /> Communication · Presse · Évènementiel
+          </motion.p>
 
-          <ScrollLink
-            to="showreel"
-            smooth={true}
-            duration={2000}
-            offset={-60}
-            className="flex items-center justify-center px-6 sm:px-8 py-3 rounded-full text-white border-2 border-white/40 font-bold backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-white active:scale-95 cursor-pointer h-12 sm:h-auto"
+          {/* BOUTONS */}
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              show: { opacity: 1, y: 0, transition: { delay: 0.4 } }
+            }}
+            className="flex flex-col sm:flex-row items-start gap-5"
           >
-            Voir démonstration
-          </ScrollLink>
+            <button
+              onClick={() => navigate("/commande")}
+              className="group relative flex items-center justify-center gap-2 px-8 py-3 rounded-full font-bold bg-gradient-to-r from-purple-600 to-indigo-500 text-white shadow-xl hover:scale-105 transition-transform active:scale-95"
+            >
+              Commander
+              <span className="group-hover:translate-x-1 transition-transform">→</span>
+            </button>
+
+            <ScrollLink
+              to="showreel"
+              smooth={true}
+              duration={1500}
+              className="flex items-center justify-center px-8 py-3 rounded-full text-white border-2 border-white/40 font-bold backdrop-blur-sm hover:bg-white/10 transition-all cursor-pointer"
+            >
+              Voir démonstration
+            </ScrollLink>
+          </motion.div>
         </motion.div>
       </div>
     </section>
   );
 }
 
-export default HeaderSection;
+export default React.memo(HeaderSection);

@@ -1,5 +1,7 @@
 export function getRelativeTime(publishedDate) {
+  if (!publishedDate) return "—";
   const date = new Date(publishedDate);
+   if (isNaN(date.getTime())) return "—";
   const now = new Date();
 
   // 1. Calculer la différence : du temps actuel (now) au temps passé (date)

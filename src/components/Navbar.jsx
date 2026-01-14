@@ -16,7 +16,7 @@ function Navbar() {
 
   const navItems = [
     { id:1, to: "", label: "Accueil" },
-    { id:2, to: "about", label: "A propos" },
+    { id:2, to: "about", label: "À propos" },
     { id:3, to: "offre", label: "Offres" },
     { id:5, to: "presse_actu", label: "Actualités" },
     { id:6, to: "contact", label: "Contact" },

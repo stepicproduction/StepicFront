@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import { Input } from '../ui/input';
-import { Textarea } from '../ui/textarea'; // Ajout de Textarea pour la description
-import { Search, Edit, Trash2, HandPlatter, FileText } from "lucide-react"; 
+import { Search, Edit, Trash2, HandPlatter, Check, LoaderCircle as Loader  } from "lucide-react"; 
 import { Button } from '../ui/button';
 import toast, { Toaster } from "react-hot-toast";
 import {
@@ -19,10 +18,15 @@ import {
 import { getData, createFormData, updateDataFormData, deleteData } from "@/service/api";
 import AjoutServiceModal from "./Modals/service/AjoutServiceModal";
 import ModifierServiceModal from "./Modals/service/ModifierServiceModal";
+import { motion, AnimatePresence } from 'framer-motion';
+
 
 function DashService() {
   const [services, setServices] = useState([]);
   const [filter, setFilter] = useState("");
+
+  const [loadingPdf, setLoadingPdf] = useState(false)
+  const [successPdf, setSuccessPdf] = useState(false)  
 
   //fetch service data
   const fetchService = async () => {
@@ -62,23 +66,6 @@ function DashService() {
     fetchService()
   }, [])
 
-  // --- Styles personnalisés pour les en-têtes de tableau (DataTable) ---
-  const customStyles = {
-    headCells: {
-      style: {
-        fontSize: '15px',
-        fontWeight: '700',
-        color: '#374151',
-        backgroundColor: '#f9fafb',
-      },
-    },
-    cells: {
-      style: {
-        fontSize: '14px',
-      },
-    }
-  };
-
   const handleDelete = async (id) => {
     try {
       await deleteData(`/services/${id}/`)
@@ -117,11 +104,20 @@ function DashService() {
 
   const downloadPdf = async () => { 
     try { 
+
+      setLoadingPdf(true);
+      setSuccessPdf(false);
+
       await getData("/services/pdf_service/") 
-      toast.success("PDF téléchargé avec succès", {duration : 3000})
+      //toast.success("PDF téléchargé avec succès", {duration : 3000})
+
+      setSuccessPdf(true);
+      setLoadingPdf(false);
+
     } catch(err) { 
       console.log("Erreur lors de l'export PDF : ", err) 
       toast.error("Erreur lors du téléchargement du pdf", {duration : 3000})
+      setLoadingPdf(false);
     }
   }
   
@@ -211,6 +207,44 @@ function DashService() {
     },
   ];
 
+  const customStyles = {
+        headCells: {
+            style: {
+                fontSize: "0.9rem",
+                fontWeight: "700",
+                textTransform: "uppercase",
+                color: "#4b5563", // gray-600
+                paddingLeft: '16px',
+                paddingRight: '16px',
+                backgroundColor: '#f9fafb', // fond léger pour l'entête
+            },
+        },
+        rows: {
+            style: {
+                minHeight: '72px', // Augmente la hauteur de la ligne
+                fontSize: '14px',
+                fontWeight: 400,
+                color: '#1f2937', // gray-800
+                backgroundColor: 'white',
+                marginTop: '4px', // Crée un léger espacement entre les lignes
+                marginBottom: '4px',
+                borderRadius: '8px', // Optionnel : arrondit les lignes si combiné avec un margin
+                borderBottom: '1px solid #f3f4f6 !important',
+                '&:hover': {
+                    backgroundColor: '#f3f4f6', // Effet de survol plus doux
+                    cursor: 'pointer',
+                    transition: '0.2s',
+                },
+            },
+        },
+        cells: {
+            style: {
+                paddingLeft: '16px',
+                paddingRight: '16px',
+            },
+        },
+    }; 
+
   return (
     <div className="p-8 bg-white min-h-screen rounded-xl shadow-lg">
 
@@ -240,27 +274,73 @@ function DashService() {
           />
         </div>
         <button
-                  className="
-                    flex items-center gap-2 
-                    bg-gray-100 hover:bg-gray-200 
-                    text-gray-800
-                    cursor-pointer 
-                    px-4 py-2 
-                    rounded-xl 
-                    shadow-sm 
-                    transition
-                  "
-                  onClick={() => downloadPdf()}
+          type="button"
+          disabled={loadingPdf}
+          onClick={downloadPdf}
+          className={`
+            relative flex items-center justify-center gap-2
+            px-5 py-2.5 rounded-xl
+            text-gray-800 font-medium
+            bg-gray-100 hover:bg-gray-200
+            shadow-sm
+            transition-all duration-200
+            disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer
+          `}
+        >
+          <AnimatePresence mode="wait">
+
+            {/* État normal */}
+            {!loadingPdf && !successPdf && (
+              <motion.span
+                key="idle"
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.2 }}
+                className="flex items-center gap-2"
+              >
+                <span className="text-xl">📄</span>
+                <span>PDF à télécharger</span>
+                <span className="text-xl">📜</span>
+              </motion.span>
+            )}
+
+            {/* Loading */}
+            {loadingPdf && (
+              <motion.span
+                key="loading"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex items-center gap-2"
+              >
+                <motion.span
+                  animate={{ rotate: 360 }}
+                  transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
                 >
-                  {/* Icône PDF à gauche (emoji document) */}
-                  <span className="text-xl">📄</span>
+                  <Loader size={18} />
+                </motion.span>
+                <span>Génération…</span>
+              </motion.span>
+            )}
 
-                  {/* Texte */}
-                  <span className="font-medium">PDF à télécharger</span>
+            {/* Succès */}
+            {successPdf && (
+              <motion.span
+                key="success"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="flex items-center gap-2 text-green-600"
+              >
+                <Check size={20} />
+                <span>Téléchargé avec succès</span>
+              </motion.span>
+            )}
 
-                  {/* Petit parchemin à droite */}
-                  <span className="text-xl">📜</span>
-            </button>
+          </AnimatePresence>
+        </button>
       </div>
 
       {/* --- Tableau --- */}

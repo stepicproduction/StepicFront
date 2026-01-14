@@ -35,52 +35,48 @@ function ActualiteSection() {
   const [actu, setActu] = useState([])
   const [presse, setPresse] = useState([])
   const isMobile = useIsMobile();
+ const [loading, setLoading] = useState(true);
 
-  const fetchPresse = async () => {
+  const fetchData = async () => {
+    setLoading(true);
     try {
-        const response = await getData("presses")
-        if(Array.isArray(response.data)) {
-          const lastThree = [...response.data].reverse().slice(0, 1);
-          console.log("top les 2 dernières presses : ", lastThree)
+      // On lance les deux appels en parallèle pour plus de rapidité
+      const [resPresse, resActu] = await Promise.all([
+        getData("presses"),
+        getData("actualites")
+      ]);
 
-          setPresse(lastThree)
-        }
+      if (Array.isArray(resPresse.data)) {
+        setPresse([...resPresse.data].reverse().slice(0, 1));
+      }
+      if (Array.isArray(resActu.data)) {
+        setActu([...resActu.data].reverse().slice(0, 1));
+      }
+    } catch (err) {
+      console.log("Erreur lors de la récupération");
+    } finally {
+      setLoading(false); // 2. Fin du chargement
     }
-    catch (err) {
-      console.log("Erreur lors de la récupération de la presse");
-    }
-  }
-
-  const fetchActu = async () => {
-    try {
-        const response = await getData("actualites")
-        if(Array.isArray(response.data)) {
-          const lastThree = [...response.data].reverse().slice(0, 1);
-          console.log("top les 2 dernières actualités entreprise : ", lastThree)
-
-          setActu(lastThree)
-        }
-    }
-    catch (err) {
-      console.log("Erreur lors de la récupération de la presse");
-    }
-  }
+  };
 
   useEffect(() => {
-    fetchPresse()
-    fetchActu()
-  }, [])
+    fetchData();
+  }, []);
 
-  // Observer pour déclencher l'animation au scroll
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.2 }
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+      },
+      { threshold: 0.1 }
     );
     const section = document.getElementById('actualite');
     if (section) observer.observe(section);
     return () => { if (section) observer.unobserve(section); };
-  }, []);
+  }, [loading]); // 3. Re-déclencher l'observer quand le chargement finit
+
+  // Ne pas faire de return vide si on est en train de charger
+  if (loading) return <div id="actualite" className="h-20"></div>;
 
   // Variantes Framer Motion
   const containerVariants = {
@@ -108,6 +104,20 @@ function ActualiteSection() {
     type: "actu"
   }))
 ]
+
+  if(actu.length === 0 && presse.length === 0) {
+    return(
+      <div 
+        className="py-10 px-4 sm:px-8 md:py-20 md:px-32 max-w-7xl mx-auto overflow-hidden"
+        variants={containerVariants}
+        initial="hidden"
+        animate={isVisible ? "visible" : "hidden"}
+      >
+        <H2 className="text-center mb-6">Actualités</H2>
+        <p className="text-center text-gray-600">Aucune actualité disponible pour le moment. Revenez plus tard !</p>
+      </div>
+    ) 
+  }
 
 
   return (

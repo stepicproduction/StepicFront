@@ -1,5 +1,5 @@
 // OffreDetaille.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import {
   Compass,
@@ -21,6 +21,7 @@ import EvenementielPage from "@/page/offrePage/EvenementielPage";
 import FormationPage from "@/page/offrePage/FormationPage";
 import LocationPage from "./offrePage/LocationPage";
 import offre from "@/assets/offre.webp";
+import { useLocation } from "react-router-dom";
 
 const backgroundImageURL = offre;
 
@@ -35,6 +36,7 @@ const textAnim = {
 
 const OffreDetaille = () => {
 
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState("strategie");
 
   const menuItems = [
@@ -51,6 +53,17 @@ const OffreDetaille = () => {
   const handleTabClick = (name) => {
     setActiveTab(name)
   }
+
+  useEffect(() => {
+    // Si on arrive sur la page avec un state défini dans le lien
+    if (location.state && location.state.activeService) {
+      setActiveTab(location.state.activeService);
+      
+      // Optionnel : Scroll fluide vers le menu pour que l'utilisateur 
+      // voie bien qu'il est sur le bon service
+      window.scrollTo({ top: 500, behavior: 'smooth' });
+    }
+  }, [location]);
 
   const renderMainTab = (item) => {
     const isActive = activeTab === item.id
@@ -97,7 +110,7 @@ const OffreDetaille = () => {
 
 
   return (
-    <div className="relative flex flex-col min-h-screen bg-gray-100">
+    <div className="relative flex flex-col min-h-screen bg-white">
 
       <Helmet>
         <title>STEPIC Madagascar - Offres</title>

@@ -22,7 +22,7 @@ const actuSchema = z.object(
     {
         titre : z.string().min(5, "Le nom du catégorie est trop court."),
         contenu : z.string().min(15, "La description est trop courte."),
-        source : z.string().min(5, "La source est trop courte.").optional(),
+        source : z.string().optional(),
         image : z.preprocess(
             (val) => {
                 if(val instanceof FileList) return val[0];

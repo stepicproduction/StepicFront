@@ -85,6 +85,16 @@ function AboutDetaille() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } }
   };
 
+  const fromRigth = {
+    hidden: { opacity: 0, x: 50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: 'easeIn' } }
+  };
+
+  const fromLeft = {
+    hidden: { opacity: 0, x: -50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: 'easeOut' } }
+  };
+
   return (
     <div className="pt-[100px] py-16 md:py-20 lg:py-28">
 
@@ -105,20 +115,25 @@ function AboutDetaille() {
       {/* -------- Mission -------- */}
       <motion.div className="flex flex-col md:flex-row justify-center items-center gap-8 lg:gap-20 mb-[100px]"
                   initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-        <div className="w-full md:w-[50%] lg:w-[45%] text-justify px-4 text-black">
+        <motion.div 
+          className="w-full md:w-[50%] lg:w-[45%] text-justify px-4 text-black"
+          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fromLeft}
+          >
           <H2>Notre Mission</H2>
           <p className='text-sm sm:text-base leading-relaxed sm:leading-loose mb-4'>
             {about.length > 0 ? (about.find((item) => item.id === 2 ) || {}).contenu : 'chargement...'}
           </p>
-        </div>
-        <img src={aboutDetaille2} loading='lazy' alt="mission" className="w-[90%] md:w-[400px] lg:w-[450px] xl:w-[500px] h-auto rounded-lg"/>
+        </motion.div>
+        <motion.img initial="hidden" whileInView="visible" variants={fromRigth} src={aboutDetaille2} loading='lazy' alt="mission" className="w-[90%] md:w-[400px] lg:w-[450px] xl:w-[500px] hover:scale-105 transition-all duration-300 h-auto rounded-lg"/>
       </motion.div>
 
       {/* -------- Nos offres -------- */}
       <motion.div className="flex flex-col-reverse md:flex-row justify-center items-center gap-8 lg:gap-20 mb-[100px]"
                   initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-        <img src={aboutDetaille1} loading='lazy' alt="offres" className="w-[90%] md:w-[400px] lg:w-[450px] xl:w-[500px] h-auto rounded-lg"/>
-        <div className="w-full md:w-[50%] lg:w-[45%] text-justify px-4">
+        <motion.img variants={fromLeft} initial="hidden" whileInView="visible" src={aboutDetaille1} loading='lazy' alt="offres" className="w-[90%] md:w-[400px] lg:w-[450px] xl:w-[500px] h-auto rounded-lg hover:scale-105 transition-all duration-300"/>
+        <motion.div 
+          className="w-full md:w-[50%] lg:w-[45%] text-justify px-4"
+          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fromRigth}>
           <H2>Nos Services</H2>
 
           {/* ✅ Phrase ajoutée */}
@@ -146,16 +161,19 @@ function AboutDetaille() {
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-        </div>
+        </motion.div>
       </motion.div>
 
       {/* -------- Formations -------- */}
       <motion.div className="flex flex-col md:flex-row justify-center items-center gap-8 lg:gap-20 mb-[100px]"
                   initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-        <div className="w-full md:w-[50%] lg:w-[45%] text-justify px-4 text-black">
+        <motion.div 
+          className="w-full md:w-[50%] lg:w-[45%] text-justify px-4 text-black"
+          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fromLeft}
+        >
           <H2>Nos Formations</H2>
           <p className='text-sm sm:text-base leading-relaxed sm:leading-loose mb-4'>Au-delà de nos prestations de communication, nous proposons des formations pratiques et professionnelles dans trois domaines clés :</p>
-        </div>
+        </motion.div>
         <Carousel className="w-full md:w-[400px] lg:w-[450px] xl:w-[500px] h-auto px-2 py-3">
           <CarouselContent className="m-auto">
             {[{img: langue, title:"Langues étrangères", desc:"Acquérir une maîtrise linguistique solide et s’ouvrir à de nouvelles perspectives internationales."},
@@ -181,13 +199,13 @@ function AboutDetaille() {
       {/* -------- Particularité -------- */}
       <motion.div className="flex flex-col-reverse md:flex-row justify-center items-center gap-8 lg:gap-20 mb-[100px]"
                   initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-        <img src={aboutDetaille3} loading='lazy' alt="particularité" className="w-[90%] md:w-[400px] lg:w-[450px] xl:w-[500px] h-auto rounded-lg"/>
-        <div className="w-full md:w-[50%] lg:w-[45%] text-justify px-4 text-black">
+        <motion.img variants={fromLeft} initial="hidden" whileInView="visible" viewport={{ once: true }} src={aboutDetaille3} loading='lazy' alt="particularité" className="w-[90%] md:w-[400px] lg:w-[450px] xl:w-[500px] h-auto rounded-lg hover:scale-105 transition-all duration-300"/>
+        <motion.div className="w-full md:w-[50%] lg:w-[45%] text-justify px-4 text-black" variants={fromRigth} initial="hidden" whileInView="visible" viewport={{ once: true }}>
           <H2>Pourquoi nous?</H2>
           <p className='text-sm sm:text-base leading-relaxed sm:leading-loose mb-4'>
             Ce qui fait la différence chez STEPIC, c’est notre capacité à allier expertise technique, créativité et pédagogie, tout en restant à l’écoute des besoins spécifiques de nos clients pour leur offrir des solutions sur mesure et un accompagnement personnalisé.
           </p>
-        </div>
+        </motion.div>
       </motion.div>
 
       {/* -------- Équipe -------- */}

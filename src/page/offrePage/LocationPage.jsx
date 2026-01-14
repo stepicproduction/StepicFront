@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import OffreCard from '@/components/OffreCard'
 import { getData } from '@/service/api'
 import { H2 } from '@/components/Typographie'
+import DemandeDevis from '@/components/DemandeDevis'
 
 const LocationPage = () => {
 
@@ -36,11 +37,12 @@ const LocationPage = () => {
     <div className="min-h-screen flex flex-col justify-start items-center  py-20 px-4">
       <H2>Location Sono</H2>
 
-      <div className="max-w-7xl w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center gap-8 mt-10">
+      <div className="max-w-7xl w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center gap-8 mt-10 mb-3">
         {offreSono.map((section) => (
           <OffreCard key={section.id} section={section} />
         ))}
       </div>
+      <DemandeDevis offres={offreSono} />
     </div>
   )
 }

@@ -202,7 +202,7 @@ const PresseActu = () => {
           href="https://www.linkedin.com/in/stepic-infos-aa86b6356/" 
           target="_blank" 
           rel="noreferrer" 
-          className="w-9 h-9 lg:w-10 lg:h-10 bg-white rounded-full flex items-center justify-center text-gray-600 shadow-sm hover:bg-[#0A66C2] hover:text-white transition-all duration-300 hover:scale-110" 
+          className="w-9 h-9 lg:w-10 lg:h-10 bg-white rounded-full flex items-center justify-center text-gray-600 shadow-sm hover:bg-[#0072b1] hover:text-white transition-all duration-300 hover:scale-110" 
         > 
           <FaLinkedinIn size={14} className="lg:text-base" /> 
         </a>

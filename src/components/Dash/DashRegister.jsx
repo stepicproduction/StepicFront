@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import DataTable from 'react-data-table-component'
 import { Input } from '../ui/input'
-import { Search, Check, Trash2, X, ClipboardList } from 'lucide-react' 
+import { Search, Check, Trash2, X, ClipboardList, LoaderCircle as Loader } from 'lucide-react' 
 import { Button } from '../ui/button'
 import toast, { Toaster } from "react-hot-toast";
 import { deleteData, createData, getData, updateData, getDataPdf} from '@/service/api'
@@ -18,6 +18,7 @@ import {
     AlertDialogCancel,
     AlertDialogAction,
 } from '../ui/alert-dialog';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function DashRegister() {
   // --- Données initiales ---
@@ -27,6 +28,9 @@ function DashRegister() {
 
   const currentYear = new Date().getFullYear()
   const [selectedYear, setSelectedYear] = useState(currentYear)
+
+  const [loadingPdf, setLoadingPdf] = useState(false)
+  const [successPdf, setSuccessPdf] = useState(false)
 
 
   const fetchRegister = async (year) => {
@@ -59,17 +63,6 @@ function DashRegister() {
     }
   }, [selectedYear])
 
-
-  const customStyles = {
-    headCells: {
-      style: {
-        fontSize: '15px',
-        fontWeight: '700',
-        color: '#374151', 
-        backgroundColor: '#f9fafb', 
-      },
-    },
-  };
 
   const filteredInscriptions = inscriptions.filter(ins =>
     ins.nomClient.toLowerCase().includes(filter.toLowerCase()) ||
@@ -124,12 +117,21 @@ function DashRegister() {
 
   const downloadPdf = async () => {
     try {
-      const url = selectedYear ? `/inscriptions/pdf_inscription/?year=${selectedYear}` : "/inscriptions/pdf_inscription/"
+
+      setLoadingPdf(true);
+      setSuccessPdf(false);
+
+      const url = "/inscriptions/pdf_inscription/"
       await getData(url)
-      toast.success("PDF téléchargé avec succès", {duration : 3000})
+      //toast.success("PDF téléchargé avec succès", {duration : 3000})
+
+      setSuccessPdf(true);
+      setLoadingPdf(false);
+
     } catch(err) {
       console.log("Erreur lors de l'export PDF : ", err)
       toast.error("Erreur lors du téléchargement du pdf", {duration : 3000})
+      setLoadingPdf(false);
     }
   }
 
@@ -212,6 +214,44 @@ function DashRegister() {
     }
   ]
 
+  const customStyles = {
+        headCells: {
+            style: {
+                fontSize: "0.9rem",
+                fontWeight: "700",
+                textTransform: "uppercase",
+                color: "#4b5563", // gray-600
+                paddingLeft: '16px',
+                paddingRight: '16px',
+                backgroundColor: '#f9fafb', // fond léger pour l'entête
+            },
+        },
+        rows: {
+            style: {
+                minHeight: '72px', // Augmente la hauteur de la ligne
+                fontSize: '14px',
+                fontWeight: 400,
+                color: '#1f2937', // gray-800
+                backgroundColor: 'white',
+                marginTop: '4px', // Crée un léger espacement entre les lignes
+                marginBottom: '4px',
+                borderRadius: '8px', // Optionnel : arrondit les lignes si combiné avec un margin
+                borderBottom: '1px solid #f3f4f6 !important',
+                '&:hover': {
+                    backgroundColor: '#f3f4f6', // Effet de survol plus doux
+                    cursor: 'pointer',
+                    transition: '0.2s',
+                },
+            },
+        },
+        cells: {
+            style: {
+                paddingLeft: '16px',
+                paddingRight: '16px',
+            },
+        },
+    }; 
+
   return (
     <div className="p-8 bg-white min-h-screen rounded-xl shadow-lg">
 
@@ -254,21 +294,72 @@ function DashRegister() {
         </div>
 
         <button
-          className="
-            flex items-center gap-2 
-            bg-gray-100 hover:bg-gray-200 
-            text-gray-800 
-            px-4 py-2 
-            cursor-pointer
-            rounded-xl 
-            shadow-sm 
-            transition
-          "
-          onClick={() => downloadPdf()}
+          type="button"
+          disabled={loadingPdf}
+          onClick={downloadPdf}
+          className={`
+            relative flex items-center justify-center gap-2
+            px-5 py-2.5 rounded-xl
+            text-gray-800 font-medium
+            bg-gray-100 hover:bg-gray-200
+            shadow-sm
+            transition-all duration-200
+            disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer
+          `}
         >
-          <span className="text-xl">📄</span>
-          <span className="font-medium">PDF à télécharger</span>
-          <span className="text-xl">📜</span>
+          <AnimatePresence mode="wait">
+
+            {/* État normal */}
+            {!loadingPdf && !successPdf && (
+              <motion.span
+                key="idle"
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.2 }}
+                className="flex items-center gap-2"
+              >
+                <span className="text-xl">📄</span>
+                <span>PDF à télécharger</span>
+                <span className="text-xl">📜</span>
+              </motion.span>
+            )}
+
+            {/* Loading */}
+            {loadingPdf && (
+              <motion.span
+                key="loading"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex items-center gap-2"
+              >
+                <motion.span
+                  animate={{ rotate: 360 }}
+                  transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                >
+                  <Loader size={18} />
+                </motion.span>
+                <span>Génération…</span>
+              </motion.span>
+            )}
+
+            {/* Succès */}
+            {successPdf && (
+              <motion.span
+                key="success"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="flex items-center gap-2 text-green-600"
+              >
+                <Check size={20} />
+                <span>Téléchargé avec succès</span>
+              </motion.span>
+            )}
+
+          </AnimatePresence>
         </button>
       </div>
 

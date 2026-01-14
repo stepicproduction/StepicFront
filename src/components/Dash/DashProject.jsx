@@ -27,23 +27,6 @@ function DashProject() {
 
   const [filter, setFilter] = useState("");
 
-  // --- Styles personnalisés pour les en-têtes de tableau (DataTable) ---
-  const customStyles = {
-    headCells: {
-      style: {
-        fontSize: '15px',
-        fontWeight: '700',
-        color: '#374151',
-        backgroundColor: '#f9fafb',
-      },
-    },
-    cells: {
-      style: {
-        fontSize: '14px',
-      },
-    }
-  };
-
   // --- Logique CRUD ---
 
   const fetchProject = async () => {
@@ -219,6 +202,44 @@ function DashProject() {
       button: true,
     },
   ];
+
+  const customStyles = {
+        headCells: {
+            style: {
+                fontSize: "0.9rem",
+                fontWeight: "700",
+                textTransform: "uppercase",
+                color: "#4b5563", // gray-600
+                paddingLeft: '16px',
+                paddingRight: '16px',
+                backgroundColor: '#f9fafb', // fond léger pour l'entête
+            },
+        },
+        rows: {
+            style: {
+                minHeight: '72px', // Augmente la hauteur de la ligne
+                fontSize: '14px',
+                fontWeight: 400,
+                color: '#1f2937', // gray-800
+                backgroundColor: 'white',
+                marginTop: '4px', // Crée un léger espacement entre les lignes
+                marginBottom: '4px',
+                borderRadius: '8px', // Optionnel : arrondit les lignes si combiné avec un margin
+                borderBottom: '1px solid #f3f4f6 !important',
+                '&:hover': {
+                    backgroundColor: '#f3f4f6', // Effet de survol plus doux
+                    cursor: 'pointer',
+                    transition: '0.2s',
+                },
+            },
+        },
+        cells: {
+            style: {
+                paddingLeft: '16px',
+                paddingRight: '16px',
+            },
+        },
+    }; 
 
   return (
     <div className="p-8 bg-white min-h-screen rounded-xl shadow-lg">

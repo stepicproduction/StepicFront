@@ -69,6 +69,7 @@ const ActuEntrepriseDetaille = () => {
                 <img
                     src={actu.imageActu}
                     alt={actu.titreActu}
+                    loading='lazy'
                     className="w-full sm:w-[60%] h-auto object-cover rounded-lg mb-8 shadow-lg"
                 />
                 

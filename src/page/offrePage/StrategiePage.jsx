@@ -2,11 +2,8 @@ import React, { useState, useEffect } from "react";
 import { H2 } from "@/components/Typographie";
 import { FaLongArrowAltRight } from "react-icons/fa"
 import OffreCard from "@/components/OffreCard";
-
+import DemandeDevis from "@/components/DemandeDevis";
 import { getData } from "@/service/api";
-
-
-
 
 function StrategiePage() {
 
@@ -41,11 +38,12 @@ function StrategiePage() {
     <div className="min-h-screen flex flex-col justify-start items-center  py-20 px-4">
       <H2>Stratégie & Conseil</H2>
 
-      <div className="max-w-7xl w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center gap-8 mt-10">
+      <div className="max-w-7xl w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center gap-8 mt-10 mb-3">
         {offreStrategie.map((section) => (
           <OffreCard key={section.id} section={section} />
         ))}
       </div>
+      <DemandeDevis offres={offreStrategie} />
     </div>
   );
 }

@@ -35,7 +35,7 @@
     const schemaUtilisateur = z.object(
       {
         username : z.string().min(2, 'Le nom est trop court.'),
-        email : z.string().email("L'email est incorrect."),
+        email : z.string().email("L'email est incorrect.").optional(),
         role : z.enum([ROLE_VALUES[0], ...ROLE_VALUES.slice(1)], {
           errorMap : () => ({ message : "Le role sélectionné n'est pas valide."})
         }),
@@ -151,7 +151,7 @@
                 </div>
 
                 {/* mot de passe */}
-                <div className="flex flex-col space-y-2">
+                {/* <div className="flex flex-col space-y-2">
                   <Label htmlFor="password" className="text-right text-gray-800 font-medium">Mot de passe :</Label>
                   <Input
                     id="password"
@@ -160,7 +160,7 @@
                     className="col-span-3 border-gray-400 text-gray-800 focus:border-indigo-500"
                   />
                   {errors.password && <p className='text-red-500 text-[12px]'>{errors.password.message}</p>}
-                </div>
+                </div> */}
 
                 {/* Champ image */}
                 <div className="flex flex-col space-y-2">

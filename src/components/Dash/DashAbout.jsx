@@ -133,6 +133,43 @@ function DashAbout() {
   }
 
  const filterAbout = about.filter((a) => a.titre && a.titre.toLowerCase().includes(filter.toLocaleLowerCase()));
+ const customStyles = {
+        headCells: {
+            style: {
+                fontSize: "0.9rem",
+                fontWeight: "700",
+                textTransform: "uppercase",
+                color: "#4b5563", // gray-600
+                paddingLeft: '16px',
+                paddingRight: '16px',
+                backgroundColor: '#f9fafb', // fond léger pour l'entête
+            },
+        },
+        rows: {
+            style: {
+                minHeight: '72px', // Augmente la hauteur de la ligne
+                fontSize: '14px',
+                fontWeight: 400,
+                color: '#1f2937', // gray-800
+                backgroundColor: 'white',
+                marginTop: '4px', // Crée un léger espacement entre les lignes
+                marginBottom: '4px',
+                borderRadius: '8px', // Optionnel : arrondit les lignes si combiné avec un margin
+                borderBottom: '1px solid #f3f4f6 !important',
+                '&:hover': {
+                    backgroundColor: '#f3f4f6', // Effet de survol plus doux
+                    cursor: 'pointer',
+                    transition: '0.2s',
+                },
+            },
+        },
+        cells: {
+            style: {
+                paddingLeft: '16px',
+                paddingRight: '16px',
+            },
+        },
+    }; 
 
   useEffect(() => {
     fetchData()
@@ -153,7 +190,7 @@ function DashAbout() {
       </div>
       <div className='w-full'>
         <DataTable title = "Liste des à propos :"
-        columns={colonnes} data={filterAbout} selectableRows responsive pagination highlightOnHover pointerOnHover stripe/>
+        columns={colonnes} data={filterAbout} selectableRows responsive pagination highlightOnHover pointerOnHover stripe customStyles={customStyles}/>
       </div>
     </div>
   )

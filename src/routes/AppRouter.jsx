@@ -11,6 +11,7 @@ const InscriptionPage = lazy(() => import("@/page/InscriptionPage"))
 const CommandePage = lazy(() => import("@/page/CommandePage"))
 const PresseActu = lazy(() => import("@/page/PresseActu"))
 const DashHome = lazy(() => import("@/components/Dash/DashHome"))
+const DashEtudiant = lazy(() => import("@/components/Dash/DashEtudiant"))
 const DashUser = lazy(() => import("@/components/Dash/DashUser"))
 const DashService = lazy(() => import("@/components/Dash/DashService"))
 const DashRegister = lazy(() => import("@/components/Dash/DashRegister"))
@@ -35,7 +36,7 @@ const ProductionPage = lazy(() => import("@/page/offrePage/ProductionPage"))
 const PublicitePage = lazy(() => import("@/page/offrePage/PublicitePage"))
 const EvenementielPage = lazy(() => import("@/page/offrePage/EvenementielPage"))
 const FormationPage = lazy(() => import("@/page/offrePage/FormationPage"))
-
+const Verification = lazy(() => import("@/page/Verification"))
 
 
 const Loader = () => <div className="h-screen flex items-center justify-center">Chargement...</div>;
@@ -121,6 +122,11 @@ const router = createBrowserRouter([
                 path : "actu_entreprise_detaille/:id",
                 element : <ActuEntrepriseDetaille/>
             },
+            {
+                path : "verification/:matricule",
+                element : <Verification/>,
+                errorElement: <div className="p-10 text-center">Oups ! Une erreur est survenue lors de la vérification.</div>
+            },
 
         ]
     },
@@ -151,6 +157,10 @@ const router = createBrowserRouter([
                     {
                         path : "dashInscription",
                         element : <DashRegister />,
+                    },
+                    {
+                        path : "dashEtudiant",
+                        element : <DashEtudiant />,
                     },
                     {
                         path : "dashCommande",

@@ -32,6 +32,8 @@ function HeaderDash() {
         return 'Utilisateurs';
       case 'dashInscription':
         return 'Inscriptions';
+      case 'dashEtudiant':
+        return 'Étudiants';
       case 'dashCommande':
         return 'Commandes';
       case 'dashCategorie':

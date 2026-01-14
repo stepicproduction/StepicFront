@@ -19,7 +19,7 @@ import {
 import { 
   LayoutDashboard, ShoppingCart, UserPlus, Newspaper, Briefcase, 
   FolderKanban, Video, User, Users, Info, MessagesSquare, 
-  Mail, Tags, Notebook, ChevronDown 
+  Mail, Tags, Notebook, ChevronDown, GraduationCap 
 } from 'lucide-react'
 import { useAuth } from '@/service/AuthContext'
 import { cn } from '@/lib/utils'
@@ -37,7 +37,8 @@ const MENU_GROUPS = [
     roles: ['admin'],
     items: [
       { titre: "Utilisateurs", url: "/dashboard/dashUtilisateur", icon: User },
-      { titre: "Inscriptions", url: "/dashboard/dashInscription", icon: UserPlus }
+      { titre: "Inscriptions", url: "/dashboard/dashInscription", icon: UserPlus },
+      { titre: "Étudiants", url: "/dashboard/dashEtudiant", icon: GraduationCap },
     ]
   },
   {
