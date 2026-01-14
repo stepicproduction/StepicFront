@@ -162,23 +162,38 @@ const AssistantIA = () => {
                         </div>
 
                         {/* Zone de saisie */}
-                        <div className="p-4 bg-white border-t flex gap-2">
-                            <input 
-                                value={message} 
-                                onChange={(e) => setMessage(e.target.value)} 
-                                onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                                placeholder="Posez une question..." 
-                                className="flex-1 bg-gray-100 p-3 rounded-xl text-sm outline-none focus:ring-2 ring-[#6c63ff]/20 transition-all"
-                                disabled={loading}
-                            />
-                            <button 
-                                onClick={handleSend}
-                                disabled={loading || !message.trim()}
-                                className="bg-[#6c63ff] p-3 rounded-xl text-white hover:bg-[#5a52e0] disabled:opacity-50 transition-colors shadow-lg flex items-center justify-center"
-                            >
-                                {loading ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
-                            </button>
-                        </div>
+                       {/* Zone de saisie - On utilise items-end pour gérer les sauts de ligne si besoin */}
+<div className="p-4 bg-white border-t border-gray-100 shrink-0">
+    <div className="flex items-center gap-2 w-full"> 
+        {/* L'input est enveloppé pour contrôler sa croissance */}
+        <div className="relative flex-1 min-w-0"> 
+            <input 
+                value={message} 
+                onChange={(e) => setMessage(e.target.value)} 
+                onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                placeholder="Posez votre question..." 
+                className="w-full bg-gray-50 p-3 pr-2 rounded-xl text-sm border border-transparent focus:border-[#6c63ff] focus:bg-white outline-none transition-all"
+                disabled={loading}
+            />
+        </div>
+
+        {/* Le bouton a une taille fixe (shrink-0) pour ne JAMAIS être caché ou écrasé */}
+        <button 
+            onClick={handleSend}
+            disabled={loading || !message.trim()}
+            className="flex-none shrink-0 w-11 h-11 bg-[#6c63ff] rounded-xl text-white hover:bg-[#5a52e0] disabled:opacity-50 disabled:grayscale transition-all shadow-md flex items-center justify-center active:scale-95"
+        >
+            {loading ? (
+                <Loader2 size={18} className="animate-spin" />
+            ) : (
+                <Send size={18} className="translate-x-0.5" /> 
+            )}
+        </button>
+    </div>
+    <p className="text-[9px] text-gray-400 text-center mt-2 uppercase tracking-tighter">
+        Propulsé par Stepic IA
+    </p>
+</div>
                     </motion.div>
                 )}
             </AnimatePresence>
