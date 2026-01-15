@@ -158,7 +158,7 @@ function ActualiteSection() {
           {!isMobile && (
               <motion.div variants={imageVariants} className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
                 {presse.map(p => (
-                  <ActuCard key={p.id} id={p.id} image={p.image} date_pub={p.date_pub} contenu={p.contenu} titre={p.titre} value='info' />
+                  <ActuCard key={p.id} id={p.id} image={p.image} date_pub={p.date_pub} contenu={p.contenu} titre={p.titre} value='infos' />
                 ))}
                 {actu.map(p => (
                   <ActuCard key={p.id} id={p.id} image={p.imageActu} date_pub={p.datePub} contenu={p.contenuActu} titre={p.titreActu} value='entreprise' />

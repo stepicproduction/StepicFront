@@ -311,7 +311,7 @@ const PresseActu = () => {
           )}
 
           {presse.length === 0 && (
-            <p className="text-center text-gray-500">Aucune info presse.</p>
+            <p className="text-center text-gray-500">Aucune infos presse.</p>
           )}
         </TabsContent>
 

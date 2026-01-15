@@ -68,15 +68,15 @@ function AboutDetaille() {
   }, []);
 
   const partenaires = [
-    { id: 1, name: "Partenaire 1", image: img1, link: "https://www.actioncontrelafaim.org/" },
-    { id: 2, name: "Partenaire 2", image: img2, link: "https://www.welthungerhilfe.org/" },
-    { id: 3, name: "Partenaire 3", image: img3, link: "https://madagascar.fes.de/index.html" },
+    { id: 1, name: "Partenaire 1", image: img1, link: "https://www.actioncontrelafaim.org/nos-operations/madagascar/" },
+    { id: 2, name: "Partenaire 2", image: img2, link: "https://www.welthungerhilfe.org/what-we-do/countries/madagascar" },
+    { id: 3, name: "Partenaire 3", image: img3},
     { id: 4, name: "Partenaire 4", image: img4, link: "https://www.transparency.mg/" },
     { id: 5, name: "Partenaire 5", image: img5, link: "https://mihari-network.org/" },
-    { id: 6, name: "Partenaire 6", image: img6, link: "https://www.secours-islamique.org/" },
-    { id: 7, name: "Partenaire 7", image: img7, link: "https://msis-tatao.org/education/score/" },
+    { id: 6, name: "Partenaire 6", image: img6, link: "https://www.secours-islamique.org/nos-actions/missions-internationales/don-madagascar" },
+    { id: 7, name: "Partenaire 7", image: img7, link: "https://www.facebook.com/ScoreEducation/?locale=fr_FR" },
     { id: 8, name: "Partenaire 8", image: img8, link: "https://www.facebook.com/Ordre.des.journalistes.de.Madagascar" },
-    { id: 9, name: "Partenaire 9", image: img9, link: "https://jcimada.org/" },
+    { id: 9, name: "Partenaire 9", image: img9, link: "https://www.facebook.com/jci.toliara/?locale=fr_FR" },
     { id: 10, name: "Partenaire 10", image: img10, link: "https://www.facebook.com/consultingplusmadagascar" },
   ];
 
@@ -119,7 +119,7 @@ function AboutDetaille() {
           className="w-full md:w-[50%] lg:w-[45%] text-justify px-4 text-black"
           initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fromLeft}
           >
-          <H2>Notre Mission</H2>
+          <H2>Nos Objectifs</H2>
           <p className='text-sm sm:text-base leading-relaxed sm:leading-loose mb-4'>
             {about.length > 0 ? (about.find((item) => item.id === 2 ) || {}).contenu : 'chargement...'}
           </p>
