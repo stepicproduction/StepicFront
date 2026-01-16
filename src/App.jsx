@@ -11,6 +11,21 @@ function App() {
 
   const isMaintenanceMode = false; // Mettre à true pour activer le mode maintenance
 
+    // Détection globale des erreurs de chargement de modules
+  window.addEventListener('error', (e) => {
+    if (e.message.includes('Failed to fetch dynamically imported module') || 
+        e.message.includes('Importing a module script failed')) {
+      window.location.reload();
+    }
+  }, true);
+
+  // Optionnel : Capturer aussi les erreurs de promesses rejetées (pour certains navigateurs)
+  window.addEventListener('unhandledrejection', (e) => {
+    if (e.reason?.message?.includes('Failed to fetch dynamically imported module')) {
+      window.location.reload();
+    }
+});
+
   return (
     <>
       {isMaintenanceMode ? <Maintenance /> : (
