@@ -64,13 +64,13 @@ const DemandeDevis = ({ offres }) => {
             <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tight">
               Prêt pour l'ascension ?
             </h2>
-            <p className="text-purple-100 text-lg md:text-xl max-w-2xl mb-12 font-medium">
+            <p className="text-purple-100 text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl mb-12 font-medium">
               Transformez vos idées en résultats concrets. Nos experts sont prêts à propulser votre projet vers le sommet.
             </p>
 
             <button
               onClick={() => setIsOpen(true)}
-              className="group bg-white text-[#8a2be2] px-12 py-5 rounded-full font-black text-xl shadow-2xl hover:scale-105 transition-all flex items-center gap-4"
+              className="group bg-white text-[#8a2be2] px-4 py-3 md:px-12 md:py-5 rounded-full font-black text-sm sm:text-base md:text-lg lg:text-xl shadow-2xl hover:scale-105 transition-all flex items-center gap-4"
             >
               Obtenir mon devis gratuit
               <ArrowRight className="group-hover:translate-x-2 transition-transform" />
@@ -97,16 +97,16 @@ const DemandeDevis = ({ offres }) => {
                     <X size={24} />
                 </button>
                 
-                <h3 className="text-5xl font-black text-gray-900 leading-none mb-6">
+                <h3 className="text-3xl sm:text-5xl font-black text-gray-900 leading-none mb-6">
                     LANCEZ <br/><span className="text-[#8a2be2]">LE PROJET.</span>
                 </h3>
-                <p className="text-gray-500 font-medium leading-relaxed">
+                <p className="text-gray-500 text-sm sm:text-base font-medium leading-relaxed">
                     Remplissez ces quelques informations. Nous analysons votre demande et revenons vers vous avec une stratégie sur-mesure.
                 </p>
             </div>
 
             {/* Colonne de droite : Champs de saisie */}
-            <div className="lg:w-2/3 p-12 md:p-24 bg-white flex items-center">
+            <div className="lg:w-2/3 p-4 md:p-24 bg-white flex items-center">
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
         
                     {/* Champ Nom Complet */}
