@@ -14,7 +14,7 @@ const ActuCard = ({id, image, imageActu, contenu, contenuActu, date_pub, datePub
 
     const isEntreprise = value === 'entreprise';
 
-    const category = isEntreprise ? "Entreprise" : "Info-Presse";
+    const category = isEntreprise ? "Entreprise" : "Infos-Presse";
 
     const buttonName = isEntreprise ? "Voir le detail" : "Lire l'article";
 
