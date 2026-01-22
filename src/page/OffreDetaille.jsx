@@ -113,15 +113,15 @@ const OffreDetaille = () => {
     <div className="relative flex flex-col min-h-screen bg-white">
 
       <Helmet>
-        <title>STEPIC Madagascar - Offres</title>
+        <title>STEPIC Madagascar-Tuléar - Offres</title>
         <meta name="description" content="Une gamme complète de services adaptée à vos projets et ambitions." />
-        <meta property="og:title" content="STEPIC Madagascar - Offres" />
+        <meta property="og:title" content="STEPIC Madagascar-Tuléar - Offres" />
         <meta property="og:description" content="Une gamme complète de services adaptée à vos projets et ambitions." />
         <meta property="og:image" content="https://www.stepic-mada.com/logo.png" />
         <meta property="og:url" content="https://www.stepic-mada.com/offre" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="STEPIC Madagascar - Offres" />
+        <meta name="twitter:title" content="STEPIC Madagascar-Tuléar - Offres" />
         <meta name="twitter:description" content="Une gamme complète de services adaptée à vos projets et ambitions." />
         <meta name="twitter:image" content="https://www.stepic-mada.com/logo.png" />
       </Helmet>

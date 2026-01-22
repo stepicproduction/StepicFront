@@ -160,15 +160,15 @@ function CommandePage() {
         <div className="pt-[150px] flex flex-col gap-6 pb-7 text-black relative min-h-[80vh]"> {/* Ajoute 'relative' pour le positionnement du confetti */}
 
             <Helmet>
-                <title>STEPIC Madagascar - Inscriptions</title>
+                <title>STEPIC Madagascar-Tuléar - Inscriptions</title>
                 <meta name="description" content="Rejoignez nos programmes de formation et donnez un coup d’accélérateur à votre carrière." />
-                <meta property="og:title" content="STEPIC Madagascar - Inscriptions" />
+                <meta property="og:title" content="STEPIC Madagascar-Tuléar - Inscriptions" />
                 <meta property="og:description" content="Rejoignez nos programmes de formation et donnez un coup d’accélérateur à votre carrière." />
                 <meta property="og:image" content="https://www.stepic-mada.com/logo.png" />
                 <meta property="og:url" content="https://www.stepic-mada.com/inscription" />
                 <meta property="og:type" content="website" />
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="STEPIC Madagascar - Inscriptions" />
+                <meta name="twitter:title" content="STEPIC Madagascar-Tuléar - Inscriptions" />
                 <meta name="twitter:description" content="Rejoignez nos programmes de formation et donnez un coup d’accélérateur à votre carrière." />
                 <meta name="twitter:image" content="https://www.stepic-mada.com/logo.png" />
             </Helmet>       

@@ -88,16 +88,16 @@ function ContactPage() {
     <div id="contact" className="bg-white">
       
       <Helmet>
-        <title>STEPIC Madagascar - Contact</title>
-        <meta name="description" content="Contactez STEPIC Madagascar pour toutes vos questions ou demandes de services." />
-        <meta property="og:title" content="STEPIC Madagascar - Contact" />
-        <meta property="og:description" content="Contactez STEPIC Madagascar pour toutes vos questions ou demandes de services." />
+        <title>STEPIC Madagascar-Tuléar - Contact</title>
+        <meta name="description" content="Contactez STEPIC Madagascar-Tuléar pour toutes vos questions ou demandes de services." />
+        <meta property="og:title" content="STEPIC Madagascar-Tuléar - Contact" />
+        <meta property="og:description" content="Contactez STEPIC Madagascar-Tuléar pour toutes vos questions ou demandes de services." />
         <meta property="og:image" content="https://www.stepic-mada.com/logo.png" />
         <meta property="og:url" content="https://www.stepic-mada.com/contact" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="STEPIC Madagascar - Contact" />
-        <meta name="twitter:description" content="Contactez STEPIC Madagascar pour toutes vos questions ou demandes de services." />
+        <meta name="twitter:title" content="STEPIC Madagascar-Tuléar - Contact" />
+        <meta name="twitter:description" content="Contactez STEPIC Madagascar-Tuléar pour toutes vos questions ou demandes de services." />
         <meta name="twitter:image" content="https://www.stepic-mada.com/logo.png" />
       </Helmet>
 

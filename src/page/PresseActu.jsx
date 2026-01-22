@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"; 
 import { getData } from '@/service/api';
@@ -13,62 +13,60 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { formatDate } from '@/service/formatDate';
-
-
+import { cn } from "@/lib/utils"; // Assurez-vous d'avoir cet utilitaire shadcn
 
 /* ---------------- HOOK MOBILE ---------------- */
 function useIsMobile(breakpoint = 768) {
-  const [isMobile, setIsMobile] = useState(
-    window.innerWidth < breakpoint
-  );
-
+  const [isMobile, setIsMobile] = useState(window.innerWidth < breakpoint);
   useEffect(() => {
-    const onResize = () =>
-      setIsMobile(window.innerWidth < breakpoint);
+    const onResize = () => setIsMobile(window.innerWidth < breakpoint);
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, [breakpoint]);
-
   return isMobile;
 }
 
-
 const truncateText = (text, maxLength) => {
   if (!text) return "";
-  if (text.length <= maxLength) {
-    return text;
-  }
-  // Tronque au dernier mot complet avant la limite
+  if (text.length <= maxLength) return text;
   const trimmedString = text.substring(0, maxLength);
   return trimmedString.substring(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" "))) + '...';
 }
 
-// --- 2. COMPOSANT CARTE (Image à gauche, Texte à droite) ---
+/* ---------------- COMPOSANT INDICATEURS ---------------- */
+const CarouselDots = ({ api, count, current }) => {
+  if (!api || count <= 1) return null;
+  
+  return (
+    <div className="flex justify-center gap-2 mt-4">
+      {Array.from({ length: count }).map((_, i) => (
+        <button
+          key={i}
+          onClick={() => api.scrollTo(i)}
+          className={cn(
+            "h-2 rounded-full transition-all duration-300",
+            current === i ? "bg-sky-600 w-6" : "bg-gray-300 w-2"
+          )}
+        />
+      ))}
+    </div>
+  );
+};
+
 const ArticleCard = ({ item, categoryLabel = "ACTUALITE", tabValue }) => {
-
   const navigate = useNavigate();
-
   const title = item.titre || item.titreActu;
   const description = item.contenu || item.contenuActu;
   const imageSrc = item.image || item.imageActu;
   const datePub = item.datePub || item.date_pub;
-
   const notEntreprise = tabValue !== "entreprise";
-
   const DESCRIPTION_MAX_LENGTH = 180;
-
   const authorInfo = item.source || `STEPIC INFOS`
 
   const handleViewMore = () => {
-    if (notEntreprise) {
-      navigate("/actu_detaille/" + item.id);
-    } else {
-      navigate("/actu_entreprise_detaille/" + item.id);
-    }
-    
-  }
-
- 
+    if (notEntreprise) navigate("/actu_detaille/" + item.id);
+    else navigate("/actu_entreprise_detaille/" + item.id);
+  } 
 
   return(
 
@@ -123,53 +121,61 @@ const ArticleCard = ({ item, categoryLabel = "ACTUALITE", tabValue }) => {
 
 // --- 3. TON COMPOSANT PRINCIPAL ---
 const PresseActu = () => {
-
-  const [actu, setActu] = useState([])
-  const [presse, setPresse] = useState([])
+  const [actu, setActu] = useState([]);
+  const [presse, setPresse] = useState([]);
   const isMobile = useIsMobile();
+
+  // États pour les indicateurs (1 par carrousel)
+  const [apiActu, setApiActu] = useState(null);
+  const [apiPresse, setApiPresse] = useState(null);
+  const [currentActu, setCurrentActu] = useState(0);
+  const [currentPresse, setCurrentPresse] = useState(0);
+
+  // Sync pour le carrousel Actualités
+  useEffect(() => {
+    if (!apiActu) return;
+    apiActu.on("select", () => setCurrentActu(apiActu.selectedScrollSnap()));
+  }, [apiActu]);
+
+  // Sync pour le carrousel Presse
+  useEffect(() => {
+    if (!apiPresse) return;
+    apiPresse.on("select", () => setCurrentPresse(apiPresse.selectedScrollSnap()));
+  }, [apiPresse]);
 
   const fetchActu = async () => {
     try {
-      const response = await getData("actualites/")
-      console.log(response.data)
-      setActu(response.data)
-    } catch (err) {
-      console.log("Erreur lors de la récupération de l'actualité concernant l'entreprise : ", err)
-    }
+      const response = await getData("actualites/");
+      setActu(response.data);
+    } catch (err) { console.log(err); }
   }
 
   const fetchPresse = async () => {
     try {
-      const response = await getData("presses/")
-      console.log(response.data)
-      setPresse(response.data)
-    } catch (err) {
-      console.log("Erreur lors de la récupération de la presse de l'entreprise : ", err)
-    }
+      const response = await getData("presses/");
+      setPresse(response.data);
+    } catch (err) { console.log(err); }
   }
 
-  // Fonction appelée par ArticleCard
   useEffect(() => {
-    Promise.all([
-      fetchActu(),
-      fetchPresse(),      
-    ])
-  }, [])
+    fetchActu();
+    fetchPresse();
+  }, []);
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-start bg-white text-black py-10 px-4 sm:px-6 md:px-16 lg:px-24 xl:px-32 max-w-7xl mx-auto pt-15 relative">
 
       <Helmet>
-        <title>STEPIC Madagascar - Presse & Actualités</title>
-        <meta name="description" content="Découvrez les dernières actualités et presse de STEPIC Madagascar." />
-        <meta property="og:title" content="STEPIC Madagascar - Presse & Actualités" />
-        <meta property="og:description" content="Découvrez les dernières actualités et presse de STEPIC Madagascar." />
+        <title>STEPIC Madagascar-Tuléar - Presse & Actualités</title>
+        <meta name="description" content="Découvrez les dernières actualités et presse de STEPIC Madagascar-Tuléar." />
+        <meta property="og:title" content="STEPIC Madagascar-Tuléar - Presse & Actualités" />
+        <meta property="og:description" content="Découvrez les dernières actualités et presse de STEPIC Madagascar-Tuléar." />
         <meta property="og:image" content="https://www.stepic-mada.com/logo.png" />
         <meta property="og:url" content="https://www.stepic-mada.com/presse-actu" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="STEPIC Madagascar - Presse & Actualités" />
-        <meta name="twitter:description" content="Découvrez les dernières actualités et presse de STEPIC Madagascar." />
+        <meta name="twitter:title" content="STEPIC Madagascar-Tuléar - Presse & Actualités" />
+        <meta name="twitter:description" content="Découvrez les dernières actualités et presse de STEPIC Madagascar-Tuléar." />
         <meta name="twitter:image" content="https://www.stepic-mada.com/logo.png" />
       </Helmet>
       
@@ -240,81 +246,60 @@ const PresseActu = () => {
       </div>
     </div>
       <Tabs defaultValue="entreprise" className="w-full">
-        
-        {/* Liste des onglets */}
-        <TabsList className="w-full sm:w-auto flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 lg:gap-8 bg-transparent mb-12 mt-10 mx-auto">
-          <TabsTrigger
-            value="entreprise"
-            className="text-base sm:text-lg font-semibold text-black px-6 py-3 rounded-xl transition-all
-              data-[state=active]:bg-gradient-to-r data-[state=active]:from-sky-400 
-              data-[state=active]:via-indigo-600 data-[state=active]:to-purple-600 
-              data-[state=active]:text-white shadow-md"
-          >
+        <TabsList className="w-full sm:w-auto flex flex-wrap justify-center gap-3 sm:gap-4 bg-transparent mb-12 mt-10 mx-auto">
+          <TabsTrigger value="entreprise" className="text-base sm:text-lg font-semibold data-[state=active]:bg-sky-600 data-[state=active]:text-white px-6 py-3 rounded-xl transition-all shadow-md">
             ENTREPRISE
           </TabsTrigger>
-
-          <TabsTrigger
-            value="info"
-            className="text-base sm:text-lg font-semibold text-black px-6 py-3 rounded-xl transition-all
-              data-[state=active]:bg-gradient-to-r data-[state=active]:from-sky-400 
-              data-[state=active]:via-indigo-600 data-[state=active]:to-purple-600 
-              data-[state=active]:text-white shadow-md"
-          >
+          <TabsTrigger value="info" className="text-base sm:text-lg font-semibold data-[state=active]:bg-sky-600 data-[state=active]:text-white px-6 py-3 rounded-xl transition-all shadow-md">
             INFOS & PRESSE
           </TabsTrigger>
         </TabsList>
 
-        {/* --- Contenu Entreprise --- */}
-        <TabsContent value="entreprise" className="w-full flex flex-col gap-6 animate-in fade-in zoom-in duration-300">
-          {!isMobile && actu.map((item) => (
-            <ArticleCard key={item.id} item={item} tabValue="entreprise" />
-          ))}
-
-          {isMobile && (
-            <Carousel className="max-w-[400px] mx-auto">
-              <CarouselContent>
-                {actu.map(item => (
-                <CarouselItem key={item.id} className="min-w-[85%]">
-                  <ArticleCard key={item.id} item={item} tabValue="entreprise" />
-                </CarouselItem>
-              ))}
-              </CarouselContent>
-              <CarouselPrevious className="text-black cursor-pointer"/>
-              <CarouselNext className="text-black cursor-pointer"/>
-            </Carousel>
+        {/* --- Onglet Entreprise --- */}
+        <TabsContent value="entreprise" className="w-full flex flex-col gap-6">
+          {!isMobile ? (
+            actu.map((item) => <ArticleCard key={item.id} item={item} tabValue="entreprise" />)
+          ) : (
+            <>
+              <Carousel setApi={setApiActu} className="w-full max-w-[400px] mx-auto">
+                <CarouselContent>
+                  {actu.map(item => (
+                    <CarouselItem key={item.id} className="pl-4">
+                      <ArticleCard item={item} tabValue="entreprise" />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="hidden" /> {/* On cache les flèches sur mobile pour laisser place aux points */}
+                <CarouselNext className="hidden" />
+              </Carousel>
+              <CarouselDots api={apiActu} count={actu.length} current={currentActu} />
+            </>
           )}
-          
-          {/* Message si vide (au cas où) */}
-          {actu.length === 0 && (
-            <p className="text-center text-gray-500">Aucune actualité entreprise.</p>
-          )}
+          {actu.length === 0 && <p className="text-center text-gray-500">Aucune actualité entreprise.</p>}
         </TabsContent>
 
-        {/* --- Contenu Infos --- */}
-        <TabsContent value="info" className="w-full flex flex-col gap-6 animate-in fade-in zoom-in duration-300">
-          {!isMobile && presse.map((item) => (
-            <ArticleCard key={item.id} item={item} tabValue="info" />
-          ))}
-
-          {isMobile && (
-            <Carousel className="max-w-[400px] mx-auto">
-              <CarouselContent>
-                {presse.map(item => (
-                <CarouselItem key={item.id} className="min-w-[85%]">
-                  <ArticleCard key={item.id} item={item} tabValue="info" />
-                </CarouselItem>
-              ))}
-              </CarouselContent>
-              <CarouselPrevious className="text-black cursor-pointer"/>
-              <CarouselNext className="text-black cursor-pointer"/>
-            </Carousel>
+        {/* --- Onglet Infos --- */}
+        <TabsContent value="info" className="w-full flex flex-col gap-6">
+          {!isMobile ? (
+            presse.map((item) => <ArticleCard key={item.id} item={item} tabValue="info" />)
+          ) : (
+            <>
+              <Carousel setApi={setApiPresse} className="w-full max-w-[400px] mx-auto">
+                <CarouselContent>
+                  {presse.map(item => (
+                    <CarouselItem key={item.id} className="pl-4">
+                      <ArticleCard item={item} tabValue="info" />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="hidden" />
+                <CarouselNext className="hidden" />
+              </Carousel>
+              <CarouselDots api={apiPresse} count={presse.length} current={currentPresse} />
+            </>
           )}
-
-          {presse.length === 0 && (
-            <p className="text-center text-gray-500">Aucune infos presse.</p>
-          )}
+          {presse.length === 0 && <p className="text-center text-gray-500">Aucune infos presse.</p>}
         </TabsContent>
-
       </Tabs>
     </div>
   );

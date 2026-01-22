@@ -39,10 +39,10 @@ function HomePage() {
     <div className='relative'>
 
       <Helmet>
-        <title>STEPIC Madagascar - Accueil</title>
-        <meta name="description" content="Découvrez STEPIC Madagascar : nos services, formations et projets." />
-        <meta property="og:title" content="STEPIC Madagascar - Accueil" />
-        <meta property="og:description" content="Découvrez STEPIC Madagascar : nos services, formations et projets." />
+        <title>STEPIC Madagascar-Tuléar - Accueil</title>
+        <meta name="description" content="Découvrez STEPIC Madagascar-Tuléar : nos services, formations et projets." />
+        <meta property="og:title" content="STEPIC Madagascar-Tuléar - Accueil" />
+        <meta property="og:description" content="Découvrez STEPIC Madagascar-Tuléar : nos services, formations et projets." />
         <meta property="og:image" content="https://www.stepic-mada.com/logo.png" />
         <meta property="og:url" content="https://www.stepic-mada.com/" />
       </Helmet>   
