@@ -39,10 +39,46 @@ import img7 from '../assets/image7.webp';
 import img8 from '../assets/image8.webp';
 import img9 from '../assets/image9.webp';
 import img10 from '../assets/image10.webp';
+import { cn } from "@/lib/utils"
+
+/* ---------------- COMPOSANT INDICATEURS ---------------- */
+const CarouselDots = ({ api, count, current }) => {
+  if (!api || count <= 1) return null;
+  
+  return (
+    <div className="flex justify-center gap-2 mt-4">
+      {Array.from({ length: count }).map((_, i) => (
+        <button
+          key={i}
+          onClick={() => api.scrollTo(i)}
+          className={cn(
+            "h-2 rounded-full transition-all duration-300",
+            current === i ? "bg-sky-600 w-6" : "bg-gray-300 w-2"
+          )}
+        />
+      ))}
+    </div>
+  );
+};
 
 function AboutDetaille() {
   const [about, setAbout] = useState([]);
   const [equipe, setEquipe] = useState([]);
+
+  const formations = [
+    {img: langue, title:"Langues étrangères", desc:"Acquérir une maîtrise linguistique solide et s’ouvrir à de nouvelles perspectives internationales."},
+    {img: multimedia, title:"Multimédia", desc:"Se former aux métiers créatifs et devenir acteur des innovations du monde moderne."},
+    {img: informatique, title:"Informatique (+ maintenance)", desc:"Renforcer son efficacité et sa confiance dans l’usage des outils technologiques."}
+  ]
+
+  const [apiFormation, setApiFormation] = useState(null);
+  const [currentFormation, setCurrentFormation] = useState(0);
+
+
+  useEffect(() => {
+      if (!apiFormation) return;
+      apiFormation.on("select", () => setCurrentFormation(apiFormation.selectedScrollSnap()));
+    }, [apiFormation]);
 
   useEffect(() => {
     const fetchAboutDetaille = async () => {
@@ -174,26 +210,26 @@ function AboutDetaille() {
           <H2>Nos Formations</H2>
           <p className='text-sm sm:text-base leading-relaxed sm:leading-loose mb-4'>Au-delà de nos prestations de communication, nous proposons des formations pratiques et professionnelles dans trois domaines clés :</p>
         </motion.div>
-        <Carousel className="w-full md:w-[400px] lg:w-[450px] xl:w-[500px] h-auto px-2 py-3">
-          <CarouselContent className="m-auto">
-            {[{img: langue, title:"Langues étrangères", desc:"Acquérir une maîtrise linguistique solide et s’ouvrir à de nouvelles perspectives internationales."},
-              {img: multimedia, title:"Multimédia", desc:"Se former aux métiers créatifs et devenir acteur des innovations du monde moderne."},
-              {img: informatique, title:"Informatique (+ maintenance)", desc:"Renforcer son efficacité et sa confiance dans l’usage des outils technologiques."}
-            ].map((item, idx) => (
-              <CarouselItem key={idx}>
-                <Card className="w-[90%] sm:w-[350px] md:w-[400px] bg-blue-900/70 text-white border border-white/20 shadow-xl shadow-indigo-500/50 px-[15px] py-[20px] m-auto backdrop-blur-lg">
-                  <div className="w-[85%] m-auto"><img src={item.img} loading='lazy' alt={item.title}/></div>
-                  <CardHeader className="text-gray-900">
-                    <CardTitle className="text-center text-lg mb-1.5">{item.title}</CardTitle>
-                    <CardDescription className="text-white">{item.desc}</CardDescription>
-                  </CardHeader>
-                </Card>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="text-black cursor-pointer"/>
-          <CarouselNext className="text-black cursor-pointer"/>
-        </Carousel>
+        <div className="w-full md:w-[400px] lg:w-[450px] xl:w-[500px]">  
+          <Carousel setApi={apiFormation} className="h-auto px-2 py-3">
+            <CarouselContent className="m-auto">
+              {formations.map((item, idx) => (
+                <CarouselItem key={idx}>
+                  <Card className="w-[90%] sm:w-[350px] md:w-[400px] bg-blue-900/70 text-white border border-white/20 shadow-xl shadow-indigo-500/50 px-[15px] py-[20px] m-auto backdrop-blur-lg">
+                    <div className="w-[85%] m-auto"><img src={item.img} loading='lazy' alt={item.title}/></div>
+                    <CardHeader className="text-gray-900">
+                      <CardTitle className="text-center text-lg mb-1.5">{item.title}</CardTitle>
+                      <CardDescription className="text-white">{item.desc}</CardDescription>
+                    </CardHeader>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="text-black cursor-pointer"/>
+            <CarouselNext className="text-black cursor-pointer"/>
+          </Carousel>
+          <CarouselDots api={apiFormation} count={formations.length} current={currentFormation} />
+        </div>
       </motion.div>
 
       {/* -------- Particularité -------- */}

@@ -106,7 +106,7 @@ const ArticleCard = ({ item, categoryLabel = "ACTUALITE", tabValue }) => {
         </p>
 
         {/* Bouton Voir Plus */}
-        <button className="text-sm font-semibold text-gray-900 border border-gray-300 px-4 py-2 rounded hover:bg-sky-600 hover:text-gray-200 transition duration-300 self-start mt-auto cursor-pointer"
+        <button className="text-sm font-semibold text-gray-900 border border-gray-300 px-4 py-2 rounded hover:bg-[#6c63ff] hover:text-gray-200 transition duration-300 self-start mt-auto cursor-pointer"
           onClick={(e) => {
             e.stopPropagation(); // Empêche l'événement de cliquer sur la carte de se déclencher
             handleViewMore();
@@ -161,6 +161,9 @@ const PresseActu = () => {
     fetchActu();
     fetchPresse();
   }, []);
+
+  const orderedActu = [...actu].reverse()
+  const orderedPresse = [...presse].reverse();
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-start bg-white text-black py-10 px-4 sm:px-6 md:px-16 lg:px-24 xl:px-32 max-w-7xl mx-auto pt-15 relative">
@@ -247,10 +250,10 @@ const PresseActu = () => {
     </div>
       <Tabs defaultValue="entreprise" className="w-full">
         <TabsList className="w-full sm:w-auto flex flex-wrap justify-center gap-3 sm:gap-4 bg-transparent mb-12 mt-10 mx-auto">
-          <TabsTrigger value="entreprise" className="text-base sm:text-lg font-semibold data-[state=active]:bg-sky-600 data-[state=active]:text-white px-6 py-3 rounded-xl transition-all shadow-md">
+          <TabsTrigger value="entreprise" className="text-base sm:text-lg font-semibold data-[state=active]:bg-[#6c63ff] data-[state=active]:text-white px-6 py-3 rounded-xl transition-all shadow-md">
             ENTREPRISE
           </TabsTrigger>
-          <TabsTrigger value="info" className="text-base sm:text-lg font-semibold data-[state=active]:bg-sky-600 data-[state=active]:text-white px-6 py-3 rounded-xl transition-all shadow-md">
+          <TabsTrigger value="info" className="text-base sm:text-lg font-semibold data-[state=active]:bg-[#6c63ff] data-[state=active]:text-white px-6 py-3 rounded-xl transition-all shadow-md">
             INFOS & PRESSE
           </TabsTrigger>
         </TabsList>
@@ -258,12 +261,12 @@ const PresseActu = () => {
         {/* --- Onglet Entreprise --- */}
         <TabsContent value="entreprise" className="w-full flex flex-col gap-6">
           {!isMobile ? (
-            actu.map((item) => <ArticleCard key={item.id} item={item} tabValue="entreprise" />)
+            orderedActu.map((item) => <ArticleCard key={item.id} item={item} tabValue="entreprise" />)
           ) : (
             <>
               <Carousel setApi={setApiActu} className="w-full max-w-[400px] mx-auto">
                 <CarouselContent>
-                  {actu.map(item => (
+                  {orderedActu.map(item => (
                     <CarouselItem key={item.id} className="pl-4">
                       <ArticleCard item={item} tabValue="entreprise" />
                     </CarouselItem>
@@ -281,12 +284,12 @@ const PresseActu = () => {
         {/* --- Onglet Infos --- */}
         <TabsContent value="info" className="w-full flex flex-col gap-6">
           {!isMobile ? (
-            presse.map((item) => <ArticleCard key={item.id} item={item} tabValue="info" />)
+            orderedPresse.map((item) => <ArticleCard key={item.id} item={item} tabValue="info" />)
           ) : (
             <>
               <Carousel setApi={setApiPresse} className="w-full max-w-[400px] mx-auto">
                 <CarouselContent>
-                  {presse.map(item => (
+                  {orderedPresse.map(item => (
                     <CarouselItem key={item.id} className="pl-4">
                       <ArticleCard item={item} tabValue="info" />
                     </CarouselItem>

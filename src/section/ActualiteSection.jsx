@@ -11,6 +11,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { cn } from "@/lib/utils"
 
 
 
@@ -29,13 +30,42 @@ function useIsMobile(breakpoint = 1080) {
   return isMobile;
 }
 
+const CarouselDots = ({ api, count, current }) => {
+  if (!api || count <= 1) return null;
+  
+  return (
+    <div className="flex justify-center gap-2 mt-4">
+      {Array.from({ length: count }).map((_, i) => (
+        <button
+          key={i}
+          onClick={() => api.scrollTo(i)}
+          className={cn(
+            "h-2 rounded-full transition-all duration-300",
+            current === i ? "bg-sky-600 w-6" : "bg-gray-300 w-2"
+          )}
+        />
+      ))}
+    </div>
+  );
+};
+
 function ActualiteSection() {
   const navigate = useNavigate(); 
   const [isVisible, setIsVisible] = useState(false);
   const [actu, setActu] = useState([])
   const [presse, setPresse] = useState([])
   const isMobile = useIsMobile();
- const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+
+ // États pour les indicateurs (1 par carrousel)
+  const [apiActu, setApiActu] = useState(null);
+  const [currentActu, setCurrentActu] = useState(0);
+
+  useEffect(() => {
+      if (!apiActu) return;
+      apiActu.on("select", () => setCurrentActu(apiActu.selectedScrollSnap()));
+    }, [apiActu]);
+  
 
   const fetchData = async () => {
     setLoading(true);
@@ -104,6 +134,10 @@ function ActualiteSection() {
     type: "actu"
   }))
 ]
+  const combinedLength = actu.length + presse.length;
+  //console.log(combinedLength)
+
+  // Si aucune actu ni presse
 
   if(actu.length === 0 && presse.length === 0) {
     return(
@@ -123,7 +157,7 @@ function ActualiteSection() {
   return (
     <motion.div
       id="actualite"
-      className="py-10 px-4 sm:px-8 md:py-20 md:px-32 max-w-7xl mx-auto overflow-hidden"
+      className="py-10 px-5 md:px-36 max-w-7xl mx-auto overflow-hidden"
       variants={containerVariants}
       initial="hidden"
       animate={isVisible ? "visible" : "hidden"}
@@ -133,9 +167,9 @@ function ActualiteSection() {
                   {/* Texte */}
           <motion.div variants={textVariants} className="w-full mt-10 xl:mt-0">
             <H2 className="text-center mb-6">{/* Animate if needed */}Actualités</H2>
-              <div className="bg-white w-full h-full rounded-2xl flex flex-col justify-center p-6 sm:p-8">
-                <div className="text-black px-2">
-                  <p className="text-sm sm:text-base text-gray-800 leading-loose text-left">
+              <div className="bg-white w-full h-full rounded-2xl flex flex-col justify-center">
+                <div className="text-black">
+                  <p className="text-sm sm:text-base text-gray-800 leading-loose text-justify">
                     Restez connectés avec{" "}
                     <span className="font-extrabold bg-gradient-to-r from-[#8a2be2] to-[#6c63ff] text-transparent bg-clip-text">
                       STEPIC
@@ -168,35 +202,40 @@ function ActualiteSection() {
 
           {/* MOBILE */}
           {isMobile && (
-            <Carousel className="w-full max-w-[400px] mx-auto">
-              <CarouselContent>
-               {combinedNews.map(item => (
-                  <CarouselItem key={`${item.type}-${item.id}`}>
-                    {item.type === "presse" ? (
-                      <ActuCard
-                        id={item.id}
-                        image={item.image}
-                        date_pub={item.date_pub}
-                        contenu={item.contenu}
-                        titre={item.titre}
-                        value="info"
-                      />
-                    ) : (
-                      <ActuCard
-                        id={item.id}
-                        image={item.imageActu}
-                        date_pub={item.datePub}
-                        contenu={item.contenuActu}
-                        titre={item.titreActu}
-                        value="entreprise"
-                      />
-                    )}
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="text-black cursor-pointer"/>
-              <CarouselNext className="text-black cursor-pointer"/>
-            </Carousel>
+            <>
+            
+              <Carousel setApi={setApiActu} className="w-full max-w-[400px] mx-auto">
+                <CarouselContent>
+                {combinedNews.map(item => (
+                    <CarouselItem key={`${item.type}-${item.id}`}>
+                      {item.type === "presse" ? (
+                        <ActuCard
+                          id={item.id}
+                          image={item.image}
+                          date_pub={item.date_pub}
+                          contenu={item.contenu}
+                          titre={item.titre}
+                          value="info"
+                        />
+                      ) : (
+                        <ActuCard
+                          id={item.id}
+                          image={item.imageActu}
+                          date_pub={item.datePub}
+                          contenu={item.contenuActu}
+                          titre={item.titreActu}
+                          value="entreprise"
+                        />
+                      )}
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="text-black cursor-pointer"/>
+                <CarouselNext className="text-black cursor-pointer"/>
+              </Carousel>
+              <CarouselDots api={apiActu} count={combinedLength} current={currentActu} />
+            </>
+            
           )}
 
         
