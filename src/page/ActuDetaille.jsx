@@ -51,7 +51,7 @@ const ActuDetaille = () => {
     const content = article.contenu || article.contenuActu;
 
     // Simulation des infos méta
-    const source = `PAR STEPIC.INFO ACTUALITÉ`; 
+    const source = `PAR STEPIC INFOS ACTUALITÉ`; 
     const categorie = "Actualité";
 
 
