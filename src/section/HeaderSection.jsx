@@ -127,7 +127,7 @@ function HeaderSection() {
           initial="hidden" 
           animate={isInView ? "show" : "hidden"}
         >
-          {["STEPIC, booster des talents :", "Informatique, Langues et création", "Multimédia"].map((line, index) => (
+          {["STEPIC, booster des talents :", "Formations, Informatique et création", "Multimédia"].map((line, index) => (
             <motion.h1
               key={index}
               variants={{
@@ -152,7 +152,7 @@ function HeaderSection() {
             }}
             className="text-base sm:text-lg md:text-xl text-gray-200 mb-10 italic max-w-2xl border-l-4 border-purple-600 pl-4 py-2"
           >
-            Langues · Informatique · Multimédia <br /> Communication · Presse · Évènementiel
+            Formations · Informatique · Multimédia <br /> Communication · Presse · Évènementiel
           </motion.p>
 
           {/* BOUTONS */}
