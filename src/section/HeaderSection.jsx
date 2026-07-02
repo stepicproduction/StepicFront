@@ -127,7 +127,7 @@ function HeaderSection() {
           initial="hidden" 
           animate={isInView ? "show" : "hidden"}
         >
-          {["STEPIC, booster des talents :", "Formations, Informatique et création", "Multimédia"].map((line, index) => (
+          {["STEPIC, booster des talents :", "Informatique et création", "Multimédia"].map((line, index) => (
             <motion.h1
               key={index}
               variants={{
