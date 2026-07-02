@@ -23,7 +23,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import langue from "../assets/langue.webp";
+//import langue from "../assets/langue.webp";
 import multimedia from "../assets/multimedia.webp";
 import informatique from "../assets/informatique.webp";
 import { getData } from '@/service/api';
@@ -66,7 +66,7 @@ function AboutDetaille() {
   const [equipe, setEquipe] = useState([]);
 
   const formations = [
-    {img: langue, title:"Langues étrangères", desc:"Acquérir une maîtrise linguistique solide et s’ouvrir à de nouvelles perspectives internationales."},
+    /*{img: langue, title:"Langues étrangères", desc:"Acquérir une maîtrise linguistique solide et s’ouvrir à de nouvelles perspectives internationales."},*/
     {img: multimedia, title:"Multimédia", desc:"Se former aux métiers créatifs et devenir acteur des innovations du monde moderne."},
     {img: informatique, title:"Informatique (+ maintenance)", desc:"Renforcer son efficacité et sa confiance dans l’usage des outils technologiques."}
   ]
