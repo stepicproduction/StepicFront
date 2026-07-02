@@ -198,7 +198,7 @@ const PresseActu = () => {
         
         {/* Facebook */}
         <a 
-          href="https://www.facebook.com/STEPICINFOS" 
+          href="https://www.facebook.com/profile.php?id=100064051059009" 
           target="_blank" 
           rel="noreferrer" 
           className="w-9 h-9 lg:w-10 lg:h-10 bg-white rounded-full flex items-center justify-center text-gray-600 shadow-sm hover:bg-[#1877F2] hover:text-white transition-all duration-300 hover:scale-110" 
