@@ -104,7 +104,7 @@ export default function Footer({ active = "home" }) {
               <FaYoutube className="text-white" /> 
             </a> 
             <a 
-              href="https://www.tiktok.com/@stepic_production" 
+              href="https://www.tiktok.com/@stepic601" 
               target="_blank" 
               rel="noreferrer" 
               aria-label="Compte TikTok STEPIC"
